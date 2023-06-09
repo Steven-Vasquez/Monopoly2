@@ -4,16 +4,16 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --host --open",
+    "dev:frontend": "vite --host --open",
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "start": "nodemon ./backend/server.ts",
+    "dev:backend": "ts-node-esm ./backend/server.ts",
     "db:create": "node-pg-migrate create --",
     "db:migrate": "node-pg-migrate up",
     "db:rollback": "node-pg-migrate down",
     "postinstall": "npm run db:migrate",
-    "help": "node-pg-migrate --help"
+    "start": "concurrently \"ts-node-esm ./backend/server.ts\" \"vite --host --open\""
   },
   "dependencies": {
     "@types/express": "^4.17.17",

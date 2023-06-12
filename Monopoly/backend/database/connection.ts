@@ -4,4 +4,4 @@ const pgp = pgPromise();
 
 const connection = pgp(process.env.DATABASE_URL!);
 
-export {connection};
+export default {connection};

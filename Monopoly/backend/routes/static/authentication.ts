@@ -1,6 +1,6 @@
-const express = require('express');
-const bcrypt = require('bcrypt');
-const Users = require("../../database/users.ts");
+import express from 'express';
+import bcrypt from 'bcrypt';
+import Users from "../../database/users.ts";
 
 const app = express();
 

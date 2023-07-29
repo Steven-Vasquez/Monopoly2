@@ -1,7 +1,16 @@
-import pgPromise from 'pg-promise'
+import pgPromise, { IMain } from 'pg-promise';
+import dotenv from 'dotenv';
 
-const pgp = pgPromise();
+dotenv.config();
 
-const connection = pgp(process.env.DATABASE_URL!);
+const pgp: IMain = pgPromise();
 
-export default {connection};
+const databaseString = process.env.DATABASE_URL;
+
+if (!databaseString) {
+  throw new Error('Database URL is not defined');
+}
+
+const connection = pgp(databaseString);
+
+export default connection;

@@ -20,7 +20,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 // Serve static files
-app.use(express.static(path.join(__dirname, "backend", "static")));
+app.use(express.static(path.join(import.meta.url, "backend", "static")));
 
 // Configure session
 const pgSessionInstance = pgSession(session);

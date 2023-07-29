@@ -1,4 +1,6 @@
-const db = require("./connection.js");
+import  connection  from "./connection.ts";
+
+const db = connection;
 
 // Create a new user
 const create = (username: String, email: String, password: String) =>
@@ -15,8 +17,8 @@ const findByEmail = (email: String) =>
 const getUsername = (user_id: String) =>
   db.one("SELECT username FROM users WHERE id=$1", [user_id]);
 
-module.exports = {
-    create,
-    findByEmail,
-    getUsername,
+export default {
+  create,
+  findByEmail,
+  getUsername,
 };

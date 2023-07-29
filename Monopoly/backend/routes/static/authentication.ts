@@ -1,8 +1,17 @@
 import express from 'express';
+import cors from 'cors'; // Import the cors middleware
 import bcrypt from 'bcrypt';
+
 import Users from "../../database/users.ts";
 
 const app = express();
+
+
+app.use(cors({
+  origin: ["http://localhost:3000"], // Allow only the react app (the provided URL) to make requests to the API
+  methods: ["GET", "POST"], // Methods we want to allow
+  credentials: true, // Allow cookies to be enabled and stored in the browser
+})); // Add the cors middleware to our application
 
 // Salt rounds used to generate salt for hashing passwords
 const SALT_ROUNDS = 10;
@@ -14,6 +23,8 @@ app.get("/register", (_req: any, response: any) => {
 
 // Creating a new user and encrypting their password
 app.post("/register", async (request: any, response: any) => {
+  console.log("Registration request received."); // Add this log statement
+
   const { username, email, password } = request.body;
 
   const salt = await bcrypt.genSalt(SALT_ROUNDS);
@@ -27,15 +38,12 @@ app.post("/register", async (request: any, response: any) => {
       email,
     };
 
-    response.redirect("/home");
+    response.json({ message: "Registration successful", success: true });
   } catch (error) {
     console.log({ error });
 
-    response.render("register", {
-      title: "Monopoly | Register",
-      username,
-      email,
-    });
+    response.status(400).json({ error: "An error occurred during registration." });
+
   }
 });
 

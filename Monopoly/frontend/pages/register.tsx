@@ -33,7 +33,7 @@ function Register() {
                 console.log(data);
 
                 if (data.success) {
-                    navigate('/login');
+                    navigate('/home');
                 }
                 else {
                     setErrorMessage(data.error);

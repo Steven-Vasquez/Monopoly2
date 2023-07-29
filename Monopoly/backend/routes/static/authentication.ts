@@ -16,10 +16,12 @@ app.use(cors({
 // Salt rounds used to generate salt for hashing passwords
 const SALT_ROUNDS = 10;
 
+/*
 // Sign up route
 app.get("/register", (_req: any, response: any) => {
   response.render("register", { title: "Monopoly | Register" });
 });
+*/
 
 // Creating a new user and encrypting their password
 app.post("/register", async (request: any, response: any) => {
@@ -47,10 +49,12 @@ app.post("/register", async (request: any, response: any) => {
   }
 });
 
+/*
 // Login route
 app.get("/login", (_req: any, response: any) => {
   response.render("login", { title: "Monopoly | Register" });
 });
+*/
 
 // Checking to see if provided username and password are valid
 app.post("/login", async (request: any, response: any) => {
@@ -59,13 +63,6 @@ app.post("/login", async (request: any, response: any) => {
   try {
     const { id, username, password: hash } = await Users.findByEmail(email);
     const isValidUser = await bcrypt.compare(password, hash.trim());
-
-    // console.log("password is ()" + password + "()");
-    // console.log("hash is ()" + hash + "()");
-    // console.log("isValidUser is " + isValidUser);
-
-    // console.log("id is " + id);
-    // console.log("username is " + username);
 
     if (isValidUser) {
       console.log("User is valid");
@@ -76,17 +73,14 @@ app.post("/login", async (request: any, response: any) => {
       };
 
       console.log(request.session);
-      response.redirect("/home");
+      response.json({ message: "Login successful", success: true });
     } else {
       throw "User did not provide valid credentials";
     }
   } catch (error) {
     console.log({ error });
-    response.render("login", {
-      title: "Monopoly | Log In",
-      email,
-      message: "Error!",
-    });
+    response.status(400).json({ error: "An error occurred during registration." });
+
   }
 });
 

@@ -87,10 +87,13 @@ app.post("/login", async (request: any, response: any) => {
 // Logout route
 app.get("/logout", (request: any, response: any) => {
   request.session.destroy((error: any) => {
-    console.log({ error });
+    if (error) {
+      console.error(error);
+      response.status(500).json({ success: false, error: "Failed to logout" });
+    } else {
+      response.json({ success: true, message: "Logout successful" });
+    }
   });
-
-  response.redirect("/");
 });
 
-export default app;
+  export default app;

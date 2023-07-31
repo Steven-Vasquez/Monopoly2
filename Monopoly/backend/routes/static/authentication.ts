@@ -23,6 +23,17 @@ app.get("/register", (_req: any, response: any) => {
 });
 */
 
+
+// API endpoint that checks if a user is logged in
+app.get("/checkLogin", (req: any, res: any) => {
+  if (req.session.user) { // There is a user session active
+    res.send({loggedIn: true, user: req.session.user});
+  } else { // There is no user session active
+    res.send({ loggedIn: false });
+   }
+});
+
+
 // Creating a new user and encrypting their password
 app.post("/register", async (request: any, response: any) => {
   console.log("Registration request received."); // Add this log statement
@@ -39,6 +50,7 @@ app.post("/register", async (request: any, response: any) => {
       username,
       email,
     };
+    
 
     response.json({ message: "Registration successful", success: true });
   } catch (error) {
@@ -71,6 +83,8 @@ app.post("/login", async (request: any, response: any) => {
         username,
         email,
       };
+
+      await request.session.save(); // Save the session after setting user data
 
       console.log(request.session);
       response.json({ message: "Login successful", success: true });

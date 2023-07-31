@@ -10,6 +10,7 @@ import dotenv from "dotenv";
 import db from "./database/connection.ts";
 
 import authenticationRoutes from "./routes/static/authentication.ts";
+import addSessionLocals from "./middleware/addSessionLocals.ts";
 
 dotenv.config();
 
@@ -19,8 +20,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-// Serve static files
-app.use(express.static(path.join(import.meta.url, "backend", "static")));
+
 
 // Configure session
 const pgSessionInstance = pgSession(session);
@@ -32,6 +32,13 @@ const sessionMiddleware = session({
   cookie: { maxAge: 1000 * 60 * 60 * 24 * 7 },
 });
 app.use(sessionMiddleware);
+
+
+// Serve static files
+app.use(express.static(path.join(import.meta.url, "backend", "frontend")));
+
+// Add session locals
+app.use(addSessionLocals);
 
 // Define routes
 app.use(authenticationRoutes); // Authentication routes

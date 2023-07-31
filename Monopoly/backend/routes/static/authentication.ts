@@ -96,7 +96,7 @@ app.get("/logout", (request: any, response: any) => {
 });
 
 
-app.get("/checkLogin", (req: any, res: any) => {
+app.post("/checkLogin", (req: any, res: any) => {
   if (req.session.user) { // There is a user session active
     console.log("User passed login check");
     res.send({ loggedIn: true, user: req.session.user });

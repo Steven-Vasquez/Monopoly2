@@ -10,6 +10,7 @@ import dotenv from "dotenv";
 import db from "./database/connection.ts";
 
 import authenticationRoutes from "./routes/static/authentication.ts";
+import addSessionLocals from "./middleware/addSessionLocals.ts";
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.use(cookieParser());
 // Serve static files
 app.use(express.static(path.join(import.meta.url, "backend", "static")));
 
+
 // Configure session
 const pgSessionInstance = pgSession(session);
 const sessionMiddleware = session({
@@ -33,8 +35,16 @@ const sessionMiddleware = session({
 });
 app.use(sessionMiddleware);
 
+app.use(addSessionLocals);
+
 // Define routes
 app.use(authenticationRoutes); // Authentication routes
+
+
+app.use((request, _response, next) => {
+  console.log("Session : ", request.session)
+  next();
+});
 
 // Catch 404 and forward to error handler
 app.use((_req: Request, _res: Response, next: NextFunction) => {

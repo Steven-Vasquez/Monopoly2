@@ -71,8 +71,7 @@ app.post("/login", async (request: any, response: any) => {
         username,
         email,
       };
-
-      console.log(request.session);
+      
       response.json({ message: "Login successful", success: true });
     } else {
       throw "User did not provide valid credentials";
@@ -95,5 +94,17 @@ app.get("/logout", (request: any, response: any) => {
     }
   });
 });
+
+
+app.get("/checkLogin", (req: any, res: any) => {
+  if (req.session.user) { // There is a user session active
+    console.log("User passed login check");
+    res.send({ loggedIn: true, user: req.session.user });
+  } else { // There is no user session active
+    console.log("User failed login check");
+    res.send({ loggedIn: false });
+  }
+});
+
 
   export default app;

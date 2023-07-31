@@ -28,7 +28,7 @@ function Login() {
                 console.log(data);
 
                 if (data.success) {
-                    navigate('/home');
+                    navigate('/');
                 }
                 else {
                     setErrorMessage(data.error);

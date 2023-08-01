@@ -27,10 +27,10 @@ app.get("/register", (_req: any, response: any) => {
 // API endpoint that checks if a user is logged in
 app.get("/checkLogin", (req: any, res: any) => {
   if (req.session.user) { // There is a user session active
-    res.send({loggedIn: true, user: req.session.user});
+    res.send({ loggedIn: true, user: req.session.user });
   } else { // There is no user session active
     res.send({ loggedIn: false });
-   }
+  }
 });
 
 
@@ -43,14 +43,25 @@ app.post("/register", async (request: any, response: any) => {
   const salt = await bcrypt.genSalt(SALT_ROUNDS);
   const hash = await bcrypt.hash(password, salt);
 
+
+  const user = await Users.findByEmail(email);
+  if (user && user.email == email) {
+    response.send({ message: `Email "${email}" is already in use.` })
+  }
+  else if (user && user.username == username) {
+    response.send({ message: `Username "${username}" is already in use.` })
+  }
+
+
   try {
     const { id } = await Users.create(username, email, hash);
+    
     request.session.user = {
       id,
       username,
       email,
     };
-    
+
 
     response.json({ message: "Registration successful", success: true });
   } catch (error) {
@@ -77,23 +88,18 @@ app.post("/login", async (request: any, response: any) => {
     const isValidUser = await bcrypt.compare(password, hash.trim());
 
     if (isValidUser) {
-      console.log("User is valid");
-      request.session.user = {
-        id,
-        username,
-        email,
-      };
+      const foundUser = { id, username, email };
+      request.session.user = foundUser
 
-      await request.session.save(); // Save the session after setting user data
-
-      console.log(request.session);
-      response.json({ message: "Login successful", success: true });
+      //await request.session.save(); // Save the session after setting user data
+      response.send(foundUser)
     } else {
-      throw "User did not provide valid credentials";
+      response.send({ message: "Invalid Username/Password." })
+
     }
   } catch (error) {
     console.log({ error });
-    response.status(400).json({ error: "An error occurred during registration." });
+    response.status(400).json({ error: "An error occurred during login." });
 
   }
 });
@@ -105,9 +111,10 @@ app.get("/logout", (request: any, response: any) => {
       console.error(error);
       response.status(500).json({ success: false, error: "Failed to logout" });
     } else {
+      response.clearCookie("sid"); // Clear the session cookie, sid is default name for session id
       response.json({ success: true, message: "Logout successful" });
     }
   });
 });
 
-  export default app;
+export default app;

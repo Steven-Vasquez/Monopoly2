@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function Register() {
     const [username, setUsername] = useState('');
@@ -8,17 +9,35 @@ function Register() {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
 
+    axios.defaults.withCredentials = true; // Allow cookies to be stored in the browser
     const navigate = useNavigate();
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        const formData = {
-            username,
-            email,
-            password,
-        };
+        axios.post("http://localhost:3001/register", {
+            username: username,
+            email: email,
+            password: password
+        }, {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+            .then(res => {
 
+                if (typeof res.data.message !== "undefined" && res.data.message > 0) {
+                    alert(res.data.message);
+                } else {
+                    alert(`New account created for ${username}!`);
+                    window.location.href = "/lobby";
+                }
+            })
+            .catch(err => {
+                console.log(err);
+            });
+
+        /*
         fetch('http://localhost:3001/register', {
             method: 'POST',
             headers: {
@@ -33,7 +52,7 @@ function Register() {
                 console.log(data);
 
                 if (data.success) {
-                    navigate('/home');
+                    navigate('/lobby');
                 }
                 else {
                     setErrorMessage(data.error);
@@ -44,6 +63,7 @@ function Register() {
                 // Handle any errors
                 console.error(error);
             });
+            */
     };
 
 

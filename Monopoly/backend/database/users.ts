@@ -11,11 +11,11 @@ const create = (username: String, email: String, password: String) =>
 
 // Find a user by their email address
 const findByEmail = (email: String) =>
-  db.one("SELECT * FROM users WHERE email=$1", [email]);
+  db.oneOrNone("SELECT * FROM users WHERE email=$1", [email]);
 
 // Find a user by their id
 const getUsername = (user_id: String) =>
-  db.one("SELECT username FROM users WHERE id=$1", [user_id]);
+  db.oneOrNone("SELECT username FROM users WHERE id=$1", [user_id]);
 
 export default {
   create,

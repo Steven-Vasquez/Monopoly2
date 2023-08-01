@@ -21,9 +21,7 @@ function App() {
 
     axios.get("http://localhost:3001/checkLogin")
       .then(res => {
-        console.log("The response from the login get in App.js is: is: ");
-        console.log(res.data.user);
-        console.log(res.data);
+
         if (res.data.loggedIn === true) {
           setLoggedIn(true);
           setUsername(res.data.user.username);
@@ -39,8 +37,6 @@ function App() {
       });
   }, []);
 
-  console.log("The loggedIn variable in App.js is: ");
-  console.log(loggedIn);
 
   if (loading) {
     return (

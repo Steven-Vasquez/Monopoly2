@@ -1,44 +1,39 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-
+import axios from 'axios';
 
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState('');
 
-    const navigate = useNavigate();
+    axios.defaults.withCredentials = true; // Allow cookies to be stored in the browser
+
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        const formData = { email, password };
+        //const formData = { email, password };
 
-        fetch('http://localhost:3001/login', {
-            method: 'POST',
+        axios.post("http://localhost:3001/login", {
+            email: email,
+            password: password
+        }, {
             headers: {
                 'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData),
+            }
         })
-            .then((response) => response.json())
-            .then((data) => {
-                // Handle the response from the server
-                console.log('data is:');
-                console.log(data);
-
-                if (data.success) {
-                    navigate('/home');
+            .then(res => {
+                if (typeof res.data.message !== "undefined" && res.data.message > 0) {
+                    alert(res.data.message);
+                } else {
+                    alert(`Welcome back, ${email}!`);
+                    window.location.href = "/lobby";
                 }
-                else {
-                    setErrorMessage(data.error);
-                }
-
             })
-            .catch((error) => {
-                // Handle any errors
-                console.error(error);
+            .catch(err => {
+                console.log(err);
             });
+
     }
     return (
         <div>

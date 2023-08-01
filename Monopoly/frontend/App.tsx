@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css'
 
+import NavBar from './components/navbar.tsx';
+
 import Register from './pages/register.tsx'
 import Login from './pages/login.tsx'
 import Home from './pages/home.tsx';
@@ -54,6 +56,7 @@ function App() {
   return (
     <>
       <Router>
+        <NavBar loggedIn={loggedIn} />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />

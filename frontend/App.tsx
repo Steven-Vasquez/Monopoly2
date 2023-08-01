@@ -2,12 +2,12 @@ import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css'
 
-import NavBar from './components/navbar.tsx';
+import NavBar from './components/Navbar.tsx';
 
-import Register from './pages/register.tsx'
-import Login from './pages/login.tsx'
-import Home from './pages/home.tsx';
-import Lobby from './pages/lobby.tsx';
+import Register from './pages/Register.tsx'
+import Login from './pages/Login.tsx'
+import Home from './pages/Home.tsx';
+import Lobby from './pages/Lobby.tsx';
 
 import axios from 'axios';
 

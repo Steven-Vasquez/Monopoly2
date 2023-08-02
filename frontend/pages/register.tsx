@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function Register() {
@@ -10,7 +9,6 @@ function Register() {
     const [errorMessage, setErrorMessage] = useState('');
 
     axios.defaults.withCredentials = true; // Allow cookies to be stored in the browser
-    const navigate = useNavigate();
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -27,6 +25,7 @@ function Register() {
             .then(res => {
 
                 if (typeof res.data.message !== "undefined" && res.data.message > 0) {
+                    setErrorMessage(res.data.message);
                     alert(res.data.message);
                 } else {
                     alert(`New account created for ${username}!`);
@@ -36,34 +35,6 @@ function Register() {
             .catch(err => {
                 console.log(err);
             });
-
-        /*
-        fetch('http://localhost:3001/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                // Handle the response from the server
-                console.log('data is:');
-                console.log(data);
-
-                if (data.success) {
-                    navigate('/lobby');
-                }
-                else {
-                    setErrorMessage(data.error);
-                }
-
-            })
-            .catch((error) => {
-                // Handle any errors
-                console.error(error);
-            });
-            */
     };
 
 

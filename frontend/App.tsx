@@ -8,6 +8,8 @@ import Register from './pages/Register.tsx'
 import Login from './pages/Login.tsx'
 import Home from './pages/Home.tsx';
 import Lobby from './pages/Lobby.tsx';
+import GameHub from './pages/GameHub.tsx';
+import CreateGame from './pages/CreateGame.tsx';
 
 import axios from 'axios';
 
@@ -58,12 +60,14 @@ function App() {
       <Router>
         <NavBar loggedIn={loggedIn} />
         <Routes>
+        <Route path="*" element={<Navigate to="/" />} />
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="*" element={<Navigate to="/" />} />
+          <Route path="/hub" element={<GameHub />} />
           {loggedIn ? (
             <>
+              <Route path="/createGame" element={<CreateGame />} />
               <Route path="/lobby" element={<Lobby />} />
             </>
           ) : null}

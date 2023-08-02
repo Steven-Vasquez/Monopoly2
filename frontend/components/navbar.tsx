@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import '../stylesheets/Navbar.css';
 
 function NavBar(props: any) {
     const { loggedIn, /*username*/ } = props;
@@ -15,8 +16,8 @@ function NavBar(props: any) {
     }
 
     return (
-        <div>
-            <ul>
+        <div className='navbar'>
+            <ul id='navbar-list'>
                 {loggedIn ? (
                     <li onClick={handleLogoutRequest}>
                         <Link to={''}>Logout</Link>

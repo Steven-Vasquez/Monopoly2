@@ -19,6 +19,16 @@ exports.up = (pgm) => {
         notNull: true,
         default: "Untitled Game",
       },
+      is_private: {
+        type: "boolean",
+        notNull: true,
+        default: false,
+      },
+      game_password: {
+        type: "varchar(255)",
+        notNull: true,
+        default: "",
+      },
       created_at: {
         type: "timestamp",
         notNull: true,

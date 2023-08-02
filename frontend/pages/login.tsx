@@ -24,6 +24,7 @@ function Login() {
         })
             .then(res => {
                 if (typeof res.data.message !== "undefined" && res.data.message > 0) {
+                    setErrorMessage(res.data.message);
                     alert(res.data.message);
                 } else {
                     alert(`Welcome back, ${email}!`);

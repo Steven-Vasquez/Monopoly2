@@ -1,14 +1,44 @@
-import Games from "../../backend/database/games.ts";
+import { useState, useEffect } from "react";
+import axios from "axios";
+
+// Interface to define the shape of the Game data returned from the API call to get list of games
+interface Game {
+    id: number;
+    joined: boolean;
+    completed: boolean;
+    game_title: string;
+    is_private: boolean;
+    created_at: Date;
+    turn_number: number;
+    player_count: number;
+}
 
 export function Hub() {
-    
-    const gamesList = Games.listGames();
+    const [gamesList, setGamesList] = useState<Game[]>([]);
 
-    console.log(gamesList);
+    useEffect(() => {
+        async function getGamesList() {
+            try {
+                const response = await axios.get("http://localhost:3001/api/games/getGamesList");
+                setGamesList(response.data);
+            } catch (error) {
+                console.error("Error fetching games list: ", error);
+            }
+        }
+
+        getGamesList();
+    }, []);
+
+
+
     return (
         <div>
             <h1>Games List</h1>
-            <p></p>
+            <ul>
+                {gamesList.map(game => (
+                    <li key={game.id}>{game.game_title}</li>
+                ))}
+            </ul>
         </div>
     );
 }

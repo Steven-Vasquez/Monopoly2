@@ -8,6 +8,16 @@ import Games from "../../database/games.ts";
 const router = express.Router();
 
 // Get list of games
+router.get("/getGamesList", async (_request: any, response: any) => {
+    try {
+        const available_games = await Games.listGames();
+
+        response.json(available_games);
+    } catch (error) {
+        console.log({ error });
+    }
+});
+
 /*
 router.get("/", async (request: any, response: any) => {
     const { id: user_id } = request.session.user;
@@ -23,6 +33,8 @@ router.get("/", async (request: any, response: any) => {
     }
 });
 */
+
+
 
 // Create new game
 router.post("/create", async (request: any, response: any) => {

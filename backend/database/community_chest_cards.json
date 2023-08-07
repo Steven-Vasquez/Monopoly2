@@ -1,0 +1,98 @@
+[
+  {
+    "card_id": "1",
+    "card_text": "Advance to Go (Collect $200)",
+    "action_type": "move",
+    "action_data": "1"
+  },
+  {
+    "card_id": "2",
+    "card_text": "Bank error in your favor - collect $75",
+    "action_type": "credit",
+    "action_data": "75"
+  },
+  {
+    "card_id": "3",
+    "card_text": "Doctor's fees - Pay $50",
+    "action_type": "debit",
+    "action_data": "50"
+  },
+  {
+    "card_id": "4",
+    "card_text": "Get out of Jail Free",
+    "action_type": "jail_card",
+    "action_data": ""
+  },
+  {
+    "card_id": "5",
+    "card_text": "Go to Jail - Go directly to Jail - Do not pass Go, do not collect $200",
+    "action_type": "jail",
+    "action_data": ""
+  },
+  {
+    "card_id": "6",
+    "card_text": "Grand Opera Night - find $150 from every player for opening night seats",
+    "action_type": "credit",
+    "action_data": "150"
+  },
+  {
+    "card_id": "7",
+    "card_text": "Holiday Fund matures - Receive $100",
+    "action_type": "credit",
+    "action_data": "100"
+  },
+  {
+    "card_id": "8",
+    "card_text": "Income Tax refund - collect $20",
+    "action_type": "credit",
+    "action_data": "20"
+  },
+  {
+    "card_id": "9",
+    "card_text": "It is your lucky birthday - you found $40",
+    "action_type": "credit",
+    "action_data": "10"
+  },
+  {
+    "card_id": "10",
+    "card_text": "Life Insurance Matures - collect $100",
+    "action_type": "credit",
+    "action_data": "100"
+  },
+  {
+    "card_id": "11",
+    "card_text": "Pay Hospital Fees of $100",
+    "action_type": "debit",
+    "action_data": "100"
+  },
+  {
+    "card_id": "12",
+    "card_text": "Pay School Fees of $50",
+    "action_type": "debit",
+    "action_data": "50"
+  },
+  {
+    "card_id": "13",
+    "card_text": "Receive $25 Consultancy Fee",
+    "action_type": "credit",
+    "action_data": "25"
+  },
+  {
+    "card_id": "14",
+    "card_text": "You are assessed for street repairs - $55 per house or hotel",
+    "action_type": "debit",
+    "action_data": "55"
+  },
+  {
+    "card_id": "15",
+    "card_text": "You have won second prize in a beauty contest - collect $10",
+    "action_type": "credit",
+    "action_data": "10"
+  },
+  {
+    "card_id": "16",
+    "card_text": "You inherit $100",
+    "action_type": "credit",
+    "action_data": "100"
+  }
+]

@@ -1,0 +1,92 @@
+[
+  {
+    "card_id": "1",
+    "card_text": "Advance to Boardwalk",
+    "action_type": "move",
+    "action_data": "40"
+  },
+  {
+    "card_id": "2",
+    "card_text": "Advance to Go (Collect $200)",
+    "action_type": "move",
+    "action_data": "1"
+  },
+  {
+    "card_id": "3",
+    "card_text": "Advance to Illinois Avenue. If you pass Go, collect $200",
+    "action_type": "move",
+    "action_data": "25"
+  },
+  {
+    "card_id": "4",
+    "card_text": "Advance to St. Charles Place. If you pass Go, collect $200",
+    "action_type": "move",
+    "action_data": "12"
+  },
+  {
+    "card_id": "5",
+    "card_text": "Bank pays you dividend of $50",
+    "action_type": "credit",
+    "action_data": "50"
+  },
+  {
+    "card_id": "6",
+    "card_text": "Get out of Jail Free",
+    "action_type": "jail_card",
+    "action_data": ""
+  },
+  {
+    "card_id": "7",
+    "card_text": "Go back 3 spaces",
+    "action_type": "move_spaces",
+    "action_data": "-3"
+  },
+  {
+    "card_id": "8",
+    "card_text": "Go directly to Jail",
+    "action_type": "jail",
+    "action_data": ""
+  },
+  {
+    "card_id": "9",
+    "card_text": "Make general repairs on all your property. Fpr each house or hotel, pay $40",
+    "action_type": "debit",
+    "action_data": "40"
+  },
+  {
+    "card_id": "10",
+    "card_text": "Speeding fine $15",
+    "action_type": "debit",
+    "action_data": "15"
+  },
+  {
+    "card_id": "11",
+    "card_text": "Take a trip to Reading Railroad. If you pass Go, collect $200",
+    "action_type": "move",
+    "action_data": "5"
+  },
+  {
+    "card_id": "12",
+    "card_text": "Take a walk on the Boardwalk",
+    "action_type": "move",
+    "action_data": "39"
+  },
+  {
+    "card_id": "13",
+    "card_text": "You have been elected Chairman of the Board. Pay $50",
+    "action_type": "debit",
+    "action_data": "50"
+  },
+  {
+    "card_id": "14",
+    "card_text": "Your building loan matures - collect $150",
+    "action_type": "credit",
+    "action_data": "150"
+  },
+  {
+    "card_id": "15",
+    "card_text": "You have won a crossword competition - collect $100",
+    "action_type": "credit",
+    "action_data": "100"
+  }
+]

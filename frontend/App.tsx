@@ -68,7 +68,7 @@ function App() {
           {loggedIn ? (
             <>
               <Route path="/createGame" element={<CreateGame />} />
-              <Route path="/lobby" element={<Lobby />} />
+              <Route path="/lobby/:lobbyID" element={<Lobby />} />
             </>
           ) : null}
         </Routes>

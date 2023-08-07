@@ -9,8 +9,9 @@ import dotenv from "dotenv";
 
 import db from "./database/connection.ts";
 
-import authenticationRoutes from "./routes/static/authentication.ts";
 import addSessionLocals from "./middleware/addSessionLocals.ts";
+import authenticationRoutes from "./routes/static/authentication.ts";
+import apiGamesRoutes from "./routes/api/games.ts";
 
 dotenv.config();
 
@@ -42,6 +43,7 @@ app.use(addSessionLocals);
 
 // Define routes
 app.use(authenticationRoutes); // Authentication routes
+app.use("/api/games", apiGamesRoutes); // Game routes
 
 // Catch 404 and forward to error handler
 app.use((_req: Request, _res: Response, next: NextFunction) => {

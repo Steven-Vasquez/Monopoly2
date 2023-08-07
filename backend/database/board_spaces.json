@@ -1,0 +1,202 @@
+[
+  {
+    "board_position": 1,
+    "space_name": "go",
+    "space_type": "go"
+  },
+  {
+    "board_position": 2,
+    "space_name": "mediterranean_avenue",
+    "space_type": "color_property"
+  },
+  {
+    "board_position": 3,
+    "space_name": "community_chest",
+    "space_type": "community_chest"
+  },
+  {
+    "board_position": 4,
+    "space_name": "baltic_avenue",
+    "space_type": "color_property"
+  },
+  {
+    "board_position": 5,
+    "space_name": "income_tax",
+    "space_type": "tax"
+  },
+  {
+    "board_position": 6,
+    "space_name": "reading_railroad",
+    "space_type": "railroad_property"
+  },
+  {
+    "board_position": 7,
+    "space_name": "oriental_avenue",
+    "space_type": "color_property"
+  },
+  {
+    "board_position": 8,
+    "space_name": "chance",
+    "space_type": "chance"
+  },
+  {
+    "board_position": 9,
+    "space_name": "vermont_avenue",
+    "space_type": "color_property"
+  },
+  {
+    "board_position": 10,
+    "space_name": "connecticut_avenue",
+    "space_type": "color_property"
+  },
+  {
+    "board_position": 11,
+    "space_name": "jail",
+    "space_type": "jail"
+  },
+  {
+    "board_position": 12,
+    "space_name": "st_charles_place",
+    "space_type": "color_property"
+  },
+  {
+    "board_position": 13,
+    "space_name": "electric_company",
+    "space_type": "utility_property"
+  },
+  {
+    "board_position": 14,
+    "space_name": "states_avenue",
+    "space_type": "color_property"
+  },
+  {
+    "board_position": 15,
+    "space_name": "virginia_avenue",
+    "space_type": "color_property"
+  },
+  {
+    "board_position": 16,
+    "space_name": "pennsylvania_railroad",
+    "space_type": "railroad_property"
+  },
+  {
+    "board_position": 17,
+    "space_name": "st_james_place",
+    "space_type": "color_property"
+  },
+  {
+    "board_position": 18,
+    "space_name": "community_chest",
+    "space_type": "community_chest"
+  },
+  {
+    "board_position": 19,
+    "space_name": "tennessee_avenue",
+    "space_type": "color_property"
+  },
+  {
+    "board_position": 20,
+    "space_name": "new_york_avenue",
+    "space_type": "color_property"
+  },
+  {
+    "board_position": 21,
+    "space_name": "free_parking",
+    "space_type": "free_parking"
+  },
+  {
+    "board_position": 22,
+    "space_name": "kentucky_avenue",
+    "space_type": "color_property"
+  },
+  {
+    "board_position": 23,
+    "space_name": "chance",
+    "space_type": "chance"
+  },
+  {
+    "board_position": 24,
+    "space_name": "indiana_avenue",
+    "space_type": "color_property"
+  },
+  {
+    "board_position": 25,
+    "space_name": "illinois_avenue",
+    "space_type": "color_property"
+  },
+  {
+    "board_position": 26,
+    "space_name": "b_and_o_railroad",
+    "space_type": "railroad_property"
+  },
+  {
+    "board_position": 27,
+    "space_name": "atlantic_avenue",
+    "space_type": "color_property"
+  },
+  {
+    "board_position": 28,
+    "space_name": "ventnor_avenue",
+    "space_type": "color_property"
+  },
+  {
+    "board_position": 29,
+    "space_name": "water_works",
+    "space_type": "utility_property"
+  },
+  {
+    "board_position": 30,
+    "space_name": "marvin_gardens",
+    "space_type": "color_property"
+  },
+  {
+    "board_position": 31,
+    "space_name": "go_to_jail",
+    "space_type": "go_to_jail"
+  },
+  {
+    "board_position": 32,
+    "space_name": "pacific_avenue",
+    "space_type": "color_property"
+  },
+  {
+    "board_position": 33,
+    "space_name": "north_carolina_avenue",
+    "space_type": "color_property"
+  },
+  {
+    "board_position": 34,
+    "space_name": "community_chest",
+    "space_type": "community_chest"
+  },
+  {
+    "board_position": 35,
+    "space_name": "pennsylvania_avenue",
+    "space_type": "color_property"
+  },
+  {
+    "board_position": 36,
+    "space_name": "short_line_railroad",
+    "space_type": "railroad_property"
+  },
+  {
+    "board_position": 37,
+    "space_name": "chance",
+    "space_type": "chance"
+  },
+  {
+    "board_position": 38,
+    "space_name": "park_place",
+    "space_type": "color_property"
+  },
+  {
+    "board_position": 39,
+    "space_name": "luxury_tax",
+    "space_type": "tax"
+  },
+  {
+    "board_position": 40,
+    "space_name": "boardwalk",
+    "space_type": "color_property"
+  }
+]

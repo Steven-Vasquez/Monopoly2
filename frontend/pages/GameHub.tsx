@@ -1,4 +1,10 @@
-export function JoinGame() {
+import Games from "../../backend/database/games.ts";
+
+export function Hub() {
+    
+    const gamesList = Games.listGames();
+
+    console.log(gamesList);
     return (
         <div>
             <h1>Games List</h1>
@@ -7,4 +13,4 @@ export function JoinGame() {
     );
 }
 
-export default JoinGame;
+export default Hub;

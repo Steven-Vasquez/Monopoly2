@@ -184,6 +184,6 @@ const create = async (creator_id: number, game_title: string, is_private: boolea
 
 // Gets the list of all games that are joinable
 const GAMES_LIST_SQL = `SELECT * FROM games WHERE joinable=true;`;
-const listGames = async (user_id: number) => db.any(GAMES_LIST_SQL, [user_id]);
+const listGames = async () => db.any(GAMES_LIST_SQL);
 
 export default { create, listGames };

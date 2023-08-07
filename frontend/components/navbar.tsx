@@ -26,7 +26,7 @@ function NavBar(props: any) {
                     <li><Link to="/login">Login</Link></li>
                 )}
                 <li><Link to="/">Home</Link></li>
-                <li><Link to="/gamesList">Games</Link></li>
+                <li><Link to="/hub">Games</Link></li>
             </ul>
         </div>
     )

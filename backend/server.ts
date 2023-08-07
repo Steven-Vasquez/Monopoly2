@@ -10,6 +10,8 @@ import dotenv from "dotenv";
 import db from "./database/connection.ts";
 
 import addSessionLocals from "./middleware/addSessionLocals.ts";
+import initSockets from "./sockets/init.ts";
+
 import authenticationRoutes from "./routes/static/authentication.ts";
 import apiGamesRoutes from "./routes/api/games.ts";
 
@@ -52,6 +54,10 @@ app.use((_req: Request, _res: Response, next: NextFunction) => {
 
 // Start the server
 const port = process.env.PORT || 3001
-app.listen(port, () => {
+
+// Use the initSockets function to initialize a server to listen to regular HTTP requests and socket connections
+const server = initSockets(app, sessionMiddleware);
+
+server.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })

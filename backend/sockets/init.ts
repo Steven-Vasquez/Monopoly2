@@ -9,7 +9,14 @@ interface SocketServer extends http.Server {
 
 const initSockets = (app: Express, sessionMiddleware: any): SocketServer => {
   const server = http.createServer(app) as SocketServer; // Cast server to SocketServer
-  const io = new Server(server);
+  
+  // Use the cors middleware to allow WebSocket connections
+  const io = new Server(server, {
+    cors: {
+      origin: "http://localhost:3000",  // Change this to your frontend URL
+      methods: ["GET", "POST"]
+    }
+  });
 
   io.engine.use(sessionMiddleware);
 
@@ -31,7 +38,11 @@ const initSockets = (app: Express, sessionMiddleware: any): SocketServer => {
     // TODO: Add other event listeners and logic for handling real-time updates
   });
 
+
+  //console.log("io exists:", io);
+
   server.io = io; // Set the io property on the server instance (because TypeScript doesn't know about the io property on the server instance)
+  app.set("io", io);
 
   return server;
 };

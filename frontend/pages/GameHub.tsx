@@ -1,5 +1,9 @@
+
 import { useState, useEffect } from "react";
 import axios from "axios";
+import io from "socket.io-client";
+
+import { GAME_CREATED } from "../../shared/constants.ts"
 
 // Interface to define the shape of the Game data returned from the API call to get list of games
 interface Game {
@@ -13,23 +17,39 @@ interface Game {
     player_count: number;
 }
 
+/*
+function gameListItem() { //TODO: insert Game info to make a list item
+    return (
+        <div>
+            <h1>Game List Item</h1>
+        </div>
+    );
+}
+*/
+
 export function Hub() {
+    const socket = io("http://localhost:3001");
+    console.log("Hub.tsx: socket: ", socket);
     const [gamesList, setGamesList] = useState<Game[]>([]);
 
-    useEffect(() => {
-        async function getGamesList() {
-            try {
-                const response = await axios.get("http://localhost:3001/api/games/getGamesList");
-                setGamesList(response.data);
-            } catch (error) {
-                console.error("Error fetching games list: ", error);
-            }
+    async function getGamesList() {
+        try {
+            const response = await axios.get("http://localhost:3001/api/games/getGamesList");
+            setGamesList(response.data);
+        } catch (error) {
+            console.error("Error fetching games list: ", error);
         }
+    }
 
+    useEffect(() => {
         getGamesList();
     }, []);
 
 
+    socket.on(GAME_CREATED, (_data: any) => {
+        console.log("GAME_CREATED event received");
+        getGamesList();
+    });
 
     return (
         <div>

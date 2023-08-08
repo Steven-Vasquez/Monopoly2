@@ -6,6 +6,7 @@ import session from "express-session";
 import cookieParser from "cookie-parser";
 import pgSession from "connect-pg-simple";
 import dotenv from "dotenv";
+import cors from "cors";
 
 import db from "./database/connection.ts";
 
@@ -24,7 +25,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 
-
 // Configure session
 const pgSessionInstance = pgSession(session);
 const sessionMiddleware = session({
@@ -36,12 +36,21 @@ const sessionMiddleware = session({
 });
 app.use(sessionMiddleware);
 
+// Use the initSockets function to initialize a server to listen to regular HTTP requests and socket connections
+const server = initSockets(app, sessionMiddleware);
+
 
 // Serve static files
 app.use(express.static(path.join(import.meta.url, "backend", "frontend")));
 
 // Add session locals
 app.use(addSessionLocals);
+
+app.use(cors({
+  origin: ["http://localhost:3000"], // Allow only the react app (the provided URL) to make requests to the API
+  methods: ["GET", "POST"], // Methods we want to allow
+  credentials: true, // Allow cookies to be enabled and stored in the browser
+}));
 
 // Define routes
 app.use(authenticationRoutes); // Authentication routes
@@ -54,9 +63,6 @@ app.use((_req: Request, _res: Response, next: NextFunction) => {
 
 // Start the server
 const port = process.env.PORT || 3001
-
-// Use the initSockets function to initialize a server to listen to regular HTTP requests and socket connections
-const server = initSockets(app, sessionMiddleware);
 
 server.listen(port, () => {
   console.log(`Example app listening on port ${port}`)

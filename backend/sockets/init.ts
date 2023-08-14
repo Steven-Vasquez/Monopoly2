@@ -39,8 +39,6 @@ const initSockets = (app: Express, sessionMiddleware: any): SocketServer => {
   });
 
 
-  //console.log("io exists:", io);
-
   server.io = io; // Set the io property on the server instance (because TypeScript doesn't know about the io property on the server instance)
   app.set("io", io);
 

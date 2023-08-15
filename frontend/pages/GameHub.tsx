@@ -2,8 +2,11 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import io from "socket.io-client";
+import { formatDistanceToNow } from 'date-fns';
 
 import { GAME_CREATED } from "../../shared/constants.ts"
+
+import "../stylesheets/GameHub.css"
 
 // Interface to define the shape of the Game data returned from the API call to get list of games
 interface Game {
@@ -26,6 +29,16 @@ function gameListItem() { //TODO: insert Game info to make a list item
     );
 }
 */
+
+interface TimeAgoProps {
+    date: Date | string; // Accept Date object or string representation of date (because TypeScript)
+}
+
+function TimeAgo({ date }: TimeAgoProps) {
+    const timeAgo = formatDistanceToNow(new Date(date), { addSuffix: true });
+
+    return <span>{timeAgo}</span>;
+}
 
 export function Hub() {
     const socket = io("http://localhost:3001");
@@ -56,7 +69,14 @@ export function Hub() {
             <h1>Games List</h1>
             <ul>
                 {gamesList.map(game => (
-                    <li key={game.id}>{game.game_title}</li>
+                    <li key={game.id}>
+                        <ul className="game-info-row">
+                            <li>{game.game_title}</li>
+                            <li>{game.is_private ? "private" : "public"}</li>
+                            <li><TimeAgo date={game.created_at} /> </li>
+                            <li><a href={`/api/games/${game.id}/join`}>Join button</a></li>
+                        </ul>
+                    </li>
                 ))}
             </ul>
         </div>

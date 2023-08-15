@@ -1,5 +1,6 @@
 import express from "express";
 import Games from "../../database/games.ts";
+import Users from "../../database/users.ts";
 
 //import Users from "../../database/users.ts";
 
@@ -16,6 +17,20 @@ router.get("/getGamesList", async (_request: any, response: any) => {
     } catch (error) {
         console.log({ error });
     }
+});
+
+// Get list of players in a game/lobby (by game_id)
+router.get("/getPlayersList/:id", async (request: any, response: any) => {
+    const { id: game_id } = request.params;
+    const playerList = await Games.listPlayers(game_id);
+
+    const playerNames = []; //playerList.map((player: any) =>  Games.getUsername(player.user_id));
+    for (let i = 0; i < playerList.length; i++) {
+        const username = await Users.getUsername(playerList[i].user_id);
+        playerNames.push(username);
+      }
+
+      response.json(playerNames);
 });
 
 /*

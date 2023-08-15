@@ -186,4 +186,12 @@ const create = async (creator_id: number, game_title: string, is_private: boolea
 const GAMES_LIST_SQL = `SELECT * FROM games WHERE joinable=true;`;
 const listGames = async () => db.any(GAMES_LIST_SQL);
 
-export default { create, listGames };
+// Gets the list of all the players in the current game being played and sort them by play_order
+const PLAYERS_LIST_SQL = `SELECT user_id FROM game_users WHERE game_id=$1 ORDER BY play_order ASC;`;
+const listPlayers = async (game_id: number) => db.any(PLAYERS_LIST_SQL, [game_id]);
+
+export default {
+    create,
+    listGames,
+    listPlayers,
+};

@@ -9,6 +9,7 @@ function NavBar(props: any) {
         axios.get("http://localhost:3001/logout")
             .then(res => {
                 console.log(res);
+                window.location.href = "/";
             })
             .catch(err => {
                 console.log(err);

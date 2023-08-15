@@ -25,6 +25,7 @@ function App() {
 
     axios.get("http://localhost:3001/checkLogin")
       .then(res => {
+        console.log("logged in status is " + res.data.loggedIn);
 
         if (res.data.loggedIn === true) {
           setLoggedIn(true);

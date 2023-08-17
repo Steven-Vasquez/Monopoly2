@@ -21,7 +21,7 @@ const initSockets = (app: Express, sessionMiddleware: any): SocketServer => {
   io.engine.use(sessionMiddleware);
 
   io.on("connection", (socket) => {
-    console.log("Connection");
+    console.log("Connection", socket.id);
 
     socket.on("join", (game_id: string) => {
       console.log(socket.id + " is joining room: " + game_id);

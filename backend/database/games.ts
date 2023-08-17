@@ -201,11 +201,22 @@ const join = async (game_id: number, user_id: number) => {
         [game_id]
     );
 
+    if(player_count.player_count >= 4) {
+        console.log("Error thrown: Game is full");
+        throw new Error("Error thrown: Game is full");
+    }
+
+
     // Add 1 to player_count
     console.log("Player count: ");
     console.log(player_count);
     player_count = player_count.player_count;
     player_count++;
+
+    if(player_count >= 4) {
+        await db.none("UPDATE games SET joinable=false WHERE id=$1", [game_id]);
+    }
+    
     console.log("Player count: " + player_count);
 
     // Insert into game_users table with game_id, user_id, player_count

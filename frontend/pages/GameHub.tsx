@@ -44,12 +44,12 @@ function TimeAgo({ date }: TimeAgoProps) {
 
 export function Hub() {
     const navigate = useNavigate();
-    const socket = io("http://localhost:3001");
+    const socket = io("http://localhost:3001"); // Connecting to the socket room of the GameHub to update the list of games as needed
     console.log("Hub.tsx: socket: ", socket);
 
     const [gamesList, setGamesList] = useState<Game[]>([]);
 
-    async function getGamesList() {
+    async function getGamesList() { // Updates the list of joinable games
         try {
             const response = await axios.get("http://localhost:3001/api/games/getGamesList");
             setGamesList(response.data);
@@ -58,12 +58,12 @@ export function Hub() {
         }
     }
 
-    useEffect(() => {
+    useEffect(() => { // Initial fetch of games list
         getGamesList();
     }, []);
 
 
-    socket.on(GAME_CREATED, (_data: any) => {
+    socket.on(GAME_CREATED, (_data: any) => { // Updates the list of joinable games when a new game is created
         console.log("GAME_CREATED event received");
         getGamesList();
     });

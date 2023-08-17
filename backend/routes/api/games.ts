@@ -62,23 +62,6 @@ router.post("/:id/join", async (request: any, response: any) => {
     }
 });
 
-/*
-router.get("/", async (request: any, response: any) => {
-    const { id: user_id } = request.session.user;
-
-    try {
-        const available_games = await Games.listGames(user_id);
-
-        response.json(available_games);
-    } catch (error) {
-        console.log({ error });
-
-        response.redirect("/home");
-    }
-});
-*/
-
-
 
 // Create new game
 router.post("/create", async (request: any, response: any) => {

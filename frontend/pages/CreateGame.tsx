@@ -17,8 +17,6 @@ function CreateGame() {
             roomName: roomName,
             isPrivate: isPrivate,
             password: password
-
-        
         })
             .then(res => {
                 console.log(res.data.message);

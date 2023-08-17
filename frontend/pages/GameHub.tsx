@@ -1,8 +1,10 @@
 
 import { useState, useEffect } from "react";
+import { useNavigate, Link } from 'react-router-dom';
+import { formatDistanceToNow } from 'date-fns';
+
 import axios from "axios";
 import io from "socket.io-client";
-import { formatDistanceToNow } from 'date-fns';
 
 import { GAME_CREATED } from "../../shared/constants.ts"
 
@@ -41,8 +43,10 @@ function TimeAgo({ date }: TimeAgoProps) {
 }
 
 export function Hub() {
+    const navigate = useNavigate();
     const socket = io("http://localhost:3001");
     console.log("Hub.tsx: socket: ", socket);
+
     const [gamesList, setGamesList] = useState<Game[]>([]);
 
     async function getGamesList() {
@@ -64,6 +68,17 @@ export function Hub() {
         getGamesList();
     });
 
+    const handleJoinRequest = (game_id: any) => {
+        axios.post(`http://localhost:3001/api/games/${game_id}/join`)
+            .then(res => {
+                console.log(res);
+                navigate(`/lobby/${game_id}`);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+
     return (
         <div>
             <h1>Games List</h1>
@@ -74,7 +89,7 @@ export function Hub() {
                             <li>{game.game_title}</li>
                             <li>{game.is_private ? "private" : "public"}</li>
                             <li><TimeAgo date={game.created_at} /> </li>
-                            <li><a href={`/api/games/${game.id}/join`}>Join button</a></li>
+                            <li onClick={() => handleJoinRequest(game.id)}><Link to={''}>Join button</Link></li>
                         </ul>
                     </li>
                 ))}

@@ -4,7 +4,7 @@ import Users from "../../database/users.ts";
 
 //import Users from "../../database/users.ts";
 
-import { GAME_CREATED } from "../../../shared/constants.ts";
+import { GAME_CREATED, GAME_JOINED } from "../../../shared/constants.ts";
 
 const router = express.Router();
 
@@ -28,9 +28,37 @@ router.get("/getPlayersList/:id", async (request: any, response: any) => {
     for (let i = 0; i < playerList.length; i++) {
         const username = await Users.getUsername(playerList[i].user_id);
         playerNames.push(username);
-      }
+    }
 
-      response.json(playerNames);
+    response.json(playerNames);
+});
+
+// Join a game
+router.post("/:id/join", async (request: any, response: any) => {
+    const { id: game_id } = request.params;
+    const { id: user_id } = request.session.user;
+    const io = request.app.get("io");
+
+    try {
+        await Games.join(game_id, user_id);
+
+        const state = await Games.state(game_id, user_id);
+        console.log("state: ");
+        console.log(state);
+        //io.to(game_id).emit(GAME_UPDATED(game_id), state);
+
+        const username = await Users.getUsername(user_id);
+        console.log(
+            "the username being sent to lobby websocket is " + username.username
+        );
+        io.to(game_id).emit(GAME_JOINED, username.username); // not working
+
+        response.send({ message: "Game joined successfully", success: true, game_id: game_id });
+    } catch (error) {
+        console.log({ error });
+
+        response.send({ message: "An error occured while joining a game", success: false, game_id: game_id });
+    }
 });
 
 /*
@@ -62,7 +90,7 @@ router.post("/create", async (request: any, response: any) => {
     try {
         const { id: game_id, created_at } = await Games.create(user_id, roomName, isPrivate, password);
         created_at;
-        
+
         try {
             io.emit(GAME_CREATED, { game_id, created_at });
             console.log("Game emitted successfully!!!!");
@@ -72,10 +100,10 @@ router.post("/create", async (request: any, response: any) => {
         }
 
         io.emit(GAME_CREATED, { game_id, created_at });
-        response.send({message: "Game created successfully", success: true, game_id: game_id});
+        response.send({ message: "Game created successfully", success: true, game_id: game_id });
     } catch (error) {
         console.log({ error });
-        response.send({message: "An error occurred during game creation.", success: false});
+        response.send({ message: "An error occurred during game creation.", success: false });
     }
 });
 

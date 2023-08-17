@@ -182,16 +182,97 @@ const create = async (creator_id: number, game_title: string, is_private: boolea
     return { id, created_at }; // Returns the game id
 };
 
+
+// Allow a user to join the game database-wise
+const join = async (game_id: number, user_id: number) => {
+    // Check if user is already in the game they're trying to join
+    // const CHECK_IF_IN_CURRENT_GAME_SQL = "SELECT * FROM game_users WHERE user_id=$1 AND game_id=$2";
+    // const rowCount = await db.one(CHECK_IF_IN_GAME_SQL, [user_id, game_id]);
+    // if (rowCount) {
+    //   throw new Error("Error thrown: Player is already in a game");
+    //   console.log("Error thrown: Player is already in a game");
+    // }
+
+    // User is added to game (they are added to the game_users table with the corresponding game_id)
+
+    // Read player_count from game from games table with game_id
+    let player_count = await db.one(
+        "SELECT player_count FROM games WHERE id=$1",
+        [game_id]
+    );
+
+    // Add 1 to player_count
+    console.log("Player count: ");
+    console.log(player_count);
+    player_count = player_count.player_count;
+    player_count++;
+    console.log("Player count: " + player_count);
+
+    // Insert into game_users table with game_id, user_id, player_count
+    const INSERT_GAME_USER_SQL =
+        "INSERT INTO game_users (game_id, user_id, play_order) VALUES ($1, $2, $3)";
+    const INSERT_INVENTORY_SQL =
+        "INSERT INTO inventory (user_id, game_id) VALUES ($1, $2)";
+    const INSERT_PROPERTY_INV_SQL =
+        "INSERT INTO property_inventory (user_id, game_id) VALUES ($1, $2)";
+    await db.none(INSERT_GAME_USER_SQL, [game_id, user_id, player_count]);
+    await db.none(INSERT_INVENTORY_SQL, [user_id, game_id]);
+    await db.none(INSERT_PROPERTY_INV_SQL, [user_id, game_id]);
+
+    // Update games table with new player_count
+    await db.none("UPDATE games SET player_count=$1 WHERE id=$2", [
+        player_count,
+        game_id,
+    ]);
+};
+
+
 // Gets the list of all games that are joinable
 const GAMES_LIST_SQL = `SELECT * FROM games WHERE joinable=true;`;
 const listGames = async () => db.any(GAMES_LIST_SQL);
+
 
 // Gets the list of all the players in the current game being played and sort them by play_order
 const PLAYERS_LIST_SQL = `SELECT user_id FROM game_users WHERE game_id=$1 ORDER BY play_order ASC;`;
 const listPlayers = async (game_id: number) => db.any(PLAYERS_LIST_SQL, [game_id]);
 
+
+// Create and return the game state
+const state = async (game_id: number, user_id: number) => {
+    // Dealing with the game_users table
+    const users = await db.many(
+        `
+     SELECT game_users.*
+     FROM game_users
+     WHERE game_users.game_id = $1
+     ORDER BY game_users.play_order
+     `,
+        [game_id]
+    );
+
+    const inventories = await db.many(
+        `
+    SELECT DISTINCT inventory.*, game_users.play_order
+    FROM inventory
+    JOIN game_users ON inventory.user_id = game_users.user_id
+    WHERE inventory.game_id = $1 AND game_users.game_id = $1
+    ORDER BY game_users.play_order
+    `,
+        [game_id]
+    );
+
+    return {
+        game_id,
+        users,
+        inventories,
+        user_id,
+    };
+};
+
 export default {
     create,
+    join,
     listGames,
     listPlayers,
+    state
 };

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from 'react-router-dom';
 import { formatDistanceToNow } from 'date-fns';
@@ -79,6 +78,12 @@ export function Hub() {
             });
     }
 
+    // Disconnect from socket when component unmounts
+    useEffect(() => {
+        return () => {
+            socket.disconnect();
+        }
+    }, [socket]);
     return (
         <div>
             <h1>Games List</h1>

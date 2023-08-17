@@ -40,6 +40,13 @@ function Lobby() {
         fetchData();
     });
 
+    // Disconnect from socket when component unmounts
+    useEffect(() => {
+        return () => {
+            socket.disconnect();
+        }
+    }, [socket]);
+
     return (
         <div>
             <h1>Lobby #{lobbyID}</h1>

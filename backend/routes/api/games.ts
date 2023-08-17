@@ -58,6 +58,7 @@ router.post("/:id/join", async (request: any, response: any) => {
         console.log({ error });
 
         response.send({ message: "An error occured while joining a game", success: false, game_id: game_id });
+
     }
 });
 

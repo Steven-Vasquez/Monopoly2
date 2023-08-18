@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import io from "socket.io-client";
 import axios from "axios";
@@ -9,8 +10,39 @@ import { GAME_JOINED } from "../../shared/constants.ts";
 import ChatBox from '../components/ChatBox.tsx';
 
 function Lobby() {
-
+    const navigate = useNavigate();
     const { lobbyID } = useParams<{ lobbyID: string }>();
+    
+    /*************************************************************
+     * User authentication (route protection for users not in the game)  
+     *************************************************************/
+    const inGameCheck = async () => {
+        console.log("inGameCheck() called");
+        try {
+            const inGameResponse = await axios.get(`http://localhost:3001/checkInGame/${lobbyID}`);
+            const inGame = inGameResponse.data.inGame;
+            console.log("inGame: ", inGame);
+            if (inGame === false) {
+                
+                navigate('/hub');
+                setTimeout(() => {
+                    alert("You are not in this game!"); // Show the alert after a brief delay (to show after navigating)
+                }, 100); // Adjust the delay time as needed
+            }
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
+
+    // Check if user is in the game when component mounts
+    useEffect(() => {
+        inGameCheck();
+    }, [lobbyID]);
+
+    /*************************************************************
+     * Game Lobby
+     *************************************************************/
     const [playerUsernames, setPlayerUsernames] = useState<string[]>([]);
     
     if(!lobbyID) { // To ensure that lobbyID is not undefined

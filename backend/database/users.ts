@@ -17,8 +17,13 @@ const findByEmail = (email: String) =>
 const getUsername = (user_id: String) =>
   db.oneOrNone("SELECT username FROM users WHERE id=$1", [user_id]);
 
+
+const findUserInGame = (game_id: String, user_id: String) =>
+  db.any("SELECT * FROM game_users WHERE game_id=$1 AND user_id=$2", [game_id, user_id]);
+
 export default {
   create,
   findByEmail,
   getUsername,
+  findUserInGame
 };

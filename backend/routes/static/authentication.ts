@@ -16,12 +16,28 @@ app.use(cors({
 // Salt rounds used to generate salt for hashing passwords
 const SALT_ROUNDS = 10;
 
-/*
-// Sign up route
-app.get("/register", (_req: any, response: any) => {
-  response.render("register", { title: "Monopoly | Register" });
+
+// API endpoint that checks if a user is in a game
+app.get("/checkInGame/:id", (req: any, res: any) => {
+  const { id: game_id } = req.params;
+  const { id: user_id } = req.session.user;
+  
+  Users.findUserInGame(game_id, user_id)
+  .then((result: any[]) => {
+    if (result.length > 0) {
+      // There is a match, user is in the game
+      console.log("User is in the game");
+      res.send({ inGame: true });
+    } else {
+      // No match, user is not in the game
+      console.log("User is not in the game");
+      res.send({ inGame: false });
+    }
+  })
+  .catch(error => {
+    console.error("Error checking user in game:", error);
+  });
 });
-*/
 
 
 // API endpoint that checks if a user is logged in
@@ -51,8 +67,6 @@ app.post("/register", async (request: any, response: any) => {
   else if (user && user.username == username) {
     response.send({ message: `Username "${username}" is already in use.` })
   }
-
-
   try {
     const { id } = await Users.create(username, email, hash);
     
@@ -62,22 +76,13 @@ app.post("/register", async (request: any, response: any) => {
       email,
     };
 
-
     response.json({ message: "Registration successful", success: true });
   } catch (error) {
     console.log({ error });
-
     response.status(400).json({ error: "An error occurred during registration." });
-
   }
 });
 
-/*
-// Login route
-app.get("/login", (_req: any, response: any) => {
-  response.render("login", { title: "Monopoly | Register" });
-});
-*/
 
 // Checking to see if provided username and password are valid
 app.post("/login", async (request: any, response: any) => {

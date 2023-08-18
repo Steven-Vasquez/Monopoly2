@@ -15,7 +15,7 @@ const checkPropertyInfo = async () => {
         const __filename = fileURLToPath(import.meta.url);
         const __dirname = dirname(__filename);
 
-        const propertiesPath = __dirname + "/properties.json";
+        const propertiesPath = __dirname + "/data/properties.json";
 
         console.log(propertiesPath);
         // Read the property data from the JSON file
@@ -67,7 +67,7 @@ const checkChanceCards = async () => {
         const __filename = fileURLToPath(import.meta.url);
         const __dirname = dirname(__filename);
 
-        const chanceCardsPath = __dirname + "/chance_cards.json";
+        const chanceCardsPath = __dirname + "/data/chance_cards.json";
 
         // Read the chance card data from the JSON file
         const chanceCards = JSON.parse(fs.readFileSync(chanceCardsPath, 'utf-8'));
@@ -103,7 +103,7 @@ const checkCommunityChestCards = async () => {
         const __filename = fileURLToPath(import.meta.url);
         const __dirname = dirname(__filename);
 
-        const communityChestCardsPath = __dirname + "/community_chest_cards.json";
+        const communityChestCardsPath = __dirname + "/data/community_chest_cards.json";
         // Read the community chest card data from the JSON file
         const communityChestCards = JSON.parse(
             fs.readFileSync(communityChestCardsPath, 'utf-8')
@@ -134,7 +134,7 @@ const createGameBoard = async (game_id: number) => {
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = dirname(__filename);
 
-    const boardSpacesPath = __dirname + "/board_spaces.json";
+    const boardSpacesPath = __dirname + "/data/board_spaces.json";
     // Read the board space data from the JSON file
     const boardSpaces = JSON.parse(fs.readFileSync(boardSpacesPath, 'utf-8'));
     // Insert the board space data into the database

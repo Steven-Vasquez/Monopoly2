@@ -12,12 +12,26 @@ const router = express.Router();
 router.get("/getGamesList", async (_request: any, response: any) => {
     try {
         const available_games = await Games.listGames();
-
         response.json(available_games);
     } catch (error) {
         console.log({ error });
     }
 });
+
+
+// Get list of games that user is in
+router.get("/getMyGamesList", async (request: any, response: any) => {
+    if(!request.session.user) return response.json([]); // If user is not logged in, return empty array
+    const { id: user_id } = request.session.user;
+    
+    try {
+        const available_games = await Games.listMyGames(user_id);
+        response.json(available_games);
+    } catch (error) {
+        console.log({ error });
+    }
+});
+
 
 // Get list of players in a game/lobby (by game_id)
 router.get("/getPlayersList/:id", async (request: any, response: any) => {

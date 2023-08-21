@@ -242,6 +242,11 @@ const join = async (game_id: number, user_id: number) => {
 const GAMES_LIST_SQL = `SELECT * FROM games WHERE joinable=true;`;
 const listGames = async () => db.any(GAMES_LIST_SQL);
 
+const listMyGames = async (user_id: number) => {
+    const MY_GAMES_LIST_SQL = `SELECT * FROM games WHERE id IN (SELECT game_id FROM game_users WHERE user_id=$1);`;
+    return db.any(MY_GAMES_LIST_SQL, [user_id]);
+};
+
 
 // Gets the list of all the players in the current game being played and sort them by play_order
 const PLAYERS_LIST_SQL = `SELECT user_id FROM game_users WHERE game_id=$1 ORDER BY play_order ASC;`;
@@ -284,6 +289,7 @@ export default {
     create,
     join,
     listGames,
+    listMyGames,
     listPlayers,
     state
 };

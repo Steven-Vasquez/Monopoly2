@@ -1,0 +1,12 @@
+.page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #e1d8d1;
+    height: calc(100vh - 75px);
+}
+
+#site-title {
+    margin-top: 6rem;
+    font-size: 6rem;
+}

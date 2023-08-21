@@ -10,7 +10,7 @@ exports.up = (pgm) => {
         type: "boolean",
         default: true,
       },
-      completed: {
+      started: {
         type: "boolean",
         default: false,
       },

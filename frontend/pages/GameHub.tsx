@@ -134,6 +134,7 @@ export function Hub() {
                             <li>
                                 <ul className="game-info-labels">
                                     <li>Game Title</li>
+                                    <li>Players</li>
                                     <li>Privacy</li>
                                     <li>Created</li>
                                     <li>Join</li>
@@ -143,6 +144,7 @@ export function Hub() {
                                 <li key={game.id} className="game">
                                     <ul className="game-info">
                                         <li className="game-title">{game.game_title}</li>
+                                        <li className="game-playe-count">{game.player_count}</li>
                                         <li className="game-type">{game.is_private ? "private" : "public"}</li>
                                         <li className="game-date"><TimeAgo date={game.created_at} /> </li>
                                         {!game.started ?

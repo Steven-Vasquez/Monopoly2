@@ -95,46 +95,73 @@ export function Hub() {
     return (
         <div>
             <h1>Games List</h1>
-            <Tabs>
-                <TabList>
-                    <Tab>Joinable Games</Tab>
-                    <Tab>My Games</Tab>
-                </TabList>
+            <div className="games-tabs-container">
+                <Tabs>
+                    <TabList>
+                        <Tab>Joinable Games</Tab>
+                        <Tab>My Games</Tab>
+                    </TabList>
 
-                <TabPanel>
-                    <ul>
-                        {gamesList.map(game => (
-                            <li key={game.id}>
-                                <ul className="game-info-row">
-                                    <li>{game.game_title}</li>
-                                    <li>{game.is_private ? "private" : "public"}</li>
-                                    <li><TimeAgo date={game.created_at} /> </li>
-                                    <li onClick={() => handleJoinRequest(game.id)}><Link to={''}>Join button</Link></li>
+                    <TabPanel>
+                        <ul className="game-list">
+                            <li>
+                                <ul className="game-info-labels">
+                                    <li>Game Title</li>
+                                    <li>Players</li>
+                                    <li>Privacy</li>
+                                    <li>Created</li>
+                                    <li>Join</li>
                                 </ul>
                             </li>
-                        ))}
-                    </ul>
-                </TabPanel>
+                            {gamesList.map(game => (
+                                <li key={game.id} className="game">
+                                    <ul className="game-info">
+                                        <li className="game-title">{game.game_title}</li>
+                                        <li className="game-playe-count">{game.player_count}/4</li>
+                                        <li className="game-type">{game.is_private ? "private" : "public"}</li>
+                                        <li className="game-date"><TimeAgo date={game.created_at} /> </li>
+                                        <li>
+                                            <Link className="join-button" to={''} onClick={() => handleJoinRequest(game.id)}>Join Game</Link>
+                                        </li>
+                                    </ul>
+                                </li>
+                            ))}
+                        </ul>
+                    </TabPanel>
 
-                <TabPanel>
-                    <ul>
-                        {myGamesList.map(game => (
-                            <li key={game.id}>
-                                <ul className="game-info-row">
-                                    <li>{game.game_title}</li>
-                                    <li>{game.is_private ? "private" : "public"}</li>
-                                    <li><TimeAgo date={game.created_at} /> </li>
-                                    {!game.started ?
-                                        <li><Link to={`/lobby/${game.id}`}>Join button</Link></li>
-                                        :
-                                        <li><Link to={`/game/${game.id}`}>Join button</Link></li>
-                                    }
+                    <TabPanel>
+                        <ul className="game-list">
+                            <li>
+                                <ul className="game-info-labels">
+                                    <li>Game Title</li>
+                                    <li>Privacy</li>
+                                    <li>Created</li>
+                                    <li>Join</li>
                                 </ul>
                             </li>
-                        ))}
-                    </ul>
-                </TabPanel>
-            </Tabs>
+                            {myGamesList.map(game => (
+                                <li key={game.id} className="game">
+                                    <ul className="game-info">
+                                        <li className="game-title">{game.game_title}</li>
+                                        <li className="game-type">{game.is_private ? "private" : "public"}</li>
+                                        <li className="game-date"><TimeAgo date={game.created_at} /> </li>
+                                        {!game.started ?
+                                            <li>
+                                                <Link className="join-button" to={`/lobby/${game.id}`}>Rejoin Game</Link>
+                                            </li>
+                                            :
+                                            <li>
+                                                <Link className="join-button" to={`/game/${game.id}`}>Rejoin Game</Link>
+                                            </li>
+                                        }
+                                    </ul>
+                                </li>
+                            ))}
+                        </ul>
+                    </TabPanel>
+                </Tabs>
+            </div>
+
 
         </div>
     );

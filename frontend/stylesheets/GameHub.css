@@ -87,11 +87,12 @@
     transition: background-color 0.2s ease-in-out;
 }
 
-.react-tabs__tab:hover {
+/* Apply hover effect to non-selected tabs */
+.react-tabs__tab:not(.react-tabs__tab--selected):hover {
     background-color: #e0e0e0;
 }
 
-.react-tabs__tab[selected] {
+.react-tabs__tab--selected {
     background-color: #fff;
     border-bottom: 1px solid #fff;
 }

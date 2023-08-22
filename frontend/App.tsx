@@ -9,7 +9,6 @@ import Login from './pages/Login.tsx'
 import Home from './pages/Home.tsx';
 import Lobby from './pages/Lobby.tsx';
 import GameHub from './pages/GameHub.tsx';
-import CreateGame from './pages/CreateGame.tsx';
 
 import axios from 'axios';
 
@@ -62,13 +61,12 @@ function App() {
         <NavBar loggedIn={loggedIn} />
         <Routes>
         <Route path="*" element={<Navigate to="/" />} />
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home loggedIn={loggedIn}/>} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/hub" element={<GameHub />} />
           {loggedIn ? (
             <>
-              <Route path="/createGame" element={<CreateGame />} />
+              <Route path="/hub" element={<GameHub />} />
               <Route path="/lobby/:lobbyID" element={<Lobby />} />
             </>
           ) : null}

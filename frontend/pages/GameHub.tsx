@@ -1,15 +1,14 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from 'react-router-dom';
 import { formatDistanceToNow } from 'date-fns';
-
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import 'react-tabs/style/react-tabs.css';
-
 import axios from "axios";
 import io from "socket.io-client";
 
 import { GAME_CREATED } from "../../shared/constants.ts"
+import CreateGame from "../components/CreateGame.tsx";
 
+import 'react-tabs/style/react-tabs.css';
 import "../stylesheets/GameHub.css"
 
 // Interface to define the shape of the Game data returned from the API call to get list of games
@@ -94,6 +93,7 @@ export function Hub() {
     }, [socket]);
     return (
         <div>
+            <CreateGame />
             <h1>Games List</h1>
             <div className="games-tabs-container">
                 <Tabs>

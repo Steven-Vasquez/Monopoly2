@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 function Register() {
@@ -72,7 +73,7 @@ function Register() {
                     onChange={(e) => setPassword(e.target.value)}
                 />
 
-                <label htmlFor="confirmPassword">Password</label>
+                <label htmlFor="confirmPassword">Confirm Password</label>
                 <input
                     type="password"
                     id="confirmPassword"
@@ -84,6 +85,8 @@ function Register() {
 
                 <button type="submit">Register</button>
             </form>
+
+            <p>Already have an account? <Link to="/login">Login</Link></p>
         </div>
     )
 }

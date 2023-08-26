@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { TextField } from '../components/TextField.tsx';
 import axios from 'axios';
 
 function Login() {
@@ -44,7 +45,23 @@ function Login() {
             {errorMessage && <p>Error: {errorMessage}</p>}
 
             <form onSubmit={handleSubmit}>
-                <label htmlFor="email">Email</label>
+                <TextField
+                    label="Email"
+                    type="email"
+                    id="username"
+                    name="username"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}>
+                </TextField>
+                <TextField
+                    label="Password"
+                    type="password"
+                    id="password"
+                    name="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}>
+                </TextField>
+                {/* <label htmlFor="email">Email</label>
                 <input
                     type="email"
                     id="username"
@@ -60,7 +77,7 @@ function Login() {
                     name="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                />
+                /> */}
 
                 <button type="submit">Login</button>
             </form>

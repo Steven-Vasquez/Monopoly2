@@ -1,19 +1,26 @@
-import {HTMLInputTypeAttribute} from "react";
+import {HTMLInputTypeAttribute, InputHTMLAttributes} from "react";
+import './TextField.css'
 
-type TextFieldProps = {
-    inputType?: HTMLInputTypeAttribute;
-    value?: string;
-    error?: boolean;
-    disabled?: boolean;
-    required?: boolean;
-    placeholder?: string;
+// type TextFieldProps = {
+//     inputType?: HTMLInputTypeAttribute;
+//     value?: string;
+//     error?: boolean;
+//     disabled?: boolean;
+//     required?: boolean;
+//     placeholder?: string;
+// }
+
+interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
+    label: string;
+    
 }
 
-export function TextField (props: TextFieldProps): JSX.Element {
+export function TextField ({label, ...props}: TextFieldProps): JSX.Element {
     return (
         <>
-            <label>
-                <input type={props.inputType || "text"} disabled={props.disabled} required={props.required} placeholder={props.placeholder}/>
+            <label className={(props.value) ? "filled" : ""}>
+                <span>{label}</span>
+                <input {...props}/>
             </label>
         </>
     );

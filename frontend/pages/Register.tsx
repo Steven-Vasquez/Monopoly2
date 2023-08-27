@@ -54,7 +54,8 @@ function Register() {
                         type="text"
                         id="username"
                         name="username"
-                        value={username}>
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}>
                     </TextField>
                     <TextField
                         label="Email"

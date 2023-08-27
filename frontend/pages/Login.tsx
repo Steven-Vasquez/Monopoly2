@@ -40,28 +40,29 @@ function Login() {
     }
     return (
         <div>
-            <h1>Login</h1>
+            <div className="page-container">
+                <h1>Login</h1>
 
-            {errorMessage && <p>Error: {errorMessage}</p>}
+                {errorMessage && <p>Error: {errorMessage}</p>}
 
-            <form onSubmit={handleSubmit}>
-                <TextField
-                    label="Email"
-                    type="email"
-                    id="username"
-                    name="username"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}>
-                </TextField>
-                <TextField
-                    label="Password"
-                    type="password"
-                    id="password"
-                    name="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}>
-                </TextField>
-                {/* <label htmlFor="email">Email</label>
+                <form onSubmit={handleSubmit}>
+                    <TextField
+                        label="Email"
+                        type="email"
+                        id="username"
+                        name="username"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}>
+                    </TextField>
+                    <TextField
+                        label="Password"
+                        type="password"
+                        id="password"
+                        name="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}>
+                    </TextField>
+                    {/* <label htmlFor="email">Email</label>
                 <input
                     type="email"
                     id="username"
@@ -79,11 +80,12 @@ function Login() {
                     onChange={(e) => setPassword(e.target.value)}
                 /> */}
 
-                <button type="submit">Login</button>
-            </form>
-
-            <p>Don't have an account? <Link to="/register">Register</Link></p>
-
+                    <button type="submit">Login</button>
+                </form>
+                <div className="action-links">
+                    <p>Don't have an account? <Link to="/register">Register</Link></p>
+                </div>
+            </div>
         </div>
     )
 }

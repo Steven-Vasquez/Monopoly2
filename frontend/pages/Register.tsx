@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { TextField } from '../components/TextField.tsx';
 import axios from 'axios';
 
 function Register() {
@@ -41,52 +42,50 @@ function Register() {
 
     return (
         <div>
-            <h1>Register</h1>
+            <div className="page-container">
 
-            {errorMessage && <p>Error: {errorMessage}</p>}
+                <h1>Register</h1>
 
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="username">Username</label>
-                <input
-                    type="text"
-                    id="username"
-                    name="username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                />
+                {errorMessage && <p>Error: {errorMessage}</p>}
 
-                <label htmlFor="email">Email</label>
-                <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-
-                <label htmlFor="password">Password</label>
-                <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-
-                <label htmlFor="confirmPassword">Confirm Password</label>
-                <input
-                    type="password"
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                />
-
-
-                <button type="submit">Register</button>
-            </form>
-
-            <p>Already have an account? <Link to="/login">Login</Link></p>
+                <form onSubmit={handleSubmit}>
+                    <TextField
+                        label="Username"
+                        type="text"
+                        id="username"
+                        name="username"
+                        value={username}>
+                    </TextField>
+                    <TextField
+                        label="Email"
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}>
+                    </TextField>
+                    <TextField
+                        label="Password"
+                        type="password"
+                        id="password"
+                        name="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}>
+                    </TextField>
+                    <TextField
+                        label="Confirm Password"
+                        type="password"
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}>
+                    </TextField>
+                    <button type="submit">Register</button>
+                </form>
+                <div className="action-links">
+                    <p>Already have an account? <Link to="/login">Login</Link></p>
+                </div>
+            </div>
         </div>
     )
 }

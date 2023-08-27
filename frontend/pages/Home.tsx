@@ -11,12 +11,17 @@ function Home(props: any) {
             <h1 id="site-title">Monopoly</h1>
             <div>
                 <h2>Introduction</h2>
-                <p>This is the introduction to the monopoly site (a web app to play monopoly with friends or strangers online)</p>
-                {loggedIn ? (
-                    <Link to={"/hub"}>Play Now!</Link>
-                ) : (
-                    <Link to={"/login"}>Get Started</Link>
-                    )}
+                <p>The classic board game Monopoly is now available online for multiplayer! Compete with friends and strangers from all over the world in this fast-paced and strategic game.</p>
+                <p>Choose your game room, customize your character, and start playing today!</p>
+                <div className="action-links">
+                    <>
+                        {loggedIn ? (
+                            <Link to={"/hub"}>Play Now!</Link>
+                        ) : (
+                            <Link to={"/login"}>Get Started</Link>
+                        )}
+                    </>
+                </div>
             </div>
         </div>
     )

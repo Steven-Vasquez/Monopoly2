@@ -1,12 +1,29 @@
 .page-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    /* align-items: center; */
     background-color: #e1d8d1;
     height: calc(100vh - 75px);
+    margin: 0 auto;
+    padding: 4rem;
 }
 
 #site-title {
     margin-top: 6rem;
+    margin-bottom: 2rem;
     font-size: 6rem;
+}
+
+h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+h2 {
+    margin-bottom: 1rem;
+}
+
+.action-links {
+    margin-top: 1rem;
+
 }

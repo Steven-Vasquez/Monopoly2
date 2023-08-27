@@ -1,4 +1,4 @@
-label {
+.filled, .label-class {
     color: blue;
     /* display: flex;
     flex-direction: column; */
@@ -6,7 +6,7 @@ label {
     box-sizing: border-box;
 }
 
-span {
+.text-field-span {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -14,28 +14,24 @@ span {
     transition: 0.15s;
 }
 
-input {
+.text-field-input {
     padding: 12px;
     border-radius: 0px;
     border: 2px solid black;
     background: transparent;
     margin-top: 8px;
+    transition: box-shadow 0.25s;
 }
 
-input:focus {
-    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
+.text-field-input:focus {
+    box-shadow: 0px 2px 8px rgba(0,0,0,0.15);
     outline: none;
 }
 
-label:focus-within span,
-label.filled span {
+label:focus-within span, label.filled span {
     top: -50%;
     font-size: 10px;
     padding: 2px 4px;
     background-color: white;
     border-radius: 2px;
-}
-
-button {
-    margin-left: 1rem;
 }

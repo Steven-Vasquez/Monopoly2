@@ -18,9 +18,9 @@ interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
 export function TextField ({label, ...props}: TextFieldProps): JSX.Element {
     return (
         <>
-            <label className={(props.value) ? "filled" : ""}>
-                <span>{label}</span>
-                <input {...props}/>
+            <label className={(props.value) ? "filled" : "label-class"}>
+                <span className="text-field-span">{label}</span>
+                <input className="text-field-input" {...props}/>
             </label>
         </>
     );

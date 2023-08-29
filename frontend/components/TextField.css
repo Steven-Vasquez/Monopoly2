@@ -1,17 +1,24 @@
-.filled, .label-class {
-    color: blue;
+.input-container {
+    color: black;
     /* display: flex;
     flex-direction: column; */
+    /* justify-content: center; */
+    display: inline-block;
     position: relative;
     box-sizing: border-box;
+    margin-top: 8px;
+    /* width: 100%; */
 }
 
-.text-field-span {
+.text-field-label {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     left: 12px;
-    transition: 0.15s;
+    transition: all 0.15s, top 0.25s cubic-bezier(0.68, -0.4, 0.32, 1.4);
+    pointer-events: none;
+    color: gray;
+    font-size: 14px;
 }
 
 .text-field-input {
@@ -19,8 +26,10 @@
     border-radius: 0px;
     border: 2px solid black;
     background: transparent;
-    margin-top: 8px;
+    /* margin-top: 8px; */
     transition: box-shadow 0.25s;
+    box-sizing: border-box;
+    display: inline-block;
 }
 
 .text-field-input:focus {
@@ -28,10 +37,10 @@
     outline: none;
 }
 
-label:focus-within span, label.filled span {
-    top: -50%;
+.input-container:focus-within span, .input-container.filled span {
+    top: 0%;
     font-size: 10px;
     padding: 2px 4px;
-    background-color: white;
-    border-radius: 2px;
+    background-color: black;
+    color: white;
 }

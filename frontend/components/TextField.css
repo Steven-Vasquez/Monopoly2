@@ -1,5 +1,4 @@
 .input-container {
-    color: black;
     /* display: flex;
     flex-direction: column; */
     /* justify-content: center; */
@@ -7,6 +6,7 @@
     position: relative;
     box-sizing: border-box;
     margin-top: 8px;
+    font-family: var(--body-font);
     /* width: 100%; */
 }
 
@@ -17,30 +17,39 @@
     left: 12px;
     transition: all 0.15s, top 0.25s cubic-bezier(0.68, -0.4, 0.32, 1.4);
     pointer-events: none;
-    color: gray;
+    color: var(--gray);
     font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
 }
 
 .text-field-input {
     padding: 12px;
     border-radius: 0px;
-    border: 2px solid black;
+    border: 2px solid var(--black);
     background: transparent;
     /* margin-top: 8px; */
-    transition: box-shadow 0.25s;
+    transition: box-shadow 0.25s, border 0.25s;
     box-sizing: border-box;
     display: inline-block;
+    font-family: var(--body-font);
+    font-size: 16px;
 }
 
 .text-field-input:focus {
     box-shadow: 0px 2px 8px rgba(0,0,0,0.15);
     outline: none;
+    border: 2px solid var(--accent);;
 }
 
 .input-container:focus-within span, .input-container.filled span {
     top: 0%;
-    font-size: 10px;
-    padding: 2px 4px;
-    background-color: black;
+    font-size: 11px;
+    padding: 4px 6px;
+    background-color: var(--black);
     color: white;
+}
+
+.input-container:focus-within span {
+    background-color: var(--accent);
 }

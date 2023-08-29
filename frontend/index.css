@@ -5,6 +5,15 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+
+  --body-font: "Jost", sans-serif;
+  --display-font: "Staatliches", sans-serif;
+  --background: #f6dac1;
+  --background-dark: #f2c9a6;
+  --accent: #b44418;
+  --accent-dark: #7e3011;
+  --black: #271107;
+  --gray: #7e7e7e;
 }
 
 

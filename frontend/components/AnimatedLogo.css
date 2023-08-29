@@ -1,0 +1,66 @@
+.monopoly-title {
+    font-family: var(--display-font);
+    font-size: 128px;
+    /* margin: 15vh 0px 64px 0px; */
+    color: var(--black);
+    text-decoration: none;
+    /* word-spacing: 16px; */
+    display: flex;
+    gap: 16px;
+  }
+  
+  .monopoly-title span {
+    display: inline-block;
+    animation: 5s ease-out infinite letter-jump;
+  }
+  
+  .monopoly-title:hover span {
+    color: var(--accent-dark);
+  }
+  
+  @keyframes letter-jump {
+    0% {
+      transform: translateY(0px);
+      text-shadow: 0px 0px 0px var(--accent);
+    }
+    5% {
+      transform: translateY(-20px);
+      text-shadow: 0px 24px 0px var(--accent);
+    }
+    10% {
+      transform: translateY(0px);
+      text-shadow: 0px 0px 0px var(--accent);
+    }
+  }
+  
+  .monopoly-title span:nth-child(1) {
+    animation-delay: 0s;
+  }
+  
+  .monopoly-title span:nth-child(2) {
+    animation-delay: 0.1s;
+  }
+  
+  .monopoly-title span:nth-child(3) {
+    animation-delay: 0.2s;
+  }
+  
+  .monopoly-title span:nth-child(4) {
+    animation-delay: 0.3s;
+  }
+  
+  .monopoly-title span:nth-child(5) {
+    animation-delay: 0.4s;
+  }
+  
+  .monopoly-title span:nth-child(6) {
+    animation-delay: 0.5s;
+  }
+  
+  .monopoly-title span:nth-child(7) {
+    animation-delay: 0.6s;
+  }
+  
+  .monopoly-title span:nth-child(8) {
+    animation-delay: 0.7s;
+  }

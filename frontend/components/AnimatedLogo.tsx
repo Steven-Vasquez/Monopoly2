@@ -1,4 +1,4 @@
-import "./AnimatedLogo.css"
+import "../stylesheets/AnimatedLogo.css"
 
 import { Link } from 'react-router-dom';
 

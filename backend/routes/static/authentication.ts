@@ -17,6 +17,15 @@ app.use(cors({
 const SALT_ROUNDS = 10;
 
 
+//API endpoint to get user ID
+app.get("/getUserID", (req: any, res: any) => {
+  if (req.session.user) { // There is a user session active
+    res.send({ id: req.session.user.id });
+  } else { // There is no user session active
+    res.send({ id: null });
+  }
+});
+
 // API endpoint that checks if a user is in a game
 app.get("/checkInGame/:id", (req: any, res: any) => {
   const { id: game_id } = req.params;

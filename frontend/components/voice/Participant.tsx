@@ -1,64 +1,67 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useParams } from "react-router-dom";
+import io from "socket.io-client";
 
 
-interface ParticipantProps {
-    participant: number; // user id
+// Define the type for a participant
+interface Participant {
+    id: number;
 }
 
-const Participant = ({ participant }: ParticipantProps) => {
-  // State variables to store audio tracks
-  const [audioTracks, setAudioTracks] = useState([]);
+const Participant: React.FC<Participant> = ({ id }) => {
+    // Connecting to the socket room of the lobby for lobby-wide event updates
+    const { lobbyID } = useParams<{ lobbyID: string }>();
+    const socket = io("http://localhost:3001");
+    socket.emit("join", lobbyID);
 
-  const audioRef = useRef();
+    // State variable to store audio tracks
+    const [audioTracks, setAudioTracks] = useState<MediaStreamTrack[]>([]);
 
-  const trackpubsToTracks = (trackMap) =>
-    Array.from(trackMap.values())
-      .map((publication) => publication.track)
-      .filter((track) => track !== null);
+    const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  useEffect(() => {
-    setAudioTracks(trackpubsToTracks(participant.audioTracks));
+    useEffect(() => {
 
-    const trackSubscribed = (track) => {
-      if (track.kind === "audio") {
-        setAudioTracks((audioTracks) => [...audioTracks, track]);
-      }
-    };
+        const trackSubscribed = (track: MediaStreamTrack) => {
+            if (track.kind === "audio") {
+                setAudioTracks((audioTracks) => [...audioTracks, track]);
+            }
+        };
 
-    const trackUnsubscribed = (track) => {
-      if (track.kind === "audio") {
-        setAudioTracks((audioTracks) => audioTracks.filter((a) => a !== track));
-      }
-    };
+        const trackUnsubscribed = (track: MediaStreamTrack) => {
+            if (track.kind === "audio") {
+                setAudioTracks((audioTracks) => audioTracks.filter((a) => a !== track));
+            }
+        };
 
-    // Event listeners for when a participant adds or removes a track
-    participant.on("trackSubscribed", trackSubscribed);
-    participant.on("trackUnsubscribed", trackUnsubscribed);
-
-    return () => {
-      setAudioTracks([]);
-      participant.removeAllListeners();
-    };
-  }, [participant]);
+        socket.on(`audioTrackAdded/${id}`, trackSubscribed);
+        socket.on(`audioTrackRemoved/${id}`, trackUnsubscribed);
 
 
-  // Attach the audio tracks to the DOM
-  useEffect(() => {
-    const audioTrack = audioTracks[0];
-    if (audioTrack) {
-      audioTrack.attach(audioRef.current);
-      return () => {
-        audioTrack.detach();
-      };
-    }
-  }, [audioTracks]);
+        return () => {
+            setAudioTracks([]);
+            // Clean up event listeners
+            socket.off(`audioTrackAdded/${id}`, trackSubscribed);
+            socket.off(`audioTrackRemoved/${id}`, trackUnsubscribed);
+        };
+    }, [id]);
 
-  return (
-    <div className="participant">
-      {/*<h3>{participant.identity}</h3>*/}
-      <audio ref={audioRef} autoPlay={true} muted={false} />
-    </div>
-  );
+    // Attach the audio tracks to the DOM
+    useEffect(() => {
+        const audioTrack = audioTracks[0];
+        if (audioTrack && audioRef.current) {
+            const mediaStream = new MediaStream([audioTrack]);
+            audioRef.current.srcObject = mediaStream;
+            audioRef.current.autoplay = true;
+            audioRef.current.muted = false;
+        }
+    }, [audioTracks]);
+
+    return (
+        <div className="participant">
+            <h3>{id}</h3>
+            <audio ref={audioRef} />
+        </div>
+    );
 };
 
 export default Participant;

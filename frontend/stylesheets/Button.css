@@ -1,0 +1,22 @@
+.button {
+    border-radius: 5px;
+    text-align: center;
+    color: #fff;
+    background-color: var(--accent);
+    border: none;
+    padding: 12px 12px; /* Adjust padding as needed */
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    font-size: 14px;
+}
+
+.button:hover {
+    background-color: var(--accent-dark);
+}
+
+.button-link {
+    text-decoration: none;
+    color: #fff;
+    width: fit-content;
+    display: inline-block;
+}

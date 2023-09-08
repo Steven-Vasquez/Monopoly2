@@ -49,6 +49,11 @@ exports.up = (pgm) => {
         notNull: true,
         default: 1,
       },
+      completed: {
+        type: "boolean",
+        notNull: true,
+        default: false,
+      },
     });
   };
   

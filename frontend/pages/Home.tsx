@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Button } from "../components/Button.tsx";
 
 import "../stylesheets/Home.css";
 
@@ -19,9 +20,13 @@ function Home(props: any) {
                 <div className="action-links">
                     <>
                         {loggedIn ? (
-                            <Link to={"/hub"}>Play Now!</Link>
+                            <Link className="button-link" to={"/hub"}>
+                                <Button label="Play Now!"></Button>
+                            </Link>
                         ) : (
-                            <Link to={"/login"}>Get Started</Link>
+                            <Link className="button-link" to={"/login"}>
+                                <Button label="Get Started"></Button>
+                            </Link>
                         )}
                     </>
                 </div>

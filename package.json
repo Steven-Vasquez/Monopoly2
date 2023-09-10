@@ -16,6 +16,7 @@
     "start": "concurrently \"ts-node-esm ./backend/server.ts\" \"vite --host --open\""
   },
   "dependencies": {
+    "@phosphor-icons/react": "^2.0.10",
     "@types/express": "^4.17.17",
     "@types/node": "^20.2.5",
     "@types/pg": "^8.10.2",

@@ -9,14 +9,14 @@ import { AnimatedLogo } from "../components/AnimatedLogo.tsx";
 function Home(props: any) {
     const { loggedIn } = props;
 
-    // Sample images for slides (To be replaced with screenshots of the website)
+    // Content for slides (To be replaced with screenshots from website and corresponding descriptions)
     const slides = [
-        { url: "frontend/assets/featuresImageSlider/monopoly_board_sample.png", title: "Monopoly game board" },
-        { url: "frontend/assets/featuresImageSlider/image-1.jpg", title: "beach" },
-        { url: "frontend/assets/featuresImageSlider/image-2.jpg", title: "boat" },
-        { url: "frontend/assets/featuresImageSlider/image-3.jpg", title: "forest" },
-        { url: "frontend/assets/featuresImageSlider/image-4.jpg", title: "city" },
-        { url: "frontend/assets/featuresImageSlider/image-5.jpg", title: "town" }
+        { url: "frontend/assets/featuresImageSlider/monopoly_board_sample.png", description: "Monopoly game board" },
+        { url: "frontend/assets/featuresImageSlider/image-1.jpg", description: "beach" },
+        { url: "frontend/assets/featuresImageSlider/image-2.jpg", description: "boat" },
+        { url: "frontend/assets/featuresImageSlider/image-3.jpg", description: "forest" },
+        { url: "frontend/assets/featuresImageSlider/image-4.jpg", description: "city" },
+        { url: "frontend/assets/featuresImageSlider/image-5.jpg", description: "town" }
     ];
 
     return (
@@ -50,7 +50,7 @@ function Home(props: any) {
                 <div id="features-section" className="sections">
                     <h2 className="headers">Features</h2>
                     <div id="slideshow-container">
-                        <ImageSlider slides={slides}></ImageSlider>
+                        <ImageSlider slides={slides} parentWidth={500}></ImageSlider>
                     </div>
                 </div>
                 <div id="about-section" className="sections">

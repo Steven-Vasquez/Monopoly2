@@ -44,3 +44,7 @@ p {
   font-family: var(--body-font);
   font-size: 1rem;
 }
+
+a {
+  text-decoration: none;
+}

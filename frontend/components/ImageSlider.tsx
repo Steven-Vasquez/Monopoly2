@@ -4,8 +4,8 @@ import { useState } from "react";
 const ImageSlider = ({ slides }: any) => {
     const [currentIndex, setCurrent] = useState(0);
 
-    const slideCurrentImage = {
-        backgroundImage: `url(${slides[currentIndex].url})`,
+    const slideCurrentImage: {backgroundImage: string} = {
+        backgroundImage: slides[currentIndex].url,
     };
 
     const goPrevious = () => {
@@ -30,8 +30,7 @@ const ImageSlider = ({ slides }: any) => {
         <div className="slider-container">
             <div id="left-slider-button" className="slider-button" onClick={goPrevious}><p>◄</p></div>
             <div id="right-slider-button" className="slider-button" onClick={goNext}><p>►</p></div>
-            <div className="slide" style={slideCurrentImage}>
-            </div>
+            <img className="slide" src={slideCurrentImage.backgroundImage} alt={currentIndex.toString()}/>
         </div>
     );
 };

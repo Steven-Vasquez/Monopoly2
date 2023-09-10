@@ -21,12 +21,18 @@
 }
 
 #title-section {
-    #tagline {
-        margin-bottom: 2rem;
-        font-size: 1.25rem;
-        font-weight: 300;
-        text-align: center;
-    }
+    
+}
+
+#title-section {
+    height: 80vh;
+}
+
+#title-section #tagline {
+    margin-bottom: 2rem;
+    font-size: 1.25rem;
+    font-weight: 300;
+    text-align: center;
 }
 
 .action-links {
@@ -47,6 +53,7 @@
     height: 380px;
     margin: 0 auto;
 }
+
 
 /* #site-title {
     margin-top: 6rem;

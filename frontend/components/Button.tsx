@@ -23,9 +23,9 @@ const handleClick = () => {
 export function Button({ label }: TextFieldProps): JSX.Element {
     return (
         <>
-            <div className={"button"} onClick={handleClick}>
+            <a className={"button"} onClick={handleClick}>
                 {label}
-            </div>
+            </a>
         </>
     );
 }

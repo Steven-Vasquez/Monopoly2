@@ -1,18 +1,24 @@
 import { useState, useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
-import io from "socket.io-client";
 
 
 // Define the type for a participant
 interface Participant {
     id: number;
+    audioRefPassed : React.RefObject<HTMLAudioElement>;
 }
 
-const Participant: React.FC<Participant> = ({ id }) => {
-    // Connecting to the socket room of the lobby for lobby-wide event updates
-    const { lobbyID } = useParams<{ lobbyID: string }>();
-    const socket = io("http://localhost:3001");
-    socket.emit("join", lobbyID);
+const Participant: React.FC<Participant> = ({ id, audioRefPassed }) => {
+
+    // Special case for when the audioRef is passed in as a prop (for the current user)
+    if(audioRefPassed) {
+        return (
+            <div className="participant">
+                <h3>{id}</h3>
+                <audio ref={audioRefPassed} />
+            </div>
+        );
+    }
+
 
     // State variable to store audio tracks
     const [audioTracks, setAudioTracks] = useState<MediaStreamTrack[]>([]);
@@ -20,6 +26,7 @@ const Participant: React.FC<Participant> = ({ id }) => {
     const audioRef = useRef<HTMLAudioElement | null>(null);
 
     useEffect(() => {
+        // Define trackDictionary as an object where keys are numbers (user_id) and values are MediaStreamTrack instances
         const trackDictionary: { [key: number]: MediaStreamTrack } = {};
 
         // Define a function to handle when a new audio track is subscribed to (AKA when a user joins the chat or unmutes their mic)
@@ -35,9 +42,7 @@ const Participant: React.FC<Participant> = ({ id }) => {
                     if (audioTrack) {
                         // Add the first audio track to the audioTracks state
                         setAudioTracks((audioTracks) => [...audioTracks, audioTrack]);
-
-                        // Define trackDictionary as an object where keys are numbers and values are MediaStreamTrack instances
-                        const trackDictionary: { [key: number]: MediaStreamTrack } = {};
+                        // Add the audio track to the track dictionary
                         trackDictionary[id] = audioTrack;
                     }
                 })
@@ -46,6 +51,7 @@ const Participant: React.FC<Participant> = ({ id }) => {
                 });
 
         };
+        trackSubscribed();
 
         // Define a function to handle when an audio track is unsubscribed from (AKA when a user leaves the chat or mutes their mic)
         const trackUnsubscribed = (track: MediaStreamTrack) => {
@@ -54,21 +60,14 @@ const Participant: React.FC<Participant> = ({ id }) => {
             }
         };
 
-        socket.on(`audioTrackAdded/${id}`, trackSubscribed); // When websocket emits that a user joins the chat, start broadcasting their audio
-        socket.on(`audioTrackRemoved/${id}`, () => { // When websocket emits that a user leaves the chat, stop broadcasting their audio
+        return () => { // Clean up
+            setAudioTracks([]);
             if (trackDictionary[id]) {
                 trackUnsubscribed(trackDictionary[id]);
                 delete trackDictionary[id];
             }
-        });
-
-        return () => { // Clean up
-            setAudioTracks([]);
-            // Clean up event listeners
-            socket.off(`audioTrackAdded/${id}`, trackSubscribed);
-            socket.off(`audioTrackRemoved/${id}`, trackUnsubscribed);
         };
-    }, [id]);
+    }, []);
 
     // Attach the audio tracks to the DOM
     useEffect(() => {

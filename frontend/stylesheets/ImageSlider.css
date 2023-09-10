@@ -1,0 +1,31 @@
+.slider-container {
+    position: relative;
+    height: 100%;
+}
+
+.slide {
+        width: 100%;
+        height: 100%;
+        border-radius: 10px;
+        background-position: center;
+        background-size: cover;
+}
+
+.slider-button {
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+    font-size: 3rem;
+    color: #fff;
+    z-index: 1;
+    cursor: pointer;
+    text-shadow: 0 0 0.2em black;
+}
+
+#left-slider-button {
+    left: 32px;
+}
+
+#right-slider-button {
+    right: 32px;
+}

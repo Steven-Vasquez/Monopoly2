@@ -2,6 +2,7 @@
     border-radius: 5px;
     text-align: center;
     color: #fff;
+    text-decoration: none;
     background-color: var(--accent);
     border: none;
     padding: 12px 12px; /* Adjust padding as needed */

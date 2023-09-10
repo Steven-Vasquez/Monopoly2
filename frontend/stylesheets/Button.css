@@ -1,13 +1,16 @@
 .button {
-    border-radius: 5px;
+    border-radius: 0px;
     text-align: center;
     color: #fff;
     background-color: var(--accent);
     border: none;
-    padding: 12px 12px; /* Adjust padding as needed */
+    padding: 16px 24px; /* Adjust padding as needed */
     cursor: pointer;
     transition: background-color 0.2s ease-in-out;
-    font-size: 14px;
+    font-size: 1rem;
+    font-family: var(--body-font);
+    line-height: 1;
+    font-weight: 600;
 }
 
 .button:hover {
@@ -17,6 +20,6 @@
 .button-link {
     text-decoration: none;
     color: #fff;
-    width: fit-content;
+    /* width: fit-content; */
     display: inline-block;
 }

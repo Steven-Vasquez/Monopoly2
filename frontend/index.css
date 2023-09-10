@@ -21,3 +21,26 @@ html, body {
   margin: 0;
   height: 100%;
 }
+
+h1 {
+  font-family: var(--display-font);
+  font-size: 4rem;
+  color: var(--black);
+}
+
+h2 {
+  font-family: var(--display-font);
+  font-size: 2rem;
+  color: var(--black);
+}
+
+h3 {
+  font-family: var(--display-font);
+  font-size: 1.5rem;
+  color: var(--black);
+}
+
+p {
+  font-family: var(--body-font);
+  font-size: 1rem;
+}

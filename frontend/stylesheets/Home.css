@@ -49,9 +49,11 @@
 }
 
 #slideshow-container {
-    width: 600px;
-    height: 380px;
-    margin: 0 auto;
+    /* width: 600px;
+    height: 380px; */
+    width: 40rem;
+    height: 25rem;
+    margin-bottom: 2em;
 }
 
 

@@ -2,16 +2,15 @@ import "../stylesheets/ImageSlider.css";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { CaretLeft, CaretRight, DotOutline } from "@phosphor-icons/react";
 
-const ImageSlider = ({ slides, parentWidth }: any) => {
+const ImageSlider = ({ slides }: any) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const timerRef = useRef(null);
 
-    const getCurrentSlideImg: {backgroundImage: string} = {
+    const getCurrentSlideImg: { backgroundImage: string } = {
         backgroundImage: slides[currentIndex].url,
     };
 
     const getCurrentSlideTxt = slides[currentIndex].description;
-
 
     const goPrevious = () => {
         // Go to last image if current image is first image
@@ -52,14 +51,14 @@ const ImageSlider = ({ slides, parentWidth }: any) => {
             <div id="right-slider-button" className="slider-button" onClick={goNext}>
                 <CaretRight size={64} weight="fill" />
             </div>
-            <img className="slide" src={getCurrentSlideImg.backgroundImage} alt={currentIndex.toString()}/>
-        
+            <img className="slide" src={getCurrentSlideImg.backgroundImage} alt={currentIndex.toString()} />
+            <p className="slide-text">{getCurrentSlideTxt}</p>
             <div className="dots-container">
                 {slides.map((slide, slideIndex: any) => (
                     <div
                         key={slideIndex}
                         onClick={() => setCurrentIndex(slideIndex)}
-                    ><DotOutline size={50} weight="fill"  className={slideIndex === currentIndex ? "dot-active" : "dot"}/>
+                    ><DotOutline size={50} weight="fill" className={slideIndex === currentIndex ? "dot-active" : "dot"} />
                     </div>
                 ))}
             </div>

@@ -30,7 +30,6 @@
     color: #fff;
     z-index: 1;
     cursor: pointer;
-    text-shadow: 0 0 0.2em black;
     user-select: none;
     -webkit-user-select: none;
     filter: drop-shadow(0 0 0.2em #000)    

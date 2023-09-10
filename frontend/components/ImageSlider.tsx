@@ -55,7 +55,7 @@ const ImageSlider = ({ slides, parentWidth }: any) => {
             <img className="slide" src={getCurrentSlideImg.backgroundImage} alt={currentIndex.toString()}/>
         
             <div className="dots-container">
-                {slides.map((slide, slideIndex) => (
+                {slides.map((slide, slideIndex: any) => (
                     <div
                         key={slideIndex}
                         onClick={() => setCurrentIndex(slideIndex)}

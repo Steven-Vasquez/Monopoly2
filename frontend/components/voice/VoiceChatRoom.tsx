@@ -8,16 +8,28 @@ import Participant from "./Participant.tsx"; // Import your Participant componen
 
 
 function VoiceChatRoom() {
-    const [user_id, setUser_id] = useState(0);
-    
-    // Use state to manage the participants in the chat
-    const [participants, setParticipants] = useState<Participant[]>([]);
-    const [muted, setMuted] = useState(false); // State to manage mute/unmute
-   
+
     // Connecting to the socket room of the lobby for lobby-wide event updates
     const { lobbyID } = useParams<{ lobbyID: string }>();
     const socket = io("http://localhost:3001");
-    socket.emit("join", lobbyID);
+
+    socket.on("userLeftVoiceChat", (participantId: number) => {
+        handleLeaveVoiceChat(participantId);
+    });
+
+    socket.on("userJoinedVoiceChat", (participantId: number) => {
+        handleJoinVoiceChat(participantId);
+    });
+
+    socket.on("offer", (data: any) => {
+        console.log("offer received");
+        socket.emit("answer", data);
+    });
+
+    const [inVoiceChat, setInVoiceChat] = useState(false); // State to manage whether the user is in the voice chat or not
+    const [participants, setParticipants] = useState<Participant[]>([]); // Use state to manage the participants in the chat
+    const [muted, setMuted] = useState(false); // State to manage mute/unmute
+    const [user_id, setUser_id] = useState(0);
 
     useEffect(() => {
         // Get the current user's ID
@@ -29,12 +41,13 @@ function VoiceChatRoom() {
                 console.log(err);
             });
 
-        
+
     }, []);
 
 
     // Handle joining the chat
     const handleJoinVoiceChat = (participantId: number) => {
+        socket.emit("joinVoiceChat", lobbyID);
         const audioRef = useRef<HTMLAudioElement | null>(null); // Create an audioRef
 
         // Add the participant to the list
@@ -54,24 +67,33 @@ function VoiceChatRoom() {
 
     return (
         <div className="voice-chat-room">
-            <div>
-                <button onClick={toggleMute}>
-                    {muted ? "Unmute" : "Mute"} {/* Toggle mute/unmute button */}
-                </button>
-            </div>
-            <div>
-                {participants.map((participant) => (
-                    <Participant key={participant.id} id={participant.id} audioRefPassed={participant.audioRefPassed} />
-                ))}
-            </div>
-            <div>
-                <button onClick={() => handleJoinVoiceChat(user_id)}>
-                    Join Voice Chat {/* Replace '1' with the participant ID */}
-                </button>
-                <button onClick={() => handleLeaveVoiceChat(user_id)}>
-                    Leave Voice Chat {/* Replace '1' with the participant ID */}
-                </button>
-            </div>
+            {inVoiceChat ? (
+                <div>
+                    <button onClick={() => handleLeaveVoiceChat(user_id)}>
+                        Leave Voice Chat
+                    </button>
+
+                    <button onClick={toggleMute}>
+                        {muted ? "Unmute" : "Mute"} {/* Toggle mute/unmute button */}
+                    </button>
+
+                    <div>
+                        {participants.map((participant) => (
+                            <Participant key={participant.id} id={participant.id} audioRefPassed={participant.audioRefPassed} />
+                        ))}
+                    </div>
+
+                </div>
+
+            ) : (
+                <div>
+                    <h1>You are not in the voice chat!</h1>
+                    <button onClick={() => handleJoinVoiceChat(user_id)}>
+                        Join Voice Chat {/* Replace '1' with the participant ID */}
+                    </button>
+                </div>
+            )}
+
         </div>
     );
 };

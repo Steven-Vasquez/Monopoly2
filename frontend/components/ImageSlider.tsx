@@ -44,25 +44,35 @@ const ImageSlider = ({ slides }: any) => {
     }, [goNext]);
 
     return (
-        <div className="slider-container">
+        <>
+        <div className="slideshow">
             <div id="left-slider-button" className="slider-button" onClick={goPrevious}>
-                <CaretLeft size={64} weight="fill" />
+                <CaretLeft size={24} weight="fill" />
             </div>
+            <div className="slideshow-center">
+                <div className="slides-container">
+                    {slides.map((slide: {url: string, description: string}) => (
+                        <img className="slide" src={slide.url} alt={currentIndex.toString()} />
+                    ))}
+                </div>
+            </div>
+            {/* <img className="slide" src={getCurrentSlideImg.backgroundImage} alt={currentIndex.toString()} /> */}
+            {/* <p className="slide-text">{getCurrentSlideTxt}</p> */}
             <div id="right-slider-button" className="slider-button" onClick={goNext}>
-                <CaretRight size={64} weight="fill" />
+                <CaretRight size={24} weight="fill" />
             </div>
-            <img className="slide" src={getCurrentSlideImg.backgroundImage} alt={currentIndex.toString()} />
-            <p className="slide-text">{getCurrentSlideTxt}</p>
-            <div className="dots-container">
+            <div className="dots">
                 {slides.map((slide, slideIndex: any) => (
                     <div
                         key={slideIndex}
                         onClick={() => setCurrentIndex(slideIndex)}
-                    ><DotOutline size={50} weight="fill" className={slideIndex === currentIndex ? "dot-active" : "dot"} />
+                        className={"dot " + (slideIndex === currentIndex ? "active" : "")}
+                    >
                     </div>
                 ))}
             </div>
         </div>
+        </>
     );
 };
 

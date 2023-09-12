@@ -47,9 +47,7 @@ function Home(props: any) {
                 </div>
                 <div id="features-section" className="sections">
                     <h2 className="headers">Features</h2>
-                    <div id="slideshow-container">
-                        <ImageSlider slides={slides}></ImageSlider>
-                    </div>
+                    <ImageSlider slides={slides}></ImageSlider>
                 </div>
                 <div id="about-section" className="sections">
                     <h2 className="headers">More About Monopoly</h2>

@@ -61,11 +61,18 @@
 
 /* Styling for time ago span */
 .game-date span {
-    font-size: 12px;
+    font-size: 0.8rem;
     color: #777;
 }
 
+.empty-games-list {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1.5rem;
+    align-items: center;
+    height: 100%;
 
+}
 
 /***********************************/
 /* Custom react-tabs styling (below) */

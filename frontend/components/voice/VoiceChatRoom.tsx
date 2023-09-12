@@ -5,9 +5,14 @@ import io from "socket.io-client";
 
 import Participant from "./Participant.tsx"; // Import your Participant component
 
+import { createPeerConnection, createOffer, createAnswer } from "./utility/webRTCUtils.ts";
 
 
 function VoiceChatRoom() {
+    const [inVoiceChat, setInVoiceChat] = useState(false); // State to manage whether the user is in the voice chat or not
+    const [participants, setParticipants] = useState<Participant[]>([]); // Use state to manage the participants in the chat
+    const [muted, setMuted] = useState(false); // State to manage mute/unmute
+    const [user_id, setUser_id] = useState(0);
 
     // Connecting to the socket room of the lobby for lobby-wide event updates
     const { lobbyID } = useParams<{ lobbyID: string }>();
@@ -26,10 +31,6 @@ function VoiceChatRoom() {
         socket.emit("answer", data);
     });
 
-    const [inVoiceChat, setInVoiceChat] = useState(false); // State to manage whether the user is in the voice chat or not
-    const [participants, setParticipants] = useState<Participant[]>([]); // Use state to manage the participants in the chat
-    const [muted, setMuted] = useState(false); // State to manage mute/unmute
-    const [user_id, setUser_id] = useState(0);
 
     useEffect(() => {
         // Get the current user's ID
@@ -49,7 +50,7 @@ function VoiceChatRoom() {
     const handleJoinVoiceChat = (participantId: number) => {
         socket.emit("joinVoiceChat", lobbyID);
         const audioRef = useRef<HTMLAudioElement | null>(null); // Create an audioRef
-
+        setInVoiceChat(true); // Set inVoiceChat to true
         // Add the participant to the list
         setParticipants([...participants, { id: participantId, audioRefPassed: audioRef }]);
     };

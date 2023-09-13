@@ -51,8 +51,11 @@ const ImageSlider = ({ slides }: any) => {
             </div>
             <div className="slideshow-center">
                 <div className="slides-container">
-                    {slides.map((slide: {url: string, description: string}) => (
-                        <img className="slide" src={slide.url} alt={currentIndex.toString()} />
+                    {slides.map((slide: {url: string, description: string}, index: Number) => (
+                        <div className="slide">
+                            <img className="slide-image" src={slide.url} alt={index.toString()} />
+                            <div className="slide-text">{slide.description}</div>
+                        </div>
                     ))}
                 </div>
             </div>

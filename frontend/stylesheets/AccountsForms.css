@@ -1,0 +1,29 @@
+.form-page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 8rem 0 8rem 0;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    width: 25rem;
+}
+
+.form-container form {
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    justify-content: center;
+    gap: 1rem;
+    width: 100%;
+}
+
+.form-button-container {
+    margin-top: 1.5rem;
+}

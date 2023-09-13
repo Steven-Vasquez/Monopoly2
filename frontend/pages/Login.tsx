@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { TextField } from '../components/TextField.tsx';
+import "../stylesheets/AccountsForms.css"
 import axios from 'axios';
+import { Button } from '../components/Button.tsx';
 
 function Login() {
     const [email, setEmail] = useState("");
@@ -10,10 +12,9 @@ function Login() {
 
     axios.defaults.withCredentials = true; // Allow cookies to be stored in the browser
 
-
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-
+    // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {        
+    //     event.preventDefault();
+    const handleSubmit = () => {
         //const formData = { email, password };
 
         axios.post("http://localhost:3001/login", {
@@ -40,29 +41,29 @@ function Login() {
     }
     return (
         <div>
-            <div className="page-container">
-                <h1>Login</h1>
-
+            <div className="form-page-container">
+                <h1>MONOPOLY</h1>
                 {errorMessage && <p>Error: {errorMessage}</p>}
-
-                <form onSubmit={handleSubmit}>
-                    <TextField
-                        label="Email"
-                        type="email"
-                        id="username"
-                        name="username"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}>
-                    </TextField>
-                    <TextField
-                        label="Password"
-                        type="password"
-                        id="password"
-                        name="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}>
-                    </TextField>
-                    {/* <label htmlFor="email">Email</label>
+                <div className="form-container">
+                    <h2>Log In</h2>
+                    <form onSubmit={handleSubmit}>
+                        <TextField
+                            label="Email"
+                            type="email"
+                            id="username"
+                            name="username"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}>
+                        </TextField>
+                        <TextField
+                            label="Password"
+                            type="password"
+                            id="password"
+                            name="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}>
+                        </TextField>
+                        {/* <label htmlFor="email">Email</label>
                 <input
                     type="email"
                     id="username"
@@ -80,10 +81,16 @@ function Login() {
                     onChange={(e) => setPassword(e.target.value)}
                 /> */}
 
-                    <button type="submit">Login</button>
-                </form>
-                <div className="action-links">
-                    <p>Don't have an account? <Link to="/register">Register</Link></p>
+                        {/* <button type="submit">Login</button> */}
+                        <div className="form-button-container">
+                            <Link className="button-link" to={''} onClick={handleSubmit}>
+                                <Button label="Login"></Button>
+                            </Link>
+                        </div>
+                    </form>
+                    <div className="action-links">
+                        <p>Don't have an account? <Link to="/register">Register</Link></p>
+                    </div>
                 </div>
             </div>
         </div>

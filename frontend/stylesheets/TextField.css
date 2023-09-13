@@ -7,7 +7,6 @@
     box-sizing: border-box;
     margin-top: 8px;
     font-family: var(--body-font);
-    /* width: 100%; */
 }
 
 .text-field-label {
@@ -24,6 +23,7 @@
 }
 
 .text-field-input {
+    width: 100%;
     padding: 12px;
     border-radius: 0px;
     border: 2px solid var(--black);

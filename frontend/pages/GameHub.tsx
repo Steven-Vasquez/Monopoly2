@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useNavigate, Link } from 'react-router-dom';
 import { formatDistanceToNow } from 'date-fns';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import { GlobeHemisphereWest, Lock } from "@phosphor-icons/react";
+import { Button } from "../components/Button.tsx";
 import axios from "axios";
 import io from "socket.io-client";
 
@@ -113,19 +115,31 @@ export function Hub() {
                                     <li>Join</li>
                                 </ul>
                             </li>
-                            {gamesList.map(game => (
-                                <li key={game.id} className="game">
-                                    <ul className="game-info">
-                                        <li className="game-title">{game.game_title}</li>
-                                        <li className="game-playe-count">{game.player_count}/4</li>
-                                        <li className="game-type">{game.is_private ? "private" : "public"}</li>
-                                        <li className="game-date"><TimeAgo date={game.created_at} /> </li>
-                                        <li>
-                                            <Link className="join-button" to={''} onClick={() => handleJoinRequest(game.id)}>Join Game</Link>
+                            {gamesList.length === 0 ? (
+                                <div className="empty-games-list">
+                                    <li>No games available. Create a new game or refresh the page.</li>
+                                    <Button label="Create Game"></Button>
+                                    <li>(Popup window appears)</li>
+                                </div>
+                            ) : (
+                                <>
+                                    {gamesList.map(game => (
+                                        <li key={game.id} className="game">
+                                            <ul className="game-info">
+                                                <li className="game-title">{game.game_title}</li>
+                                                <li className="game-playe-count">{game.player_count}/4</li>
+                                                <li className="game-type">{game.is_private ?
+                                                    <span title="private"><Lock size={22} color="#777" weight="fill" /></span> : <span title="public"><GlobeHemisphereWest size={22} color="#777" weight="fill" /></span>
+                                                }</li>
+                                                <li className="game-date"><TimeAgo date={game.created_at} /> </li>
+                                                <li>
+                                                    <Link className="join-button" to={''} onClick={() => handleJoinRequest(game.id)}>Join Game</Link>
+                                                </li>
+                                            </ul>
                                         </li>
-                                    </ul>
-                                </li>
-                            ))}
+                                    ))}
+                                </>
+                            )}
                         </ul>
                     </TabPanel>
 
@@ -140,32 +154,44 @@ export function Hub() {
                                     <li>Join</li>
                                 </ul>
                             </li>
-                            {myGamesList.map(game => (
-                                <li key={game.id} className="game">
-                                    <ul className="game-info">
-                                        <li className="game-title">{game.game_title}</li>
-                                        <li className="game-playe-count">{game.player_count}</li>
-                                        <li className="game-type">{game.is_private ? "private" : "public"}</li>
-                                        <li className="game-date"><TimeAgo date={game.created_at} /> </li>
-                                        {!game.started ?
-                                            <li>
-                                                <Link className="join-button" to={`/lobby/${game.id}`}>Rejoin Game</Link>
-                                            </li>
-                                            :
-                                            <li>
-                                                <Link className="join-button" to={`/game/${game.id}`}>Rejoin Game</Link>
-                                            </li>
-                                        }
-                                    </ul>
-                                </li>
-                            ))}
+                            {myGamesList.length === 0 ? (
+                                <div className="empty-games-list">
+                                    <li>No games available. Create a new game or refresh the page.</li>
+                                    <Button label="Create Game"></Button>
+                                    <li>(Popup window appears)</li>
+                                </div>
+                            ) : (
+                                <>
+                                    {myGamesList.map(game => (
+                                        <li key={game.id} className="game">
+                                            <ul className="game-info">
+                                                <li className="game-title">{game.game_title}</li>
+                                                <li className="game-playe-count">{game.player_count}/4</li>
+                                                <li className="game-type">{game.is_private ?
+                                                    <span title="private"><Lock size={22} color="#777" weight="fill" /></span> : <span title="public"><GlobeHemisphereWest size={22} color="#777" weight="fill" /></span>
+                                                }</li>
+                                                <li className="game-date"><TimeAgo date={game.created_at} /> </li>
+                                                {!game.started ?
+                                                    <li>
+                                                        <Link className="join-button" to={`/lobby/${game.id}`}>Rejoin Game</Link>
+                                                    </li>
+                                                    :
+                                                    <li>
+                                                        <Link className="join-button" to={`/game/${game.id}`}>Rejoin Game</Link>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </li>
+                                    ))}
+                                </>
+                            )}
                         </ul>
                     </TabPanel>
                 </Tabs>
             </div>
 
 
-        </div>
+        </div >
     );
 }
 

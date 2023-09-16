@@ -81,15 +81,13 @@ function Register() {
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}>
                         </TextField>
-                        {/* <button type="submit">Register</button> */}
+                        {/* <button type="submit">Register (DEV)</button> */}
                         <div className="form-button-container">
-                            <Link className="button-link" to={''} onClick={handleSubmit}>
-                                <Button label="Register"></Button>
-                            </Link>
+                            <Button label="Register" width="100%"></Button>
                         </div>
                     </form>
-                    <div className="action-links">
-                        <p>Already have an account? <Link to="/login">Log in</Link></p>
+                    <div className="account-action-links">
+                        <p><Link to="/login">Already have an account?</Link></p>
                     </div>
                 </div>
             </div>

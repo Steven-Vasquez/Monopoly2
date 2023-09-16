@@ -12,9 +12,9 @@ function Login() {
 
     axios.defaults.withCredentials = true; // Allow cookies to be stored in the browser
 
-    // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {        
-    //     event.preventDefault();
-    const handleSubmit = () => {
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        // const handleSubmit = () => {
         //const formData = { email, password };
 
         axios.post("http://localhost:3001/login", {
@@ -45,7 +45,7 @@ function Login() {
                 <h1>MONOPOLY</h1>
                 {errorMessage && <p>Error: {errorMessage}</p>}
                 <div className="form-container">
-                    <h2>Log In</h2>
+                    <h2>Sign In</h2>
                     <form onSubmit={handleSubmit}>
                         <TextField
                             label="Email"
@@ -81,15 +81,13 @@ function Login() {
                     onChange={(e) => setPassword(e.target.value)}
                 /> */}
 
-                        {/* <button type="submit">Login</button> */}
+                        {/* <button type="submit">Login (DEV)</button> */}
                         <div className="form-button-container">
-                            <Link className="button-link" to={''} onClick={handleSubmit}>
-                                <Button label="Login"></Button>
-                            </Link>
+                            <Button label="Login" width="100%"></Button>
                         </div>
                     </form>
-                    <div className="action-links">
-                        <p>Don't have an account? <Link to="/register">Register</Link></p>
+                    <div className="account-action-links">
+                        <p><Link to="/register">Don't have an account?</Link></p>
                     </div>
                 </div>
             </div>

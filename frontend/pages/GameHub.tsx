@@ -118,7 +118,7 @@ export function Hub() {
                             {gamesList.length === 0 ? (
                                 <div className="empty-games-list">
                                     <li>No games available. Create a new game or refresh the page.</li>
-                                    <Button label="Create Game"></Button>
+                                    <Button label="Create Game" width="auto"></Button>
                                     <li>(Popup window appears)</li>
                                 </div>
                             ) : (
@@ -157,7 +157,7 @@ export function Hub() {
                             {myGamesList.length === 0 ? (
                                 <div className="empty-games-list">
                                     <li>No games available. Create a new game or refresh the page.</li>
-                                    <Button label="Create Game"></Button>
+                                    <Button label="Create Game" width="auto"></Button>
                                     <li>(Popup window appears)</li>
                                 </div>
                             ) : (

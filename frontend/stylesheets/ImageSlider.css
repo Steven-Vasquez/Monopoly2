@@ -58,8 +58,6 @@
     position: relative;
     flex: 0 0 100%;
     scroll-snap-align: center;
-    user-select: none;
-    -webkit-user-select: none;
 }
 
 .slide-image {
@@ -71,6 +69,7 @@
     object-fit: cover;
     user-select: none;
     -webkit-user-select: none;
+    display: block;
     /* background-position: center;
     background-size: cover; */
 }
@@ -109,5 +108,20 @@
 
 .dot.active {
     transform: scale(1.5);
+    background-color: var(--accent);
+}
+
+.slide-timer {
+    height: 4px;
+    width: 100%;
+    background-color: var(--background);
+    position: relative;
+}
+
+.slide-progress {
+    height: 100%;
+    position: absolute;
+    top: 0;
+    width: 30%;
     background-color: var(--accent);
 }

@@ -1,16 +1,21 @@
 import "../stylesheets/ImageSlider.css";
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, createRef, useState, useCallback } from "react";
 import { CaretLeft, CaretRight, DotOutline } from "@phosphor-icons/react";
 
 const ImageSlider = ({ slides }: any) => {
     const [currentIndex, setCurrentIndex] = useState(0);
-    const timerRef = useRef(null);
+    const slidesRef = useRef<HTMLDivElement>(null);
 
-    const getCurrentSlideImg: { backgroundImage: string } = {
-        backgroundImage: slides[currentIndex].url,
-    };
+    const [currentTime, setCurrentTime] = useState(0);
 
-    const getCurrentSlideTxt = slides[currentIndex].description;
+    // const timerRef = useRef(null);
+
+    // const getCurrentSlideImg: { backgroundImage: string } = {
+    //     backgroundImage: slides[currentIndex].url,
+    // };
+
+    // const getCurrentSlideTxt = slides[currentIndex].description;
+    
 
     const goPrevious = () => {
         // Go to last image if current image is first image
@@ -31,17 +36,33 @@ const ImageSlider = ({ slides }: any) => {
     }, [currentIndex, slides.length]);
 
     useEffect(() => {
-        // Clear timer if it exists
-        if (timerRef.current) {
-            clearTimeout(timerRef.current);
-        }
-        // Set timer to go to next image after 5 seconds
-        timerRef.current = setTimeout(() => {
-            goNext();
-        }, 5000);
-        // Clear timer when component unmounts (when user clicks next arrow)
-        return () => clearTimeout(timerRef.current);
+        // // Clear timer if it exists
+        // if (timerRef.current) {
+        //     clearTimeout(timerRef.current);
+        // }
+        // // Set timer to go to next image after 5 seconds
+        // timerRef.current = setTimeout(() => {
+        //     goNext();
+        // }, 5000);
+        // // Clear timer when component unmounts (when user clicks next arrow)
+        // return () => clearTimeout(timerRef.current);
     }, [goNext]);
+
+    useEffect(() => {
+        if (slidesRef != null) {
+            console.log(`slide-${currentIndex}`);
+            console.log(slidesRef.current?.children[currentIndex]);
+            // slidesRef.current?.scrollTo({
+            //     top: window.scrollY,
+            //     left: slidesRef.current?.children[currentIndex].getBoundingClientRect().x,
+            //     behavior: 'smooth'
+            // })
+            slidesRef.current?.children[currentIndex].scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest'
+            });
+        }
+    }, [currentIndex])
 
     return (
         <>
@@ -50,13 +71,16 @@ const ImageSlider = ({ slides }: any) => {
                 <CaretLeft size={24} weight="fill" />
             </div>
             <div className="slideshow-center">
-                <div className="slides-container">
+                <div className="slides-container" ref={slidesRef}>
                     {slides.map((slide: {url: string, description: string}, index: Number) => (
-                        <div className="slide">
+                        <div className="slide" id={"slide-" + index.toString()}>
                             <img className="slide-image" src={slide.url} alt={index.toString()} />
-                            <div className="slide-text">{slide.description}</div>
+                            <div className="slide-text">{slide.description}{index.toString()}</div>
                         </div>
                     ))}
+                </div>
+                <div className="slide-timer">
+                    <div className="slide-progress"></div>
                 </div>
             </div>
             {/* <img className="slide" src={getCurrentSlideImg.backgroundImage} alt={currentIndex.toString()} /> */}
@@ -65,11 +89,12 @@ const ImageSlider = ({ slides }: any) => {
                 <CaretRight size={24} weight="fill" />
             </div>
             <div className="dots">
-                {slides.map((slide, slideIndex: any) => (
+                {slides.map((slide: {url: string, description: string}, slideIndex: any) => (
                     <div
                         key={slideIndex}
                         onClick={() => setCurrentIndex(slideIndex)}
                         className={"dot " + (slideIndex === currentIndex ? "active" : "")}
+                        id={"dot " + slideIndex}
                     >
                     </div>
                 ))}

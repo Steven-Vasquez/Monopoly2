@@ -50,17 +50,12 @@ const ImageSlider = ({ slides }: any) => {
 
     useEffect(() => {
         if (slidesRef != null) {
-            console.log(`slide-${currentIndex}`);
-            console.log(slidesRef.current?.children[currentIndex]);
-            // slidesRef.current?.scrollTo({
-            //     top: window.scrollY,
-            //     left: slidesRef.current?.children[currentIndex].getBoundingClientRect().x,
-            //     behavior: 'smooth'
-            // })
-            slidesRef.current?.children[currentIndex].scrollIntoView({
-                behavior: 'smooth',
-                block: 'nearest'
-            });
+            let elem = slidesRef.current?.children.namedItem(`slide-${currentIndex}`) as HTMLElement
+            slidesRef.current?.scrollTo({
+                top: window.scrollY,
+                left: elem.offsetLeft,
+                behavior: 'smooth'
+            })
         }
     }, [currentIndex])
 

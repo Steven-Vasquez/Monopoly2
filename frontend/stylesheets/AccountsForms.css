@@ -3,7 +3,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin: 8rem 0 8rem 0;
+    margin-top: 6rem;
 }
 
 .form-container {
@@ -20,10 +20,15 @@
     flex-direction: column;
     /* align-items: center; */
     justify-content: center;
-    gap: 1rem;
+    gap: 0.5rem;
     width: 100%;
 }
 
 .form-button-container {
-    margin-top: 1.5rem;
+    margin-top: 1rem;
+    width: 100%;
+}
+
+.account-action-links {
+    margin-top: 1rem;
 }

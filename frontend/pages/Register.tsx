@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { TextField } from '../components/TextField.tsx';
 import { Button } from '../components/Button.tsx';
-import axios from 'axios';
+import axiosInstance from '../../backend/axiosInstance.ts';
 
 function Register() {
     const [username, setUsername] = useState('');
@@ -11,13 +11,11 @@ function Register() {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
 
-    axios.defaults.withCredentials = true; // Allow cookies to be stored in the browser
 
-    // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    //     event.preventDefault();
-    const handleSubmit = () => {
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
 
-        axios.post("http://localhost:3001/register", {
+        axiosInstance.post("/register", {
             username: username,
             email: email,
             password: password
@@ -54,6 +52,7 @@ function Register() {
                             type="text"
                             id="username"
                             name="username"
+                            required
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}>
                         </TextField>
@@ -62,6 +61,7 @@ function Register() {
                             type="email"
                             id="email"
                             name="email"
+                            required
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}>
                         </TextField>
@@ -70,6 +70,7 @@ function Register() {
                             type="password"
                             id="password"
                             name="password"
+                            required
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}>
                         </TextField>
@@ -78,6 +79,7 @@ function Register() {
                             type="password"
                             id="confirmPassword"
                             name="confirmPassword"
+                            required
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}>
                         </TextField>

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { TextField } from '../components/TextField.tsx';
 import "../stylesheets/AccountsForms.css"
-import axios from 'axios';
+import axiosInstance from '../../backend/axiosInstance.ts'; 
 import { Button } from '../components/Button.tsx';
 
 function Login() {
@@ -11,14 +11,13 @@ function Login() {
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState('');
 
-    axios.defaults.withCredentials = true; // Allow cookies to be stored in the browser
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         // const handleSubmit = () => {
         //const formData = { email, password };
 
-        axios.post("http://localhost:3001/login", {
+        axiosInstance.post("/login", {
             identifier: identifier, // Common key for both email and username
             password: password
         }, {

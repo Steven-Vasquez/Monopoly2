@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../../../backend/axiosInstance.ts";
 import io from "socket.io-client";
 
 import Participant from "./Participant.tsx"; // Import your Participant component
@@ -34,7 +34,7 @@ function VoiceChatRoom() {
 
     useEffect(() => {
         // Get the current user's ID
-        axios.get("http://localhost:3001/getUserID")
+        axiosInstance.get("/getUserID")
             .then(res => {
                 setUser_id(res.data.user_id);
             })

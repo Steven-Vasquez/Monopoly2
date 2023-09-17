@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import axiosInstance from '../../backend/axiosInstance.ts';
 import '../stylesheets/Navbar.css';
 
 function NavBar(props: any) {
     const { loggedIn, /*username*/ } = props;
 
     const handleLogoutRequest = () => {
-        axios.get("http://localhost:3001/logout")
+        axiosInstance.get("/logout")
             .then(res => {
                 console.log(res);
                 window.location.href = "/";

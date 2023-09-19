@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axiosInstance from "../../backend/axiosInstance.ts";
 import { Socket } from "socket.io-client";
 
 import {CHAT_MESSAGE_RECEIVED} from "../../shared/constants.ts"
@@ -20,7 +20,7 @@ function ChatBox({ game_id, socket }: { game_id: string, socket: Socket }) {
 
     async function getChatMessages() {
         try {
-            const response = await axios.get(`http://localhost:3001/api/chat/getMessages/${game_id}`);
+            const response = await axiosInstance.get(`/api/chat/getMessages/${game_id}`);
             setChatMessages(response.data);
         } catch (error) {
             console.error("Error fetching chat messages: ", error);
@@ -45,7 +45,7 @@ function ChatBox({ game_id, socket }: { game_id: string, socket: Socket }) {
         event.preventDefault(); // Prevents page refresh on form submission
 
         try {
-            const response = await axios.post(`http://localhost:3001/api/chat/sendMessage/${game_id}`, {
+            const response = await axiosInstance.post(`/api/chat/sendMessage/${game_id}`, {
                 message: message
             });
             console.log(response.data);

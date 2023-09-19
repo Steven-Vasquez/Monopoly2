@@ -14,7 +14,7 @@ function Home(props: any) {
         { url: "frontend/assets/featuresImageSlider/image-2.jpg", description: "boat" },
         { url: "frontend/assets/featuresImageSlider/image-3.jpg", description: "forest" },
         { url: "frontend/assets/featuresImageSlider/image-4.jpg", description: "city" },
-        { url: "frontend/assets/featuresImageSlider/image-5.jpg", description: "town" }
+        { url: "frontend/assets/featuresImageSlider/image-5.jpg", description: "This is a really long description. Lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit ametlorem ipsum dolor sit amet lorem ipsum dolor sit amet" }
     ];
 
     return (
@@ -28,11 +28,11 @@ function Home(props: any) {
                         <>
                             {loggedIn ? (
                                 <Link className="button-link" to={"/hub"}>
-                                    <Button label="Play Now!"></Button>
+                                    <Button label="Play Now!" width="auto"></Button>
                                 </Link>
                             ) : (
                                 <Link className="button-link" to={"/login"}>
-                                    <Button label="Get Started"></Button>
+                                    <Button label="Get Started" width="auto"></Button>
                                 </Link>
                             )}
                         </>
@@ -47,9 +47,7 @@ function Home(props: any) {
                 </div>
                 <div id="features-section" className="sections">
                     <h2 className="headers">Features</h2>
-                    <div id="slideshow-container">
-                        <ImageSlider slides={slides}></ImageSlider>
-                    </div>
+                    <ImageSlider slides={slides}></ImageSlider>
                 </div>
                 <div id="about-section" className="sections">
                     <h2 className="headers">More About Monopoly</h2>

@@ -12,7 +12,7 @@ import '../stylesheets/Button.css'
 
 interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
     label: string;
-
+    width: string;
 }
 
 const handleClick = () => {
@@ -20,12 +20,12 @@ const handleClick = () => {
     // implementation details
 };
 
-export function Button({ label }: TextFieldProps): JSX.Element {
+export function Button({ label, width }: TextFieldProps): JSX.Element {
     return (
         <>
-            <a className={"button"} onClick={handleClick}>
+            <button className={"button"} onClick={handleClick} style={{width}} type="submit">
                 {label}
-            </a>
+            </button>
         </>
     );
 }

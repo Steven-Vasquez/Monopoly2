@@ -3,8 +3,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import io from "socket.io-client";
-import axios from "axios";
-
+import axiosInstance from '../../backend/axiosInstance.ts';
 import { GAME_JOINED } from "../../shared/constants.ts";
 
 import ChatBox from '../components/ChatBox.tsx';
@@ -20,7 +19,7 @@ function Lobby() {
     const inGameCheck = async () => {
         console.log("inGameCheck() called");
         try {
-            const inGameResponse = await axios.get(`http://localhost:3001/checkInGame/${lobbyID}`);
+            const inGameResponse = await axiosInstance.get(`/checkInGame/${lobbyID}`);
             const inGame = inGameResponse.data.inGame;
             console.log("inGame: ", inGame);
             if (inGame === false) {
@@ -56,7 +55,7 @@ function Lobby() {
 
     const fetchData = async () => {
         try {
-            const response = await axios.get(`http://localhost:3001/api/games/getPlayersList/${lobbyID}`);
+            const response = await axiosInstance.get(`/api/games/getPlayersList/${lobbyID}`);
             const currentPlayers = response.data;
             const usernames = currentPlayers.map((player: { username: string }) => player.username);
             setPlayerUsernames(usernames);

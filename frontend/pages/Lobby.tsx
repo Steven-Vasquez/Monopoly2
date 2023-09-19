@@ -8,6 +8,7 @@ import axios from "axios";
 import { GAME_JOINED } from "../../shared/constants.ts";
 
 import ChatBox from '../components/ChatBox.tsx';
+import VoiceChatRoom from '../components/voice/VoiceChatRoom.tsx';
 
 function Lobby() {
     const navigate = useNavigate();
@@ -89,6 +90,7 @@ function Lobby() {
                 ))}
             </ul>
 
+            <VoiceChatRoom/>
             <ChatBox game_id={lobbyID} socket={socket} />
         </div>
     )

@@ -1,14 +1,19 @@
 import "../stylesheets/ImageSlider.css";
 import { useEffect, useRef, createRef, useState, useCallback } from "react";
 import { CaretLeft, CaretRight, DotOutline } from "@phosphor-icons/react";
+import { timeEnd } from "console";
 
 const ImageSlider = ({ slides }: any) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const slidesRef = useRef<HTMLDivElement>(null);
+    const progressRef = useRef<HTMLDivElement>(null);
 
-    const [currentTime, setCurrentTime] = useState(0);
+    const slideTime = 5000;
+    // const [startTime, setStartTime] = useState(Date.now());
+    // const [elapsedTime, setElapsedTime] = useState(0);
+    // const [endTime, setEndTime] = useState(Date.now() + slideTime);
 
-    // const timerRef = useRef(null);
+    const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
     // const getCurrentSlideImg: { backgroundImage: string } = {
     //     backgroundImage: slides[currentIndex].url,
@@ -33,20 +38,33 @@ const ImageSlider = ({ slides }: any) => {
         } else {
             setCurrentIndex(currentIndex + 1);
         }
+        const timeNow = Date.now();
+
+        // setStartTime(timeNow);
+        // setElapsedTime(0);
+        // setEndTime(timeNow + slideTime)
+        // console.log("RESET", (elapsedTime - startTime), (endTime - startTime))
     }, [currentIndex, slides.length]);
 
     useEffect(() => {
-        // // Clear timer if it exists
-        // if (timerRef.current) {
-        //     clearTimeout(timerRef.current);
-        // }
+        // Clear timer if it exists
+        if (progressRef.current != null) {
+            progressRef.current?.classList.remove("progress-animating")
+            void progressRef.current?.offsetWidth;
+            progressRef.current?.classList.add("progress-animating")
+        }
+        // console.log(progressRef.current);
+        if (timerRef.current) {
+            clearTimeout(timerRef.current);
+        }
         // // Set timer to go to next image after 5 seconds
-        // timerRef.current = setTimeout(() => {
-        //     goNext();
-        // }, 5000);
+        const timeout = setTimeout(() => {
+            goNext();
+        }, 5000);
+        timerRef.current = timeout;
         // // Clear timer when component unmounts (when user clicks next arrow)
-        // return () => clearTimeout(timerRef.current);
-    }, [goNext]);
+        return () => clearTimeout(timerRef.current as NodeJS.Timeout);
+    }, [currentIndex]);
 
     useEffect(() => {
         if (slidesRef != null) {
@@ -75,7 +93,7 @@ const ImageSlider = ({ slides }: any) => {
                     ))}
                 </div>
                 <div className="slide-timer">
-                    <div className="slide-progress"></div>
+                    <div className="slide-progress" ref={progressRef}></div>
                 </div>
             </div>
             {/* <img className="slide" src={getCurrentSlideImg.backgroundImage} alt={currentIndex.toString()} /> */}

@@ -21,11 +21,8 @@
 }
 
 #title-section {
-    
-}
-
-#title-section {
     height: 80vh;
+    background-color: var(--background);
 }
 
 #title-section #tagline {
@@ -46,6 +43,7 @@
 
 #features-section {
     height: 25%;
+    background-color: var(--background);
 }
 
 #slideshow-container {

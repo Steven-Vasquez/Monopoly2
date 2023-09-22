@@ -21,7 +21,7 @@
 .slider-button > svg {
     display: block;
     color: var(--accent-dark);
-    transition: transform 0.2s;
+    transition: transform 0.15s ease-out;
 }
 
 #left-slider-button {
@@ -145,7 +145,7 @@
 .slide-timer {
     height: 4px;
     width: 100%;
-    background-color: var(--background);
+    background-color: var(--black);
     position: relative;
 }
 

@@ -4,7 +4,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { GlobeHemisphereWest, Lock } from "@phosphor-icons/react";
 import { Button } from "../components/Button.tsx";
-import axios from "axios";
+import axiosInstance from "../../backend/axiosInstance.ts";
 import io from "socket.io-client";
 
 import { GAME_CREATED } from "../../shared/constants.ts"
@@ -46,7 +46,7 @@ export function Hub() {
     // Updates the list of joinable games
     async function getGamesList() {
         try {
-            const response = await axios.get("http://localhost:3001/api/games/getGamesList");
+            const response = await axiosInstance.get("/api/games/getGamesList");
             setGamesList(response.data);
         } catch (error) {
             console.error("Error fetching games list: ", error);
@@ -56,7 +56,7 @@ export function Hub() {
     // Updates the list of games the user is in
     async function getMyGamesList() {
         try {
-            const response = await axios.get("http://localhost:3001/api/games/getMyGamesList");
+            const response = await axiosInstance.get("/api/games/getMyGamesList");
             setMyGamesList(response.data);
         } catch (error) {
             console.error("Error fetching my games list: ", error);
@@ -77,7 +77,7 @@ export function Hub() {
     });
 
     const handleJoinRequest = (game_id: any) => {
-        axios.post(`http://localhost:3001/api/games/${game_id}/join`)
+        axiosInstance.post(`/api/games/${game_id}/join`)
             .then(res => {
                 console.log(res);
                 navigate(`/lobby/${game_id}`);

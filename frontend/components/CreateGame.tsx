@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axiosInstance from '../../backend/axiosInstance.ts';
 
 function CreateGame() {
 
@@ -13,7 +13,7 @@ function CreateGame() {
     const handleSubmit = (e: any) => {
         e.preventDefault();
 
-        axios.post('http://localhost:3001/api/games/create', {
+        axiosInstance.post('/api/games/create', {
             roomName: roomName,
             isPrivate: isPrivate,
             password: password

@@ -10,7 +10,7 @@ import Home from './pages/Home.tsx';
 import Lobby from './pages/Lobby.tsx';
 import GameHub from './pages/GameHub.tsx';
 
-import axios from 'axios';
+import axiosInstance from '../backend/axiosInstance.ts';
 
 
 function App() {
@@ -18,11 +18,9 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState("");
 
-  axios.defaults.withCredentials = true; // Allow cookies to be stored in the browser
-
   useEffect(() => {
 
-    axios.get("http://localhost:3001/checkLogin")
+    axiosInstance.get("/checkLogin")
       .then(res => {
         console.log("logged in status is " + res.data.loggedIn);
 

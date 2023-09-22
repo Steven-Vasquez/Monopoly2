@@ -2,23 +2,23 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { TextField } from '../components/TextField.tsx';
 import "../stylesheets/AccountsForms.css"
-import axios from 'axios';
+import axiosInstance from '../../backend/axiosInstance.ts'; 
 import { Button } from '../components/Button.tsx';
 
 function Login() {
-    const [email, setEmail] = useState("");
+    const [identifier, setIdentifier] = useState(''); // Combined email/username input
+
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState('');
 
-    axios.defaults.withCredentials = true; // Allow cookies to be stored in the browser
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         // const handleSubmit = () => {
         //const formData = { email, password };
 
-        axios.post("http://localhost:3001/login", {
-            email: email,
+        axiosInstance.post("/login", {
+            identifier: identifier, // Common key for both email and username
             password: password
         }, {
             headers: {
@@ -26,16 +26,30 @@ function Login() {
             }
         })
             .then(res => {
-                if (typeof res.data.message !== "undefined" && res.data.message > 0) {
+                if (typeof res.data.message !== "undefined") {
                     setErrorMessage(res.data.message);
+
+                    console.log(res.data.message);
                     alert(res.data.message);
                 } else {
-                    alert(`Welcome back, ${email}!`);
+                    alert(`Welcome back, ${identifier}!`);
                     window.location.href = "/lobby";
                 }
             })
             .catch(err => {
-                console.log(err);
+                if (err.response) {
+                    // The request was made and the server responded with a status code
+                    // that falls out of the range of 2xx
+                    console.log(err.response.data.message);
+                    setErrorMessage(err.response.data.message);
+
+                } else if (err.request) {
+                    // The request was made but no response was received
+                    console.log('No response received:', err.request);
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    console.log('Error', err.message);
+                }
             });
 
     }
@@ -43,45 +57,28 @@ function Login() {
         <div>
             <div className="form-page-container">
                 <h1>MONOPOLY</h1>
-                {errorMessage && <p>Error: {errorMessage}</p>}
                 <div className="form-container">
                     <h2>Sign In</h2>
+                    {errorMessage && <div className="error-msg"><p>Error: {errorMessage}</p></div>}
                     <form onSubmit={handleSubmit}>
                         <TextField
-                            label="Email"
-                            type="email"
-                            id="username"
-                            name="username"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}>
-                        </TextField>
+                            label="Email or Username"
+                            type="identifier"
+                            id="identifier"
+                            name="identifier"
+                            required
+                            value={identifier}
+                            onChange={(e) => setIdentifier(e.target.value)}
+                        />
                         <TextField
                             label="Password"
                             type="password"
                             id="password"
                             name="password"
+                            required
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}>
                         </TextField>
-                        {/* <label htmlFor="email">Email</label>
-                <input
-                    type="email"
-                    id="username"
-                    name="username"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-
-                <label htmlFor="password">Password</label>
-                <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                /> */}
-
-                        {/* <button type="submit">Login (DEV)</button> */}
                         <div className="form-button-container">
                             <Button label="Login" width="100%"></Button>
                         </div>

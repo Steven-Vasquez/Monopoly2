@@ -118,7 +118,7 @@ export function Hub() {
                             {gamesList.length === 0 ? (
                                 <div className="empty-games-list">
                                     <li>No games available. Create a new game or refresh the page.</li>
-                                    <Button label="Create Game" width="auto" type="button" />
+                                    <Button label="Create Game" type="button" style={{ width: "auto" }} onClick={''} />
                                     <li>(Popup window appears)</li>
                                 </div>
                             ) : (
@@ -134,7 +134,7 @@ export function Hub() {
                                                 <li className="game-date"><TimeAgo date={game.created_at} /> </li>
                                                 <li>
                                                     <Link className="join-button" to={''} onClick={() => handleJoinRequest(game.id)}>
-                                                        <Button label="Join Game" width="auto" style={{ height: "30rem", fontSize: "0.75rem", padding: "10px 18px" }} type="button" />
+                                                        <Button label="Join Game" type="button" style={{ height: "auto", fontSize: "0.9rem", padding: "12px 20px" }} onClick={''} />
                                                     </Link>
                                                 </li>
                                             </ul>
@@ -159,7 +159,7 @@ export function Hub() {
                             {myGamesList.length === 0 ? (
                                 <div className="empty-games-list">
                                     <li>No games available. Create a new game or refresh the page.</li>
-                                    <Button label="Create Game" width="auto" type="button"></Button>
+                                    <Button label="Create Game" type="button" style={{ width: "auto" }} onClick={''} />
                                     <li>(Popup window appears)</li>
                                 </div>
                             ) : (
@@ -176,13 +176,13 @@ export function Hub() {
                                                 {!game.started ?
                                                     <li>
                                                         <Link className="join-button" to={`/lobby/${game.id}`}>
-                                                            <Button label="Join Game" width="auto" type="button" />
+                                                            <Button label="Join Game" type="button" style={{ height: "auto", fontSize: "0.9rem", padding: "12px 20px" }} onClick={''} />
                                                         </Link>
                                                     </li>
                                                     :
                                                     <li>
                                                         <Link className="join-button" to={`/game/${game.id}`}>
-                                                            <Button label="Rejoin Game" width="auto" type="button" />
+                                                            <Button label="Rejoin Game" type="button" style={{ height: "auto", fontSize: "0.9rem", padding: "12px 20px" }} onClick={''} />
                                                         </Link>
                                                     </li>
                                                 }
@@ -195,8 +195,7 @@ export function Hub() {
                     </TabPanel>
                 </Tabs>
             </div >
-            {/* <Button label="Create Game" width="auto" type="button" onClick={() => setButtonPopup(true)} /> */}
-            <button onClick={() => setButtonPopup(true)}>Create Game</button>
+            <Button label="Create Game" type="button" style={{ width: "auto" }} onClick={() => setButtonPopup(true)} />
             <CreateGame trigger={buttonPopup} setTrigger={setButtonPopup} />
         </div >
     );

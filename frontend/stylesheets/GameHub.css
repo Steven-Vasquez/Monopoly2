@@ -12,7 +12,6 @@
     list-style: none;
 }
 
-.game,
 .game-info-labels,
 .game-info {
     padding: 15px;
@@ -22,8 +21,6 @@
 .game-info-labels {
     font-weight: bold;
 }
-
-
 
 /* Styling for individual game item */
 .game {
@@ -37,6 +34,9 @@
     margin: 0 auto; /* Center the container */
 }
 
+.game-type {
+    margin-top: 0.35rem;
+}
 
 /***********************************/
 /* Indvidual game item styling (below) */
@@ -55,7 +55,7 @@
 }
 
 .join-button:hover {
-    background-color: #0056b3;
+    /* background-color: #0056b3; */
 }
 
 /* Styling for time ago span */

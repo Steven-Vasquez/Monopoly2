@@ -80,7 +80,7 @@ function Login() {
                             onChange={(e) => setPassword(e.target.value)}>
                         </TextField>
                         <div className="form-button-container">
-                            <Button label="Login" width="100%" type="submit" />
+                            <Button label="Login" type="submit" style={{ width: "100%" }} />
                         </div>
                     </form>
                     <div className="account-action-links">

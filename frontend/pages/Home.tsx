@@ -28,11 +28,11 @@ function Home(props: any) {
                         <>
                             {loggedIn ? (
                                 <Link className="button-link" to={"/hub"}>
-                                    <Button label="Play Now!" width="auto" type="button" />
+                                    <Button label="Play Now!" type="button" style={{ width: "auto" }} onClick={''} />
                                 </Link>
                             ) : (
                                 <Link className="button-link" to={"/login"}>
-                                    <Button label="Get Started" width="auto" type="button" />
+                                    <Button label="Get Started" type="button" style={{ width: "auto" }} onClick={''} />
                                 </Link>
                             )}
                         </>

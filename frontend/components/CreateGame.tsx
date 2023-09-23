@@ -72,7 +72,7 @@ function CreateGame(props: any) {
                     )}
                     {/* <button type="submit">Create</button> */}
                     <div className="form-button-container">
-                        <Button label="Create" width="100%" type="submit"/>
+                        <Button label="Create" type="submit" style={{ width: "100%" }} onClick={''} />
                     </div>
                 </form>
                 <button className="close-btn" onClick={() => props.setTrigger(false)}>Close</button>

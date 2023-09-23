@@ -1,29 +1,21 @@
 import { InputHTMLAttributes } from "react";
 import '../stylesheets/Button.css'
 
-// type TextFieldProps = {
-//     inputType?: HTMLInputTypeAttribute;
-//     value?: string;
-//     error?: boolean;
-//     disabled?: boolean;
-//     required?: boolean;
-//     placeholder?: string;
-// }
-
 interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
     label: string;
-    width: string;
     type: "button" | "submit" | "reset" | undefined;
+    style: any;
+    onClick: any;
 }
 
-const handleClick = () => {
-    console.log("Button clicked!");
-};
+// const handleClick = () => {
+//     console.log("Button clicked!");
+// };
 
-export function Button({ label, width, type }: TextFieldProps): JSX.Element {
+export function Button({ label, type, style, onClick }: TextFieldProps): JSX.Element {
     return (
         <>
-            <button className={"button"} onClick={handleClick} style={{width}} type={type}>
+            <button className={"button"} type={type} style={style} onClick={onClick} >
                 {label}
             </button>
         </>

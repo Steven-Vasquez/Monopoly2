@@ -85,7 +85,7 @@ function Register() {
                         </TextField>
                         {/* <button type="submit">Register (DEV)</button> */}
                         <div className="form-button-container">
-                            <Button label="Register" width="100%"></Button>
+                            <Button label="Register" width="100%" type="submit" />
                         </div>
                     </form>
                     <div className="account-action-links">

@@ -13,17 +13,17 @@ import '../stylesheets/Button.css'
 interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
     label: string;
     width: string;
+    type: "button" | "submit" | "reset" | undefined;
 }
 
 const handleClick = () => {
     console.log("Button clicked!");
-    // implementation details
 };
 
-export function Button({ label, width }: TextFieldProps): JSX.Element {
+export function Button({ label, width, type }: TextFieldProps): JSX.Element {
     return (
         <>
-            <button className={"button"} onClick={handleClick} style={{width}} type="submit">
+            <button className={"button"} onClick={handleClick} style={{width}} type={type}>
                 {label}
             </button>
         </>

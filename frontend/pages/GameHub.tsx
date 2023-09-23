@@ -42,6 +42,7 @@ export function Hub() {
 
     const [gamesList, setGamesList] = useState<Game[]>([]); // Array of joinable games
     const [myGamesList, setMyGamesList] = useState<Game[]>([]); // Array of games that the user is a part of
+    const [buttonPopup, setButtonPopup] = useState(false); // Handles popup window for creating a new game
 
     // Updates the list of joinable games
     async function getGamesList() {
@@ -95,7 +96,6 @@ export function Hub() {
     }, [socket]);
     return (
         <div>
-            <CreateGame />
             <h1>Games List</h1>
             <div className="games-tabs-container">
                 <Tabs>
@@ -118,7 +118,7 @@ export function Hub() {
                             {gamesList.length === 0 ? (
                                 <div className="empty-games-list">
                                     <li>No games available. Create a new game or refresh the page.</li>
-                                    <Button label="Create Game" width="auto"></Button>
+                                    <Button label="Create Game" width="auto" type="button" />
                                     <li>(Popup window appears)</li>
                                 </div>
                             ) : (
@@ -127,13 +127,15 @@ export function Hub() {
                                         <li key={game.id} className="game">
                                             <ul className="game-info">
                                                 <li className="game-title">{game.game_title}</li>
-                                                <li className="game-playe-count">{game.player_count}/4</li>
+                                                <li className="game-player-count">{game.player_count}/4</li>
                                                 <li className="game-type">{game.is_private ?
                                                     <span title="private"><Lock size={22} color="#777" weight="fill" /></span> : <span title="public"><GlobeHemisphereWest size={22} color="#777" weight="fill" /></span>
                                                 }</li>
                                                 <li className="game-date"><TimeAgo date={game.created_at} /> </li>
                                                 <li>
-                                                    <Link className="join-button" to={''} onClick={() => handleJoinRequest(game.id)}>Join Game</Link>
+                                                    <Link className="join-button" to={''} onClick={() => handleJoinRequest(game.id)}>
+                                                        <Button label="Join Game" width="auto" style={{ height: "30rem", fontSize: "0.75rem", padding: "10px 18px" }} type="button" />
+                                                    </Link>
                                                 </li>
                                             </ul>
                                         </li>
@@ -157,7 +159,7 @@ export function Hub() {
                             {myGamesList.length === 0 ? (
                                 <div className="empty-games-list">
                                     <li>No games available. Create a new game or refresh the page.</li>
-                                    <Button label="Create Game" width="auto"></Button>
+                                    <Button label="Create Game" width="auto" type="button"></Button>
                                     <li>(Popup window appears)</li>
                                 </div>
                             ) : (
@@ -166,18 +168,22 @@ export function Hub() {
                                         <li key={game.id} className="game">
                                             <ul className="game-info">
                                                 <li className="game-title">{game.game_title}</li>
-                                                <li className="game-playe-count">{game.player_count}/4</li>
+                                                <li className="game-player-count">{game.player_count}/4</li>
                                                 <li className="game-type">{game.is_private ?
                                                     <span title="private"><Lock size={22} color="#777" weight="fill" /></span> : <span title="public"><GlobeHemisphereWest size={22} color="#777" weight="fill" /></span>
                                                 }</li>
                                                 <li className="game-date"><TimeAgo date={game.created_at} /> </li>
                                                 {!game.started ?
                                                     <li>
-                                                        <Link className="join-button" to={`/lobby/${game.id}`}>Rejoin Game</Link>
+                                                        <Link className="join-button" to={`/lobby/${game.id}`}>
+                                                            <Button label="Join Game" width="auto" type="button" />
+                                                        </Link>
                                                     </li>
                                                     :
                                                     <li>
-                                                        <Link className="join-button" to={`/game/${game.id}`}>Rejoin Game</Link>
+                                                        <Link className="join-button" to={`/game/${game.id}`}>
+                                                            <Button label="Rejoin Game" width="auto" type="button" />
+                                                        </Link>
                                                     </li>
                                                 }
                                             </ul>
@@ -188,9 +194,10 @@ export function Hub() {
                         </ul>
                     </TabPanel>
                 </Tabs>
-            </div>
-
-
+            </div >
+            {/* <Button label="Create Game" width="auto" type="button" onClick={() => setButtonPopup(true)} /> */}
+            <button onClick={() => setButtonPopup(true)}>Create Game</button>
+            <CreateGame trigger={buttonPopup} setTrigger={setButtonPopup} />
         </div >
     );
 }

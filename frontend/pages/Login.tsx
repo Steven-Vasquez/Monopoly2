@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { TextField } from '../components/TextField.tsx';
 import "../stylesheets/AccountsForms.css"
-import axiosInstance from '../../backend/axiosInstance.ts'; 
+import axiosInstance from '../../backend/axiosInstance.ts';
 import { Button } from '../components/Button.tsx';
 
 function Login() {
@@ -80,7 +80,7 @@ function Login() {
                             onChange={(e) => setPassword(e.target.value)}>
                         </TextField>
                         <div className="form-button-container">
-                            <Button label="Login" width="100%"></Button>
+                            <Button label="Login" width="100%" type="submit" />
                         </div>
                     </form>
                     <div className="account-action-links">

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "../components/Button.tsx";
 import ImageSlider from "../components/ImageSlider.tsx"
-import { AnimatedLogo } from "../components/AnimatedLogo.tsx";
+import { Logo } from "../components/Logo.tsx";
 import "../stylesheets/Home.css";
 
 function Home(props: any) {
@@ -22,7 +22,7 @@ function Home(props: any) {
             {/* <h1 id="site-title">Monopoly</h1> */}
             <div>
                 <div id="title-section" className="sections">
-                    <AnimatedLogo></AnimatedLogo>
+                    <Logo animated size={128} spacing={16}></Logo>
                     <h1 id="tagline">Hippity hoppity, your hotels are now my property</h1>
                     <div className="action-links">
                         <>

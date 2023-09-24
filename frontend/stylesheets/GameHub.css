@@ -38,6 +38,10 @@
     margin-top: 0.35rem;
 }
 
+.empty-games-list {
+    margin-top: 1rem;
+}
+
 /***********************************/
 /* Indvidual game item styling (below) */
 /***********************************/

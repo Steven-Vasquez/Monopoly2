@@ -97,6 +97,7 @@ export function Hub() {
     return (
         <div>
             <h1>Games List</h1>
+            <Button label="Create Game" type="button" style={{ width: "auto" }} onClick={() => setButtonPopup(true)} />
             <div className="games-tabs-container">
                 <Tabs>
                     <TabList>
@@ -118,8 +119,7 @@ export function Hub() {
                             {gamesList.length === 0 ? (
                                 <div className="empty-games-list">
                                     <li>No games available. Create a new game or refresh the page.</li>
-                                    <Button label="Create Game" type="button" style={{ width: "auto" }} onClick={''} />
-                                    <li>(Popup window appears)</li>
+                                    <Button label="Create Game" type="button" style={{ width: "auto" }} onClick={() => setButtonPopup(true)} />
                                 </div>
                             ) : (
                                 <>
@@ -159,8 +159,7 @@ export function Hub() {
                             {myGamesList.length === 0 ? (
                                 <div className="empty-games-list">
                                     <li>No games available. Create a new game or refresh the page.</li>
-                                    <Button label="Create Game" type="button" style={{ width: "auto" }} onClick={''} />
-                                    <li>(Popup window appears)</li>
+                                    <Button label="Create Game" type="button" style={{ width: "auto" }} onClick={() => setButtonPopup(true)} />
                                 </div>
                             ) : (
                                 <>
@@ -195,7 +194,6 @@ export function Hub() {
                     </TabPanel>
                 </Tabs>
             </div >
-            <Button label="Create Game" type="button" style={{ width: "auto" }} onClick={() => setButtonPopup(true)} />
             <CreateGame trigger={buttonPopup} setTrigger={setButtonPopup} />
         </div >
     );

@@ -134,7 +134,7 @@ export function Hub() {
                                                 <li className="game-date"><TimeAgo date={game.created_at} /> </li>
                                                 <li>
                                                     <Link className="join-button" to={''} onClick={() => handleJoinRequest(game.id)}>
-                                                        <Button type="button" style={{ height: "auto", fontSize: "0.9rem", padding: "12px 20px" }} onClick={''}>Join Game</Button>
+                                                        <Button type="button" style={{ height: "auto", fontSize: "0.9rem", padding: "12px 20px" }}>Join Game</Button>
                                                     </Link>
                                                 </li>
                                             </ul>
@@ -175,13 +175,13 @@ export function Hub() {
                                                 {!game.started ?
                                                     <li>
                                                         <Link className="join-button" to={`/lobby/${game.id}`}>
-                                                            <Button type="button" style={{ height: "auto", fontSize: "0.9rem", padding: "12px 20px" }} onClick={''}>Join Game</Button>
+                                                            <Button type="button" style={{ height: "auto", fontSize: "0.9rem", padding: "12px 20px" }}>Join Game</Button>
                                                         </Link>
                                                     </li>
                                                     :
                                                     <li>
                                                         <Link className="join-button" to={`/game/${game.id}`}>
-                                                            <Button type="button" style={{ height: "auto", fontSize: "0.9rem", padding: "12px 20px" }} onClick={''}>Rejoin Game</Button>
+                                                            <Button type="button" style={{ height: "auto", fontSize: "0.9rem", padding: "12px 20px" }}>Rejoin Game</Button>
                                                         </Link>
                                                     </li>
                                                 }

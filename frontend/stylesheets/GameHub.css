@@ -12,7 +12,6 @@
     list-style: none;
 }
 
-.game,
 .game-info-labels,
 .game-info {
     padding: 15px;
@@ -22,8 +21,6 @@
 .game-info-labels {
     font-weight: bold;
 }
-
-
 
 /* Styling for individual game item */
 .game {
@@ -37,6 +34,13 @@
     margin: 0 auto; /* Center the container */
 }
 
+.game-type {
+    margin-top: 0.35rem;
+}
+
+.empty-games-list {
+    margin-top: 1rem;
+}
 
 /***********************************/
 /* Indvidual game item styling (below) */
@@ -44,24 +48,23 @@
 
 /* Styling for join button */
 .join-button {
-    
-    text-decoration: none;
+    /* text-decoration: none;
     color: #fff;
     background-color: #007bff;
     border: none;
     padding: 5px 10px;
     cursor: pointer;
     transition: background-color 0.2s ease-in-out;
-    font-size: 14px;
+    font-size: 14px; */
 }
 
 .join-button:hover {
-    background-color: #0056b3;
+    /* background-color: #0056b3; */
 }
 
 /* Styling for time ago span */
 .game-date span {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     color: #777;
 }
 
@@ -71,8 +74,8 @@
     row-gap: 1.5rem;
     align-items: center;
     height: 100%;
-
 }
+
 
 /***********************************/
 /* Custom react-tabs styling (below) */

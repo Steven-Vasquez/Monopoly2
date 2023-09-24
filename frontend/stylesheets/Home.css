@@ -21,6 +21,7 @@
 }
 
 #title-section {
+    margin-top: var(--nav-height);
     height: 80vh;
     background-color: var(--background);
 }

@@ -7,11 +7,27 @@
     border: none;
     padding: 16px 24px; /* Adjust padding as needed */
     cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
+    transition: background-color 0.2s ease-in-out, border 0.2s ease-in-out, color 0.2s ease-in-out;
     font-size: 1rem;
     font-family: var(--body-font);
     line-height: 1;
     font-weight: 600;
+}
+
+.button.primary {
+    background-color: var(--accent);
+}
+
+.button.secondary {
+    background-color: transparent;
+    border: 3px solid var(--accent);
+    color: var(--accent);
+    box-sizing: border-box;
+} 
+
+.button.secondary:hover {
+    border: 3px solid var(--accent-dark);
+    color: #fff;
 }
 
 .button:hover {

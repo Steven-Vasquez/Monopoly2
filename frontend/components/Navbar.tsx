@@ -1,9 +1,13 @@
 import { Link } from 'react-router-dom';
 import axiosInstance from '../../backend/axiosInstance.ts';
 import '../stylesheets/Navbar.css';
+import { useState } from 'react';
+import { Button } from './Button.tsx';
 
 function NavBar(props: any) {
     const { loggedIn, /*username*/ } = props;
+
+    const [scrollPos, setScrollPos] = useState(0);
 
     const handleLogoutRequest = () => {
         axiosInstance.get("/logout")
@@ -16,6 +20,10 @@ function NavBar(props: any) {
             });
     }
 
+    const handleScroll = () => { 
+        setScrollPos(window.scrollY);
+      };
+
     return (
         <div className='navbar'>
             <ul id='navbar-list'>
@@ -26,8 +34,10 @@ function NavBar(props: any) {
                 ) : (
                     <li><Link to="/login">Login</Link></li>
                 )}
-                <li><Link to="/">Home</Link></li>
-                <li><Link to="/hub">Games</Link></li>
+                <Button width="auto" variant='primary'>Home</Button>
+                <Button width="auto" variant='secondary'>Games</Button>
+                {/* <li><Link to="/">Home</Link></li>
+                <li><Link to="/hub">Games</Link></li> */}
             </ul>
         </div>
     )

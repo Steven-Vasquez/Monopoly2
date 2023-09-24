@@ -1,12 +1,13 @@
 .navbar {
     width: 100%;
+    padding: 0px 32px;
     height: var(--nav-height);
     background-color: var(--background-dark);
     z-index: 100;
     position: fixed;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     box-sizing: border-box;
 }
 
@@ -16,4 +17,11 @@
     margin: 0;
     gap: 20px;
     list-style-type: none;
+}
+
+#nav-left {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 32px;
 }

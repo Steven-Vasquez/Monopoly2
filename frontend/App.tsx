@@ -4,7 +4,7 @@ import './App.css'
 
 import NavBar from './components/Navbar.tsx';
 
-import Register from './pages/Register.tsx'
+import Register from './pages/Signup.tsx'
 import Login from './pages/Login.tsx'
 import Home from './pages/Home.tsx';
 import Lobby from './pages/Lobby.tsx';
@@ -60,7 +60,7 @@ function App() {
         <Routes>
         <Route path="*" element={<Navigate to="/" />} />
           <Route path="/" element={<Home loggedIn={loggedIn}/>} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/signup" element={<Register />} />
           <Route path="/login" element={<Login />} />
           {loggedIn ? (
             <>

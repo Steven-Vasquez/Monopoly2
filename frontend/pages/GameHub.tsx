@@ -97,7 +97,7 @@ export function Hub() {
     return (
         <div>
             <h1>Games List</h1>
-            <Button label="Create Game" type="button" style={{ width: "auto" }} onClick={() => setButtonPopup(true)} />
+            <Button type="button" style={{ width: "auto" }} onClick={() => setButtonPopup(true)} >Create Game</Button>
             <div className="games-tabs-container">
                 <Tabs>
                     <TabList>
@@ -119,7 +119,7 @@ export function Hub() {
                             {gamesList.length === 0 ? (
                                 <div className="empty-games-list">
                                     <li>No games available. Create a new game or refresh the page.</li>
-                                    <Button label="Create Game" type="button" style={{ width: "auto" }} onClick={() => setButtonPopup(true)} />
+                                    <Button type="button" style={{ width: "auto" }} onClick={() => setButtonPopup(true)}>Create Game</Button>
                                 </div>
                             ) : (
                                 <>
@@ -134,7 +134,7 @@ export function Hub() {
                                                 <li className="game-date"><TimeAgo date={game.created_at} /> </li>
                                                 <li>
                                                     <Link className="join-button" to={''} onClick={() => handleJoinRequest(game.id)}>
-                                                        <Button label="Join Game" type="button" style={{ height: "auto", fontSize: "0.9rem", padding: "12px 20px" }} onClick={''} />
+                                                        <Button type="button" style={{ height: "auto", fontSize: "0.9rem", padding: "12px 20px" }} onClick={''}>Join Game</Button>
                                                     </Link>
                                                 </li>
                                             </ul>
@@ -159,7 +159,7 @@ export function Hub() {
                             {myGamesList.length === 0 ? (
                                 <div className="empty-games-list">
                                     <li>No games available. Create a new game or refresh the page.</li>
-                                    <Button label="Create Game" type="button" style={{ width: "auto" }} onClick={() => setButtonPopup(true)} />
+                                    <Button type="button" style={{ width: "auto" }} onClick={() => setButtonPopup(true)}>Create Game</Button>
                                 </div>
                             ) : (
                                 <>
@@ -175,13 +175,13 @@ export function Hub() {
                                                 {!game.started ?
                                                     <li>
                                                         <Link className="join-button" to={`/lobby/${game.id}`}>
-                                                            <Button label="Join Game" type="button" style={{ height: "auto", fontSize: "0.9rem", padding: "12px 20px" }} onClick={''} />
+                                                            <Button type="button" style={{ height: "auto", fontSize: "0.9rem", padding: "12px 20px" }} onClick={''}>Join Game</Button>
                                                         </Link>
                                                     </li>
                                                     :
                                                     <li>
                                                         <Link className="join-button" to={`/game/${game.id}`}>
-                                                            <Button label="Rejoin Game" type="button" style={{ height: "auto", fontSize: "0.9rem", padding: "12px 20px" }} onClick={''} />
+                                                            <Button type="button" style={{ height: "auto", fontSize: "0.9rem", padding: "12px 20px" }} onClick={''}>Rejoin Game</Button>
                                                         </Link>
                                                     </li>
                                                 }

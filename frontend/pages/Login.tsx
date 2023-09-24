@@ -58,7 +58,7 @@ function Login() {
             <div className="form-page-container">
                 <h1>MONOPOLY</h1>
                 <div className="form-container">
-                    <h2>Sign In</h2>
+                    <h2>Log In</h2>
                     {errorMessage && <div className="error-msg"><p>Error: {errorMessage}</p></div>}
                     <form onSubmit={handleSubmit}>
                         <TextField
@@ -80,7 +80,7 @@ function Login() {
                             onChange={(e) => setPassword(e.target.value)}>
                         </TextField>
                         <div className="form-button-container">
-                            <Button label="Login" type="submit" style={{ width: "100%" }} onClick={''} />
+                            <Button type="submit" style={{ width: "100%" }}>Log In</Button>
                         </div>
                     </form>
                     <div className="account-action-links">

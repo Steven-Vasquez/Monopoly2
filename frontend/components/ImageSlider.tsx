@@ -88,7 +88,7 @@ const ImageSlider = ({ slides }: any) => {
                     {slides.map((slide: {url: string, description: string}, index: Number) => (
                         <div className="slide" id={"slide-" + index.toString()}>
                             <img className="slide-image" src={slide.url} alt={index.toString()} />
-                            <div className="slide-text">{slide.description}{index.toString()}</div>
+                            <div className="slide-text">{slide.description}</div>
                         </div>
                     ))}
                 </div>

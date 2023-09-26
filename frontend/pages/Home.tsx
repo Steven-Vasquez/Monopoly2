@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "../components/Button.tsx";
-//import ImageSlider from "../components/ImageSlider.tsx"
+import ImageSlider from "../components/ImageSlider.tsx"
 import { AnimatedLogo } from "../components/AnimatedLogo.tsx";
 import "../stylesheets/Home.css";
 

@@ -1,11 +1,24 @@
-import "../stylesheets/AnimatedLogo.css"
+import "../stylesheets/Logo.css"
 
 import { Link } from 'react-router-dom';
 
-export function AnimatedLogo(): JSX.Element {
+interface LogoProps {
+    animated?: boolean,
+    size: number,
+    spacing: number,
+}
+
+export function Logo({animated, size, spacing, ...props}: LogoProps): JSX.Element {
     return (
         <>
-        <Link className="monopoly-title" to="/">
+        <Link 
+            className={"monopoly-title " + (animated ? "animated" : "")} 
+            to="/" 
+            style={
+                {
+                    fontSize: size, 
+                    gap: spacing
+                }} >
             <span className="mt-letter" id="m1">M</span>
             <span className="mt-letter" id="o2">O</span>
             <span className="mt-letter" id="n3">N</span>

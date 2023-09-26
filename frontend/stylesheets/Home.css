@@ -21,11 +21,9 @@
 }
 
 #title-section {
-    
-}
-
-#title-section {
+    margin-top: var(--nav-height);
     height: 80vh;
+    background-color: var(--background);
 }
 
 #title-section #tagline {
@@ -46,6 +44,7 @@
 
 #features-section {
     height: 25%;
+    background-color: var(--background);
 }
 
 #slideshow-container {

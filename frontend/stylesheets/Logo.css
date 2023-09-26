@@ -9,7 +9,7 @@
     gap: 16px;
   }
   
-  .monopoly-title span {
+  .monopoly-title.animated span {
     display: inline-block;
     animation: 5s ease-out infinite letter-jump;
   }

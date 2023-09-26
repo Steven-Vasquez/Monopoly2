@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { TextField } from '../components/TextField.tsx';
 import "../stylesheets/AccountsForms.css"
-import axiosInstance from '../../backend/axiosInstance.ts'; 
+import axiosInstance from '../../backend/axiosInstance.ts';
 import { Button } from '../components/Button.tsx';
 
 function Login() {
@@ -58,12 +58,12 @@ function Login() {
             <div className="form-page-container">
                 <h1>MONOPOLY</h1>
                 <div className="form-container">
-                    <h2>Sign In</h2>
+                    <h2>Log In</h2>
                     {errorMessage && <div className="error-msg"><p>Error: {errorMessage}</p></div>}
                     <form onSubmit={handleSubmit}>
                         <TextField
                             label="Email or Username"
-                            type="identifier"
+                            type="text"
                             id="identifier"
                             name="identifier"
                             required
@@ -80,11 +80,11 @@ function Login() {
                             onChange={(e) => setPassword(e.target.value)}>
                         </TextField>
                         <div className="form-button-container">
-                            <Button label="Login" width="100%"></Button>
+                            <Button type="submit" style={{ width: "100%" }}>Log In</Button>
                         </div>
                     </form>
                     <div className="account-action-links">
-                        <p><Link to="/register">Don't have an account?</Link></p>
+                        <p><Link to="/signup">Don't have an account?</Link></p>
                     </div>
                 </div>
             </div>

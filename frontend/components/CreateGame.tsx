@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Button } from '../components/Button.tsx';
+import "../stylesheets/CreateGame.css"
 import axiosInstance from '../../backend/axiosInstance.ts';
 
-function CreateGame() {
+function CreateGame(props: any) {
 
     const [roomName, setRoomName] = useState('');
     const [isPrivate, setIsPrivate] = useState(false);
@@ -33,42 +35,50 @@ function CreateGame() {
             })
     }
 
-    return (
-        <div>
-            <form onSubmit={handleSubmit}>
-                <h1>Create Game</h1>
-                <label>
-                    Room Name:
-                    <input
-                        type="text"
-                        value={roomName}
-                        onChange={(e) => setRoomName(e.target.value)} />
-                </label>
+    return (props.trigger) ? (
+        <div className="popup-container">
+            <div className="popup-content">
+                <form onSubmit={handleSubmit}>
+                    <h2>Create Game</h2>
+                    <label>
+                        Room Name:
+                        <input
+                            type="text"
+                            value={roomName}
+                            required
+                            onChange={(e) => setRoomName(e.target.value)} />
+                    </label>
 
-                <br />
+                    <br />
 
-                <label>
-                    Private:
-                    <input
-                        type="checkbox"
-                        checked={isPrivate}
-                        onChange={() => setIsPrivate(!isPrivate)} />
-                </label>
+                    <label>
+                        Private:
+                        <input
+                            type="checkbox"
+                            checked={isPrivate}
+                            onChange={() => setIsPrivate(!isPrivate)} />
+                    </label>
 
-                {isPrivate && (
-                    <div>
-                        <label>
-                            Password:
-                            <input type="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)} />
-                        </label>
+                    {isPrivate && (
+                        <div>
+                            <label>
+                                Password:
+                                <input type="password"
+                                    value={password}
+                                    required
+                                    onChange={(e) => setPassword(e.target.value)} />
+                            </label>
+                        </div>
+                    )}
+                    {/* <button type="submit">Create</button> */}
+                    <div className="form-button-container">
+                        <Button type="submit" style={{ width: "100%" }}>Create</Button>
                     </div>
-                )}
-                <button type="submit">Create</button>
-            </form>
+                </form>
+                <button className="close-btn" onClick={() => props.setTrigger(false)}>Close</button>
+            </div>
         </div>
-    );
+    ) : "";
 }
 
 export default CreateGame;

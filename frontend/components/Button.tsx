@@ -1,32 +1,35 @@
 import { InputHTMLAttributes } from "react";
 import '../stylesheets/Button.css'
 
-// type TextFieldProps = {
-//     inputType?: HTMLInputTypeAttribute;
-//     value?: string;
-//     error?: boolean;
-//     disabled?: boolean;
-//     required?: boolean;
-//     placeholder?: string;
-// }
-
-interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
-    label: string;
-    width: string;
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+    variant?: "primary" | "secondary"
 }
 
-const handleClick = () => {
-    console.log("Button clicked!");
-    // implementation details
-};
-
-export function Button({ label, width }: TextFieldProps): JSX.Element {
-    return (
-        <>
-            <button className={"button"} onClick={handleClick} style={{width}} type="submit">
-                {label}
-            </button>
-        </>
-    );
+export function Button({variant, ...props }: ButtonProps): JSX.Element {
+    if (variant == "primary") {
+        return (
+            <>
+                <button className={"button primary"} {...props}>
+                    {props.children}
+                </button>
+            </>
+        );
+    } else if (variant == "secondary") {
+        return (
+            <>
+                <button className={"button secondary"} {...props}>
+                    {props.children}
+                </button>
+            </>
+        );
+    } else {
+        return (
+            <>
+                <button className={"button"} {...props}>
+                    {props.children}
+                </button>
+            </>
+        );
+    }
 }
 

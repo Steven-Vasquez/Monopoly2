@@ -21,67 +21,72 @@ function VoiceChatRoom() {
     const [user_id, setUser_id] = useState(0);
 
     // Connecting to the socket room of the lobby for lobby-wide event updates
-    //const { lobbyID } = useParams<{ lobbyID: string }>();
+    const { lobbyID } = useParams<{ lobbyID: string }>();
     const socket = io("http://localhost:3001");
+    socket.emit("joinVoice", lobbyID); // Joins voice chat socket room (for example: voiceChat:1)
 
 
     socket.on("offer", (data: any) => {
-        console.log("Received an offer from user:", data.from);
+        if (inVoiceChat) {
+            console.log("Received an offer from user:", data.from);
 
-        const peerConnection = createPeerConnection();
+            const peerConnection = createPeerConnection();
 
-        // Assuming you have a participant with the given `data.from` ID in your participants state.
-        const senderParticipant = participants.find((participant) => participant.id === data.from);
+            // Assuming you have a participant with the given `data.from` ID in your participants state.
+            const senderParticipant = participants.find((participant) => participant.id === data.from);
 
-        if (senderParticipant) {
-            const senderStream = senderParticipant.audioStream;
+            if (senderParticipant) {
+                const senderStream = senderParticipant.audioStream;
 
-            // Add the sender's audio stream to the peer connection
-            senderStream.getTracks().forEach((track) => {
-                peerConnection.addTrack(track, senderStream);
-            });
-
-            // Create an answer
-            createAnswer(peerConnection)
-                .then((answer) => {
-                    // Set the local description of the peer connection
-                    return peerConnection.setLocalDescription(answer);
-                })
-                .then(() => {
-                    // Send the answer back to the sender
-                    socket.emit("answer", {
-                        to: data.from,
-                        from: user_id,
-                        answer: peerConnection.localDescription,
-                    });
-                })
-                .catch((error) => {
-                    console.error("Error creating answer:", error);
+                // Add the sender's audio stream to the peer connection
+                senderStream.getTracks().forEach((track) => {
+                    peerConnection.addTrack(track, senderStream);
                 });
-        } else {
-            console.warn("Sender participant not found.");
+
+                // Create an answer
+                createAnswer(peerConnection)
+                    .then((answer) => {
+                        // Set the local description of the peer connection
+                        return peerConnection.setLocalDescription(answer);
+                    })
+                    .then(() => {
+                        // Send the answer back to the sender
+                        socket.emit("answer", {
+                            to: data.from,
+                            from: user_id,
+                            answer: peerConnection.localDescription,
+                        });
+                    })
+                    .catch((error) => {
+                        console.error("Error creating answer:", error);
+                    });
+            } else {
+                console.warn("Sender participant not found.");
+            }
         }
     });
 
     socket.on("answer", (data: any) => {
-        console.log("Received an answer from user:", data.from);
+        if (inVoiceChat) {
+            console.log("Received an answer from user:", data.from);
 
-        // Find the receiver's participant based on the data.from ID
-        const receiverParticipant = participants.find((participant) => participant.id === data.from);
+            // Find the receiver's participant based on the data.from ID
+            const receiverParticipant = participants.find((participant) => participant.id === data.from);
 
-        if (receiverParticipant) {
-            const peerConnection = receiverParticipant.peerConnection;
+            if (receiverParticipant) {
+                const peerConnection = receiverParticipant.peerConnection;
 
-            // Set the remote description of the peer connection with the received answer
-            peerConnection.setRemoteDescription(data.answer)
-                .then(() => {
-                    console.log("Remote description set successfully.");
-                })
-                .catch((error) => {
-                    console.error("Error setting remote description:", error);
-                });
-        } else {
-            console.warn("Receiver participant not found.");
+                // Set the remote description of the peer connection with the received answer
+                peerConnection.setRemoteDescription(data.answer)
+                    .then(() => {
+                        console.log("Remote description set successfully.");
+                    })
+                    .catch((error) => {
+                        console.error("Error setting remote description:", error);
+                    });
+            } else {
+                console.warn("Receiver participant not found.");
+            }
         }
     });
 
@@ -108,11 +113,12 @@ function VoiceChatRoom() {
 
             // Add the new participant to the list
             setParticipants([...participants, { id: participantId, audioStream, peerConnection }]);
-
+            
             // Send an offer to all other participants
             participants.forEach((participant) => {
                 if (participant.id !== participantId) {
                     createOffer(peerConnection).then((offer) => {
+                        console.log("Sending offer to:", participant.id + ": " + offer);
                         socket.emit("offer", {
                             to: participant.id,
                             from: user_id,
@@ -161,6 +167,13 @@ function VoiceChatRoom() {
     const toggleMute = () => {
         setMuted(!muted);
     };
+
+    // Disconnect from socket when component unmounts
+    useEffect(() => {
+        return () => {
+            socket.disconnect();
+        }
+    }, [socket]);
 
     return (
         <div className="voice-chat-room">

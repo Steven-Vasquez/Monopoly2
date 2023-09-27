@@ -3,9 +3,6 @@ import { useParams } from "react-router-dom";
 import axiosInstance from "../../../backend/axiosInstance.ts";
 import io from "socket.io-client";
 
-
-
-//import Participant from "./Participant.tsx"; // Import your Participant component
 import { createPeerConnection, createOffer, createAnswer } from "./utility/webRTCUtils.ts";
 
 

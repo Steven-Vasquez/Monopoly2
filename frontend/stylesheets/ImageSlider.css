@@ -65,6 +65,7 @@
     scroll-behavior: smooth; 
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
+    pointer-events: none;
 }
 
 .slides-container::-webkit-scrollbar {
@@ -110,6 +111,7 @@
     font-weight: 300;
     text-align: center;
     font-family: var(--body-font);
+    user-select: contain;
 }
 
 .dots {

@@ -21,9 +21,9 @@ function NavBar(props: any) {
             });
     }
 
-    const handleScroll = () => { 
+    const handleScroll = () => {
         setScrollPos(window.scrollY);
-      };
+    };
 
     return (
         <div className='navbar'>
@@ -31,7 +31,7 @@ function NavBar(props: any) {
                 <Logo size={32} spacing={4} />
                 {loggedIn ? (<Link to={'/hub'}>Games</Link>) : (<></>)}
             </div>
-            
+
             <ul id='nav-right'>
                 {loggedIn ? (
                     <li onClick={handleLogoutRequest}>

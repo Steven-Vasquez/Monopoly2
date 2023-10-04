@@ -26,15 +26,18 @@ const initSockets = (app: Express, sessionMiddleware: any): SocketServer => {
     /**************  Game/Lobby/Chat rooms **************/
     // When a user joins a game lobby/game room
     socket.on("join", (game_id: string) => {
-      console.log(socket.id + " is joining room: " + game_id);
+      //console.log(socket.id + " is joining room: " + game_id);
       socket.join(game_id);
-      console.log("All socket rooms connected:");
-      console.log(io.sockets.adapter.rooms);
+      //console.log("All socket rooms connected:");
+      //console.log(io.sockets.adapter.rooms);
     });
 
 
     /**************  Voice chat rooms **************/
-
+    socket.on("joinVoice", (game_id: string) => {
+      socket.join("voiceChat:" + game_id); // ex: voiceChat:1
+    });
+    /*
     socket.on("joinVoiceChat", (game_id: string, data: any) => {
 
       socket.join("voiceChat:" + game_id); // ex: voiceChat:1
@@ -52,6 +55,7 @@ const initSockets = (app: Express, sessionMiddleware: any): SocketServer => {
         socket.to(data.to).emit("callAccepted", data.signal);
       });
     });
+    */
     /**********************************************/
 
     socket.on("disconnect", () => {

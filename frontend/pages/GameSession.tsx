@@ -1,23 +1,22 @@
-import { useNavigate, useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import io from "socket.io-client";
 import axiosInstance from '../../backend/axiosInstance.ts';
 import { GAME_JOINED } from "../../shared/constants.ts";
 
-import ChatBox from '../components/ChatBox.tsx';
-import VoiceChatRoom from '../components/voice/VoiceChatRoom.tsx';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import { Button } from '../components/Button.tsx';
 
-function Lobby() {
+import { Board } from '../components/game/Board.tsx';
+import VoiceChatRoom from '../components/voice/VoiceChatRoom.tsx';
+import ChatBox from '../components/ChatBox.tsx';
+
+import "../stylesheets/GameSession.css";
+
+function GameSession() {
     const navigate = useNavigate();
     const { lobbyID } = useParams<{ lobbyID: string }>();
-
-    
-    // TODO: Check if user is player 1, and if so, show the start game button (must be host)
-    // Otherwise, user must wait for player 1 to start the game
-    const [isPlayerOne, setIsPlayerOne] = useState(true);  // NOTE: Set to true for testing purposes
 
     /*************************************************************
      * User authentication (route protection for users not in the game)  
@@ -45,7 +44,6 @@ function Lobby() {
     useEffect(() => {
         inGameCheck();
     }, [lobbyID]);
-
 
     /*************************************************************
      * Game Lobby
@@ -88,34 +86,32 @@ function Lobby() {
 
     return (
         <div>
-            <h1>Lobby #{lobbyID}</h1>
-            <ul>
-                {playerUsernames.map(username => (
-                    <li key={username}>{username}</li>
-                ))}
-            </ul>
-
-            <VoiceChatRoom />
-            <ChatBox game_id={lobbyID} socket={socket} />
-            <>
-                {isPlayerOne ? (
-                    <div className="action-links">
-                        <p>Hey, everyone's waiting on you!</p>
-                        <Link className="button-link" to={`/game/${lobbyID}`}>
-                            <Button style={{ width: "auto" }}>Start Game</Button>
-                        </Link>
+            <div className="game-session-container">
+                <div className="game-session">
+                    <h1>Game #{lobbyID}</h1>
+                    <div id="board-container">
+                        <Board></Board>
+                        <div id="player-pieces">
+                            <div className="player" id="p1"></div>
+                            <div className="player" id="p2"></div>
+                            <div className="player" id="p3"></div>
+                        </div></div>
+                    <div id="users-list">
+                        <template id="user-item">
+                            <div className="user"></div>
+                        </template>
                     </div>
-                ) : (
-                    <div className="action-links">
-                        <p>Waiting on Host to start the game...</p>
-                        <Link className="button-link" to={`/hub`}>
-                            <Button style={{ width: "auto" }}>Leave Game</Button>
-                        </Link>
+                    <VoiceChatRoom />
+                    <ChatBox game_id={lobbyID} socket={socket} />
+                    <div className="game-options-div">
+                        {/* <form action="/api/games/<%= id %>/endGame" method="POST"> */}
+                        <button type="submit" className="ms-btn ms-action" value="End Game">End Game</button>
+                        {/* </form> */}
                     </div>
-                )}
-            </>
-        </div>
-    )
+                </div>
+            </div>
+        </div >
+    );
 }
 
-export default Lobby;
+export default GameSession;

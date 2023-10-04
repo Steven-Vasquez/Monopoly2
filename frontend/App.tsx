@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import axiosInstance from '../backend/axiosInstance.ts';
 import './App.css'
 
 import NavBar from './components/Navbar.tsx';
@@ -9,8 +10,7 @@ import Login from './pages/Login.tsx'
 import Home from './pages/Home.tsx';
 import Lobby from './pages/Lobby.tsx';
 import GameHub from './pages/GameHub.tsx';
-
-import axiosInstance from '../backend/axiosInstance.ts';
+import GameSession from './pages/GameSession.tsx';
 
 
 function App() {
@@ -47,8 +47,8 @@ function App() {
       </div>
     );
   }
-  
-  if(username !== "") {
+
+  if (username !== "") {
     console.log("The username in App.js is: ");
     console.log(username);
   }
@@ -58,14 +58,15 @@ function App() {
       <Router>
         <NavBar loggedIn={loggedIn} />
         <Routes>
-        <Route path="*" element={<Navigate to="/" />} />
-          <Route path="/" element={<Home loggedIn={loggedIn}/>} />
+          <Route path="*" element={<Navigate to="/" />} />
+          <Route path="/" element={<Home loggedIn={loggedIn} />} />
           <Route path="/signup" element={<Register />} />
           <Route path="/login" element={<Login />} />
           {loggedIn ? (
             <>
               <Route path="/hub" element={<GameHub />} />
               <Route path="/lobby/:lobbyID" element={<Lobby />} />
+              <Route path="/game/:lobbyID" element={<GameSession />} />
             </>
           ) : null}
         </Routes>

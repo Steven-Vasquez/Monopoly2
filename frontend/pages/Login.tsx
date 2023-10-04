@@ -63,7 +63,7 @@ function Login() {
                     <form onSubmit={handleSubmit}>
                         <TextField
                             label="Email or Username"
-                            type="identifier"
+                            type="text"
                             id="identifier"
                             name="identifier"
                             required

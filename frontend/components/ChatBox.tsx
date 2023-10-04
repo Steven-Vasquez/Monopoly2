@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import axiosInstance from "../../backend/axiosInstance.ts";
 import { Socket } from "socket.io-client";
 
-import {CHAT_MESSAGE_RECEIVED} from "../../shared/constants.ts"
-
+import { CHAT_MESSAGE_RECEIVED } from "../../shared/constants.ts"
+import "../stylesheets/Chat.css"
 
 interface ChatMessage { // Interface to define the shape of the ChatMessage data returned from the API call to get list of chat messages
     username: string;
@@ -58,22 +58,31 @@ function ChatBox({ game_id, socket }: { game_id: string, socket: Socket }) {
     return (
         <div>
             <h1>Chat</h1>
-            <div>
-                <ul>
-                    {chatMessages.map((message: { username: string, message: string, timestamp: string }) => (
-                        <li key={message.timestamp}>
-                            <span>{message.username}: </span>
-                            <span>{message.message}</span>
-                        </li>
-                    ))}
-                </ul>
+            <div className="chat-container">
+                <div className="messages">
+                    <div className="message-line">
+                        <div className="message">
+                            <ul>
+                                {chatMessages.map((message: { username: string, message: string, timestamp: string }) => (
+                                    <li className="timestamp" key={message.timestamp}>
+                                        <span className="username">{message.username}: </span>
+                                        <span className="body">{message.message}</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div>
                 <form onSubmit={sendMessage}>
-                    <input
-                        type="text"
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)} />
+                    <label className="input-textfield">
+                        <input
+                            type="text"
+                            value={message}
+                            placeholder="Message..."
+                            onChange={(e) => setMessage(e.target.value)} />
+                    </label>
                     <button type="submit">Send</button>
                 </form>
             </div>

@@ -11,6 +11,7 @@ import Home from './pages/Home.tsx';
 import Lobby from './pages/Lobby.tsx';
 import GameHub from './pages/GameHub.tsx';
 import GameSession from './pages/GameSession.tsx';
+import Test from './pages/BoardTest.tsx';
 
 
 function App() {
@@ -56,12 +57,12 @@ function App() {
   return (
     <>
       <Router>
-        <NavBar loggedIn={loggedIn} />
         <Routes>
-          <Route path="*" element={<Navigate to="/" />} />
-          <Route path="/" element={<Home loggedIn={loggedIn} />} />
-          <Route path="/signup" element={<Register />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="*" element={<><NavBar loggedIn={loggedIn} /><Navigate to="/" /></>} />
+          <Route path="/" element={<><NavBar loggedIn={loggedIn} /><Home loggedIn={loggedIn} /></>} />
+          <Route path="/signup" element={<><NavBar loggedIn={loggedIn} /><Register /></>} />
+          <Route path="/login" element={<><NavBar loggedIn={loggedIn} /><Login /></>} />
+          <Route path="/test" element={<><Test /></>} />
           {loggedIn ? (
             <>
               <Route path="/hub" element={<GameHub />} />

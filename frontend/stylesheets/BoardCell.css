@@ -1,0 +1,31 @@
+.brown {
+	background-color: var(--brown);
+}
+
+.sky {
+	background-color: var(--sky);
+}
+
+.pink {
+	background-color: var(--pink);
+}
+
+.orange {
+	background-color: var(--orange);
+}
+
+.red {
+	background-color: var(--red);
+}
+
+.yellow {
+	background-color: var(--yellow);
+}
+
+.green {
+	background-color: var(--green);
+}
+
+.blue {
+	background-color: var(--blue);
+}

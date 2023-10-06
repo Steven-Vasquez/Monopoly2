@@ -17,6 +17,25 @@
   --error-red: #ff0000;
 
   --nav-height: 72px;
+
+  --border-color: black;
+	--brown: rgb(196 141 98);
+	--sky: rgb(139 209 212);
+	--pink: rgb(239 150 197);
+	--orange: rgb(240 150 107);
+	--red: rgb(255 111 97);
+	--yellow: rgb(250 216 98);
+	--green: rgb(121 200 105);
+	--blue: rgb(110 148 204);
+	--jail-color: rgb(189, 100, 52);
+	--space-background: rgb(246, 233, 198);
+	--space-background-hover: rgb(217, 203, 161);
+	--center-color: rgb(255, 248, 229);
+
+	--chance-card: #efa330;
+	--chance-card-hover: #c68e39;
+	--community-chest-card: #41b7e5;
+	--community-chest-card-hover: #3da0c7;
 }
 
 

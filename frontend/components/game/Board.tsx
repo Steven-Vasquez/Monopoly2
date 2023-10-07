@@ -2,15 +2,39 @@ import { useState, useEffect } from "react";
 import "../../stylesheets/Board.css"
 import { BoardCell } from "./BoardCell.tsx";
 
-import { Children, cloneElement } from "react";
+interface BoardProps {
+    center?: React.ReactElement;
+    bottom?: React.ReactElement;
+    left?: React.ReactElement;
+    top?: React.ReactElement;
+    right?: React.ReactElement;
+    topLeft?: React.ReactElement;
+    topRight?: React.ReactElement;
+    bottomLeft?: React.ReactElement;
+    bottomRight?: React.ReactElement;
+    height: number;
+    width: number;
+}
 
 
-export function Board({...props}) {
-    let cells = Children.toArray(props.children);;
-    console.log(cells);
+export function Board(props : BoardProps) {
     return (
-        <div className="board">
-            {props.children}
+        <div className="board" style={{
+            height: props.height,
+            width: props.width
+        }}>
+            {/* <p>{props.width} x {props.height}</p> */}
+            <div className="top-left">{props.topLeft}</div>
+            <div className="top">{props.top}</div>
+            <div className="top-right">{props.topRight}</div>
+            <div className="left">
+                {/* {props.left} */}
+                </div>
+            <div className="center">{props.center}</div>
+            <div className="right">{props.right}</div>
+            <div className="bottom-left">{props.bottomLeft}</div>
+            <div className="bottom">{props.bottom}</div>
+            <div className="bottom-right">{props.bottomRight}</div>
         </div>
         // <div>
         //     <div className="board" id="board-main">

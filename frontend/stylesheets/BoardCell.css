@@ -29,3 +29,28 @@
 .blue {
 	background-color: var(--blue);
 }
+
+.board-cell {
+	position: relative;
+}
+
+.cell-contents {
+	position: absolute;
+	top: 0;
+	left: 0;
+	overflow: hidden;
+}
+
+.cell-contents.to-right {
+	transform: rotate(90deg) translateY(-100%);
+	transform-origin: 0% 0%;
+}
+
+.cell-contents.to-left {
+	transform: rotate(-90deg) translateY(100%) translateX(50%);
+	transform-origin: 0% 100%;
+}
+
+.cell-contents.to-bottom {
+	transform: rotate(180deg)
+}

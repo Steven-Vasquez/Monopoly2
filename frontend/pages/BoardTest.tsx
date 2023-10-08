@@ -26,57 +26,31 @@ export default function Test() {
             <Board
                 width={Math.min(dim.width, dim.height)}
                 height={Math.min(dim.width, dim.height)}
-                bottom={
-                    <>
-                    <BoardCell type="property" price={500} color="blue" title="Kentucky Ave."/>
-                    <BoardCell type="property" price={500} color="blue" title="Carolina Ave."/>
-                    <BoardCell type="property" price={500} color="blue" title="Virginia Ave."/>
-                    <BoardCell type="property" price={500} color="blue" title="Iowa Ave."/>
-                    <BoardCell type="property" price={500} color="blue" title="Arizona Ave."/>
-                    <BoardCell type="property" price={500} color="blue" title="Oregon Ave."/>
-                    <BoardCell type="property" price={500} color="blue" title="Colorado Ave."/>
-                    <BoardCell type="property" price={500} color="blue" title="Maine Ave."/>
-                    <BoardCell type="property" price={500} color="blue" title="Montana Ave."/>
-                    </>
-                }
                 left={
-                    <>
-                    <BoardCell type="property" price={500} color="blue" title="Kentucky Ave."/>
-                    <BoardCell type="property" price={500} color="blue" title="Carolina Ave."/>
-                    <BoardCell type="property" price={500} color="blue" title="Virginia Ave."/>
-                    <BoardCell type="property" price={500} color="blue" title="Iowa Ave."/>
-                    <BoardCell type="property" price={500} color="blue" title="Arizona Ave."/>
-                    <BoardCell type="property" price={500} color="blue" title="Oregon Ave."/>
-                    <BoardCell type="property" price={500} color="blue" title="Colorado Ave."/>
-                    <BoardCell type="property" price={500} color="blue" title="Maine Ave."/>
-                    <BoardCell type="property" price={500} color="blue" title="Montana Ave."/>
-                    </>
-                }
-                top={
-                    <>
-                    <BoardCell type="property" price={500} color="blue" title="Kentucky Ave."/>
-                    <BoardCell type="property" price={500} color="blue" title="Carolina Ave."/>
-                    <BoardCell type="property" price={500} color="blue" title="Virginia Ave."/>
-                    <BoardCell type="property" price={500} color="blue" title="Iowa Ave."/>
-                    <BoardCell type="property" price={500} color="blue" title="Arizona Ave."/>
-                    <BoardCell type="property" price={500} color="blue" title="Oregon Ave."/>
-                    <BoardCell type="property" price={500} color="blue" title="Colorado Ave."/>
-                    <BoardCell type="property" price={500} color="blue" title="Maine Ave."/>
-                    <BoardCell type="property" price={500} color="blue" title="Montana Ave."/>
-                    </>
+                    [
+                        {type: "property", price: 300, color: "brown", title: "Virginia St."},
+                        {type: "property", price: 300, color: "brown", title: "California St."},
+                        {type: "property", price: 300, color: "brown", title: "Nevada St."},
+                        {type: "property", price: 300, color: "brown", title: "Florida St."},
+                        {type: "property", price: 300, color: "brown", title: "Ohio St."},
+                        {type: "property", price: 300, color: "brown", title: "Maine St."},
+                        {type: "property", price: 300, color: "brown", title: "Washington St."},
+                        {type: "property", price: 300, color: "brown", title: "Carolina St."},
+                        {type: "property", price: 300, color: "brown", title: "Colorado St."},
+                    ]
                 }
                 right={
-                    <>
-                    <BoardCell type="property" price={500} color="blue" title="Kentucky Ave."/>
-                    <BoardCell type="property" price={500} color="blue" title="Carolina Ave."/>
-                    <BoardCell type="property" price={500} color="blue" title="Virginia Ave."/>
-                    <BoardCell type="property" price={500} color="blue" title="Iowa Ave."/>
-                    <BoardCell type="property" price={500} color="blue" title="Arizona Ave."/>
-                    <BoardCell type="property" price={500} color="blue" title="Oregon Ave."/>
-                    <BoardCell type="property" price={500} color="blue" title="Colorado Ave."/>
-                    <BoardCell type="property" price={500} color="blue" title="Maine Ave."/>
-                    <BoardCell type="property" price={500} color="blue" title="Montana Ave."/>
-                    </>
+                    [
+                        {type: "property", price: 300, color: "brown", title: "Virginia St."},
+                        {type: "property", price: 300, color: "brown", title: "California St."},
+                        {type: "property", price: 300, color: "brown", title: "Nevada St."},
+                        {type: "property", price: 300, color: "brown", title: "Florida St."},
+                        {type: "property", price: 300, color: "brown", title: "Ohio St."},
+                        {type: "property", price: 300, color: "brown", title: "Maine St."},
+                        {type: "property", price: 300, color: "brown", title: "Washington St."},
+                        {type: "property", price: 300, color: "brown", title: "Carolina St."},
+                        {type: "property", price: 300, color: "brown", title: "Colorado St."},
+                    ]
                 }
             />
         </div>

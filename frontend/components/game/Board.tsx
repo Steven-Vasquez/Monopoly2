@@ -2,16 +2,24 @@ import { useState, useEffect } from "react";
 import "../../stylesheets/Board.css"
 import { BoardCell } from "./BoardCell.tsx";
 
+export type CellProps = {
+    type: "property" | "income-tax" | "chest" | "chance" | "railroad" | "electric-company" | "water-works" | "luxury-tax",
+    price?: number,
+    color?: "brown" | "sky" | "pink" | "orange" | "red" | "yellow" | "green" | "blue", 
+    title?: string,
+    description?: string,
+}
+
 interface BoardProps {
-    center?: React.ReactElement;
-    bottom?: React.ReactElement;
-    left?: React.ReactElement;
-    top?: React.ReactElement;
-    right?: React.ReactElement;
-    topLeft?: React.ReactElement;
-    topRight?: React.ReactElement;
-    bottomLeft?: React.ReactElement;
-    bottomRight?: React.ReactElement;
+    center?: CellProps;
+    bottom?: CellProps[];
+    left: CellProps[];
+    top?: CellProps[];
+    right?: CellProps[];
+    topLeft?: CellProps;
+    topRight?: CellProps;
+    bottomLeft?: CellProps;
+    bottomRight?: CellProps;
     height: number;
     width: number;
 }
@@ -24,17 +32,67 @@ export function Board(props : BoardProps) {
             width: props.width
         }}>
             {/* <p>{props.width} x {props.height}</p> */}
-            <div className="top-left">{props.topLeft}</div>
-            <div className="top">{props.top}</div>
-            <div className="top-right">{props.topRight}</div>
+            <div className="top-left"></div>
+            <div className="top">
+            {
+                props.left.map((e) => {
+                    return <BoardCell 
+                        type={e.type} 
+                        price={e.price} 
+                        color={e.color} 
+                        title={e.title} 
+                        description={e.description}
+                        orientation="to-bottom"
+                    />
+                })
+            }
+            </div>
+            <div className="top-right"></div>
             <div className="left">
-                {/* {props.left} */}
-                </div>
-            <div className="center">{props.center}</div>
-            <div className="right">{props.right}</div>
-            <div className="bottom-left">{props.bottomLeft}</div>
-            <div className="bottom">{props.bottom}</div>
-            <div className="bottom-right">{props.bottomRight}</div>
+                {
+                    props.left.map((e) => {
+                        return <BoardCell 
+                            type={e.type} 
+                            price={e.price} 
+                            color={e.color} 
+                            title={e.title} 
+                            description={e.description}
+                            orientation="to-right"
+                        />
+                    })
+                }
+            </div>
+            <div className="center"></div>
+            <div className="right">
+            {
+                props.left.map((e) => {
+                    return <BoardCell 
+                        type={e.type} 
+                        price={e.price} 
+                        color={e.color} 
+                        title={e.title} 
+                        description={e.description}
+                        orientation="to-left"
+                    />
+                })
+            }
+            </div>
+            <div className="bottom-left"></div>
+            <div className="bottom">
+            {
+                props.left.map((e) => {
+                    return <BoardCell 
+                        type={e.type} 
+                        price={e.price} 
+                        color={e.color} 
+                        title={e.title} 
+                        description={e.description}
+                        orientation="to-top"
+                    />
+                })
+            }
+            </div>
+            <div className="bottom-right"></div>
         </div>
         // <div>
         //     <div className="board" id="board-main">

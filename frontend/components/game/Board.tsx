@@ -12,10 +12,10 @@ export type CellProps = {
 
 interface BoardProps {
     center?: CellProps;
-    bottom?: CellProps[];
+    bottom: CellProps[];
     left: CellProps[];
-    top?: CellProps[];
-    right?: CellProps[];
+    top: CellProps[];
+    right: CellProps[];
     topLeft?: CellProps;
     topRight?: CellProps;
     bottomLeft?: CellProps;
@@ -35,7 +35,7 @@ export function Board(props : BoardProps) {
             <div className="top-left"></div>
             <div className="top">
             {
-                props.left.map((e) => {
+                props.top.map((e) => {
                     return <BoardCell 
                         type={e.type} 
                         price={e.price} 
@@ -65,7 +65,7 @@ export function Board(props : BoardProps) {
             <div className="center"></div>
             <div className="right">
             {
-                props.left.map((e) => {
+                props.right.map((e) => {
                     return <BoardCell 
                         type={e.type} 
                         price={e.price} 
@@ -80,7 +80,7 @@ export function Board(props : BoardProps) {
             <div className="bottom-left"></div>
             <div className="bottom">
             {
-                props.left.map((e) => {
+                props.bottom.map((e) => {
                     return <BoardCell 
                         type={e.type} 
                         price={e.price} 

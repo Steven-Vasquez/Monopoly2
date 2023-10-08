@@ -16,18 +16,33 @@
 	user-select: none;
 }
 
-.board .top,
 .board .bottom {
-	display: grid;
-	grid-template-columns: repeat(9, 1fr);
+	display: flex;
+	width: 100%;
+	flex-direction: row-reverse;
 }
 
-.board .left,
+.board .top {
+	display: flex;
+	width: 100%;
+	flex-direction: row;
+}
+
+.board .left {
+	display: flex;
+	height: 100%;
+	flex-direction: column-reverse;
+}
+
 .board .right {
-	display: grid;
-	grid-template-rows: repeat(9, 1fr);
+	display: flex;
+	height: 100%;
+	flex-direction: column;
 }
 
+
+
+/*TODO: refactor*/
 .board .center {
 	position: relative;
 	display: flex;

@@ -18,19 +18,25 @@ export function BoardCell(props: BoardCellProps) {
     const container = useRef<HTMLDivElement>(null);
     const [dim, setDim] = useState({ width: 0, height: 0 });
     useEffect(() => {
-        if (container.current) {
-            setDim({
-                width: container.current!.getBoundingClientRect().width,
-                height: container.current!.getBoundingClientRect().height,
-            });
-            window.addEventListener('resize', () => {
+        console.log("use effect", container)
+        function resize() {
+
+            if (container.current) {
+                //console.log(container.current!.getBoundingClientRect());
                 setDim({
                     width: container.current!.getBoundingClientRect().width,
                     height: container.current!.getBoundingClientRect().height,
                 });
-            })
+            }
         }
-    }, []);
+        resize();
+        return () => {
+            window.addEventListener('resize', resize)   
+        }
+        // return _ => {
+        //     window.removeEventListener('resize', resize)
+        // }
+    }, [container.current]);
 
 
     if (props.type == "property") {
@@ -45,15 +51,11 @@ export function BoardCell(props: BoardCellProps) {
                         {width: dim.width, height: dim.height}
                     }
                 >
-                    <div 
+                    {/* <div 
                         className={"colorblock" + props.color}
-                    ></div>
-                    <div className="space-content">
-                        {/* <p className="name">{props.title}</p>
-                        <p className="price">{props.price}</p> */}
-                        {dim.width} x
-                        {dim.height}
-                    </div>
+                    ></div> */}
+                    <p className="name">{props.title}</p>
+                    <p className="price">{props.price}</p>
                 </div>
             </div>
         )

@@ -90,7 +90,7 @@ function GameSession() {
                 <div className="game-session">
                     <h1>Game #{lobbyID}</h1>
                     <div id="board-container">
-                        <Board></Board>
+                        {/* <Board></Board> */}
                         <div id="player-pieces">
                             <div className="player" id="p1"></div>
                             <div className="player" id="p2"></div>

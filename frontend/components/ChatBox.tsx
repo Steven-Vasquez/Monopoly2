@@ -3,6 +3,8 @@ import axiosInstance from "../../backend/axiosInstance.ts";
 import { Socket } from "socket.io-client";
 
 import { CHAT_MESSAGE_RECEIVED } from "../../shared/constants.ts"
+import { ArrowRight } from "@phosphor-icons/react";
+import { Button } from '../components/Button.tsx';
 import "../stylesheets/Chat.css"
 
 interface ChatMessage { // Interface to define the shape of the ChatMessage data returned from the API call to get list of chat messages
@@ -46,7 +48,9 @@ function ChatBox({ game_id, socket }: { game_id: string, socket: Socket }) {
 
         try {
             const response = await axiosInstance.post(`/api/chat/sendMessage/${game_id}`, {
-                message: message
+                // username: username,
+                message: message,
+                timestamp: getTimestamp()
             });
             console.log(response.data);
             setMessage('');
@@ -55,36 +59,49 @@ function ChatBox({ game_id, socket }: { game_id: string, socket: Socket }) {
         }
     }
 
+    /***************************************************************************
+    * Timestamp creation
+    ***************************************************************************/
+    // TODO: store timestamp in chat message db
+    function getTimestamp() {
+        const date = new Date();
+        return date.toLocaleTimeString('en-US', {
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true
+        });
+    }
+
     return (
         <div>
             <h1>Chat</h1>
             <div className="chat-container">
+                <h2>Text</h2>
                 <div className="messages">
-                    <div className="message-line">
-                        <div className="message">
-                            <ul>
-                                {chatMessages.map((message: { username: string, message: string, timestamp: string }) => (
-                                    <li className="timestamp" key={message.timestamp}>
-                                        <span className="username">{message.username}: </span>
-                                        <span className="body">{message.message}</span>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    </div>
+                    <ul>
+                        {chatMessages.map((message: { username: string, message: string, timestamp: string }) => (
+                            <li className="message-line" key={message.timestamp}>
+                                <p className="username">TestUser: {message.username}</p>
+                                <p className="timestamp">{getTimestamp()}</p>
+                                <p className="body">This is a test message: {message.message}</p>
+                            </li>
+                        ))}
+                    </ul>
                 </div>
-            </div>
-            <div>
-                <form onSubmit={sendMessage}>
-                    <label className="input-textfield">
-                        <input
-                            type="text"
-                            value={message}
-                            placeholder="Message..."
-                            onChange={(e) => setMessage(e.target.value)} />
-                    </label>
-                    <button type="submit">Send</button>
-                </form>
+                <div className="message-input">
+                    <form onSubmit={sendMessage}>
+                        <label className="input-textfield">
+                            <input
+                                type="text"
+                                value={message}
+                                placeholder="Type here..."
+                                onChange={(e) => setMessage(e.target.value)} />
+                        </label>
+                        <Button type="submit" style={{ width: "auto", backgroundColor: "#fff", padding: "0.3rem", marginLeft: "0.5rem", verticalAlign: "middle" }} >
+                            <ArrowRight size={20} color="#000000" weight="bold" />
+                        </Button>
+                    </form>
+                </div>
             </div>
         </div>
     )

@@ -1,59 +1,58 @@
 .chat-container {
-    max-width: 640px;
+    display: flex;
+    max-width: 340px;
+    background-color: var(--background);
+    flex-direction: column;
+    padding: 1rem;
 }
 
 .messages {
-    height: 480px;
-    overflow-y: scroll;
+    height: 25rem;
     display: flex;
     flex-direction: column-reverse;
-    mask-image: linear-gradient(to bottom, transparent 0, black 32px, black 100%);
-    -webkit-mask-image: linear-gradient(to bottom,
-            transparent 0,
-            black 32px,
-            black 100%);
-    padding-top: 32px;
+    margin-top: 1rem;
+    padding-right: 0.5rem;
+    /* Make scrollable and fade-out effect */
+    overflow-y: scroll;
+    scrollbar-width: none;
+    mask-image: linear-gradient(to bottom, transparent, black 1rem);
+    -webkit-mask-image: linear-gradient(to bottom, transparent, black 1rem);
+}
+
+/* Hide scrollbar */
+.messages::-webkit-scrollbar {
+    width: 0;
+    height: 0;
 }
 
 .message-line {
     font-family: var(--body-font);
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-block-start: 8px;
-    margin-block-end: 8px;
+    margin-bottom: 1.5rem;
+    flex-direction: column;
+    align-items: flex-start;
+    position: relative;
 }
 
-.message {
-    display: flex;
-    gap: 16px;
-}
-
-.message p {
-    margin: 0;
-}
-
-.message .username {
+.messages .username {
     font-weight: 600;
+    position: absolute;
 }
 
 .message-line .timestamp {
-    margin-left: 16px;
-    /* color: var(--gray); */
+    color: var(--gray);
+    margin-left: auto;
+    font-size: 0.8rem;
+    margin-top: 0.2rem;
 }
 
-/* .input-textfield {
-    display: flex;
-    flex-direction: column;
-} */
-
-.input-textfield span {
-    margin-bottom: 8px;
+.message-line .body {
+    margin-top: 0.2rem;
 }
 
 .input-textfield input {
-    padding: 16px 16px;
-    background-color: var(--background);
+    padding: 0.5rem 0.5rem;
+    background-color: #fff;
     border: 2px solid var(--accent);
     border-radius: 0px;
     font-size: 16px;
@@ -62,5 +61,9 @@
 }
 
 .input-textfield input:focus {
-    background-color: var(--background-dark);
+    background-color: var(--background);
+}
+
+.message-input {
+    padding-top: 1.5rem;
 }

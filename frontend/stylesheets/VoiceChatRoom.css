@@ -1,0 +1,8 @@
+.voice-chat-room-container {
+    display: flex;
+    min-width: 18rem;
+    max-width: 24rem;
+    background-color: var(--background);
+    flex-direction: column;
+    padding: 1rem;
+}

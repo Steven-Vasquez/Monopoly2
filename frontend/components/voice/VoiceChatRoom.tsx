@@ -4,7 +4,9 @@ import axiosInstance from "../../../backend/axiosInstance.ts";
 import io from "socket.io-client";
 
 import { createPeerConnection, createOffer, createAnswer } from "./utility/webRTCUtils.ts";
-
+import "../../stylesheets/VoiceChatRoom.css";
+import { Button } from "../Button.tsx";
+import { PhoneCall, PhoneX, Microphone, MicrophoneSlash, SpeakerHigh, SpeakerSlash } from "@phosphor-icons/react";
 
 function VoiceChatRoom() {
     const [inVoiceChat, setInVoiceChat] = useState(false); // State to manage whether the user is in the voice chat or not
@@ -15,6 +17,8 @@ function VoiceChatRoom() {
     }[]>([]);
 
     const [muted, setMuted] = useState(false); // State to manage mute/unmute
+    // TODO
+    const [deafened, setDeafened] = useState(false); // State to manage deafen/undeafen
     const [user_id, setUser_id] = useState(0);
 
     // Connecting to the socket room of the lobby for lobby-wide event updates
@@ -110,7 +114,7 @@ function VoiceChatRoom() {
 
             // Add the new participant to the list
             setParticipants([...participants, { id: participantId, audioStream, peerConnection }]);
-            
+
             // Send an offer to all other participants
             participants.forEach((participant) => {
                 if (participant.id !== participantId) {
@@ -131,7 +135,7 @@ function VoiceChatRoom() {
             });
 
         } catch (error) {
-            console.error("Error accessing microphone:", error);
+            console.error("Error accessing SpeakerHigh:", error);
         }
         setInVoiceChat(true); // Set inVoiceChat to true
     };
@@ -165,6 +169,11 @@ function VoiceChatRoom() {
         setMuted(!muted);
     };
 
+    // Handle deafen/undeafen
+    const toggleDeafen = () => {
+        setDeafened(!deafened);
+    };
+
     // Disconnect from socket when component unmounts
     useEffect(() => {
         return () => {
@@ -173,17 +182,24 @@ function VoiceChatRoom() {
     }, [socket]);
 
     return (
-        <div className="voice-chat-room">
+        <div className="voice-chat-room-container">
+            <h2>Voice</h2>
             {inVoiceChat ? (
                 <div>
-                    <button onClick={() => handleLeaveVoiceChat(user_id)}>
+                    {/* <button onClick={() => handleLeaveVoiceChat(user_id)}>
                         Leave Voice Chat
-                    </button>
-
-                    <button onClick={toggleMute}>
-                        {muted ? "Unmute" : "Mute"} {/* Toggle mute/unmute button */}
-                    </button>
-
+                    </button> */}
+                    <span title="Leave voice chat">
+                        <Button variant="primary" style={{ width: "auto", padding: "0.3rem 0.5rem 0.6rem 0.5rem" }} onClick={() => handleLeaveVoiceChat(user_id)}>
+                            <PhoneX size={20} color="#fff" weight="bold" /> Leave Voice
+                        </Button>
+                    </span>
+                    {/* Toggle mute/unmute button */}
+                    {/* <button onClick={toggleMute}>
+                        {muted ? "Unmute" : "Mute"} 
+                    </button> */}
+                    <Button variant="secondary" style={{ width: "auto", padding: "0.3rem 0.5rem 0.6rem 0.5rem", marginLeft: "0.5rem" }} onClick={() => toggleMute} >{muted ? <span title="Unmute mic"><MicrophoneSlash size={20} color="#fff" weight="bold" /></span> : <span title="Mute mic"><Microphone size={20} weight="bold" /></span>}</Button>
+                    <Button variant="secondary" style={{ width: "auto", padding: "0.3rem 0.5rem 0.6rem 0.5rem", marginLeft: "0.5rem" }} onClick={() => toggleDeafen} >{deafened ? <span title="Unmute voice chat"><SpeakerSlash size={20} color="#fff" weight="bold" /></span> : <span title="Mute voice chat"><SpeakerHigh size={20} weight="bold" /></span>}</Button>
                     <div>
                         {participants.map((participant) => (
                             <div>
@@ -206,10 +222,17 @@ function VoiceChatRoom() {
 
             ) : (
                 <div>
-                    <h1>You are not in the voice chat!</h1>
-                    <button onClick={() => handleJoinVoiceChat(user_id)}>
-                        Join Voice Chat {/* Replace '1' with the participant ID */}
-                    </button>
+                    {/* Replace '1' with the participant ID */}
+                    {/* <button onClick={() => handleJoinVoiceChat(user_id)}>
+                        Join Voice Chat 
+                    </button> */}
+                    <span title="Join voice chat">
+                        <Button variant="primary" style={{ width: "auto", padding: "0.3rem 0.5rem 0.6rem 0.5rem" }} onClick={() => handleJoinVoiceChat(user_id)}>
+                            <PhoneCall size={20} color="#fff" weight="bold" /> Join Voice
+                        </Button>
+                    </span>
+                    <Button variant="secondary" style={{ width: "auto", padding: "0.3rem 0.5rem 0.6rem 0.5rem", marginLeft: "0.5rem" }} onClick={() => toggleMute} >{muted ? <span title="Unmute mic"><MicrophoneSlash size={20} color="#fff" weight="bold" /></span> : <span title="Mute mic"><Microphone size={20} weight="bold" /></span>}</Button>
+                    <Button variant="secondary" style={{ width: "auto", padding: "0.3rem 0.5rem 0.6rem 0.5rem", marginLeft: "0.5rem" }} onClick={() => toggleDeafen} >{deafened ? <span title="Unmute voice chat"><SpeakerSlash size={20} color="#fff" weight="bold" /></span> : <span title="Mute voice chat"><SpeakerHigh size={20} weight="bold" /></span>}</Button>
                 </div>
             )}
 

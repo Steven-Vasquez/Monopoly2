@@ -97,9 +97,11 @@ function ChatBox({ game_id, socket }: { game_id: string, socket: Socket }) {
                                 placeholder="Type here..."
                                 onChange={(e) => setMessage(e.target.value)} />
                         </label>
-                        <Button type="submit" style={{ width: "auto", backgroundColor: "#fff", padding: "0.3rem", marginLeft: "0.5rem", verticalAlign: "middle" }} >
-                            <ArrowRight size={20} color="#000000" weight="bold" />
-                        </Button>
+                        <span title="Send message">
+                            <Button type="submit" style={{ padding: "0.3rem 0.33rem 0.2rem 0.33rem", verticalAlign: "middle" }} >
+                                <ArrowRight size={20} color="#fff" weight="bold" />
+                            </Button>
+                        </span>
                     </form>
                 </div>
             </div>

@@ -186,18 +186,11 @@ function VoiceChatRoom() {
             <h2>Voice</h2>
             {inVoiceChat ? (
                 <div>
-                    {/* <button onClick={() => handleLeaveVoiceChat(user_id)}>
-                        Leave Voice Chat
-                    </button> */}
                     <span title="Leave voice chat">
                         <Button variant="primary" style={{ width: "auto", padding: "0.3rem 0.5rem 0.6rem 0.5rem" }} onClick={() => handleLeaveVoiceChat(user_id)}>
                             <PhoneX size={20} color="#fff" weight="bold" /> Leave Voice
                         </Button>
                     </span>
-                    {/* Toggle mute/unmute button */}
-                    {/* <button onClick={toggleMute}>
-                        {muted ? "Unmute" : "Mute"} 
-                    </button> */}
                     <Button variant="secondary" style={{ width: "auto", padding: "0.3rem 0.5rem 0.6rem 0.5rem", marginLeft: "0.5rem" }} onClick={() => toggleMute} >{muted ? <span title="Unmute mic"><MicrophoneSlash size={20} color="#fff" weight="bold" /></span> : <span title="Mute mic"><Microphone size={20} weight="bold" /></span>}</Button>
                     <Button variant="secondary" style={{ width: "auto", padding: "0.3rem 0.5rem 0.6rem 0.5rem", marginLeft: "0.5rem" }} onClick={() => toggleDeafen} >{deafened ? <span title="Unmute voice chat"><SpeakerSlash size={20} color="#fff" weight="bold" /></span> : <span title="Mute voice chat"><SpeakerHigh size={20} weight="bold" /></span>}</Button>
                     <div>
@@ -223,9 +216,6 @@ function VoiceChatRoom() {
             ) : (
                 <div>
                     {/* Replace '1' with the participant ID */}
-                    {/* <button onClick={() => handleJoinVoiceChat(user_id)}>
-                        Join Voice Chat 
-                    </button> */}
                     <span title="Join voice chat">
                         <Button variant="primary" style={{ width: "auto", padding: "0.3rem 0.5rem 0.6rem 0.5rem" }} onClick={() => handleJoinVoiceChat(user_id)}>
                             <PhoneCall size={20} color="#fff" weight="bold" /> Join Voice

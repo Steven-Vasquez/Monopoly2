@@ -5,8 +5,7 @@ import { useState, useEffect, useRef } from 'react'
 // Kenny's Imports
 import "../stylesheets/GameSession.css";
 import io from "socket.io-client";
-import VoiceChatRoom from '../components/voice/VoiceChatRoom.tsx';
-import ChatBox from '../components/ChatBox.tsx';
+import GameCommsPanel from "../components/GameCommsPanel.tsx";
 
 export default function Test() {
 
@@ -14,7 +13,7 @@ export default function Test() {
     const socket = io("http://localhost:3001");
     socket.emit("join", '0'); // Connecting to the socket room of the lobby for lobby-wide event updates
 
-    
+
     const container = useRef<HTMLDivElement>(null);
     const [dim, setDim] = useState({ width: 0, height: 0 });
     useEffect(() => {
@@ -97,8 +96,9 @@ export default function Test() {
                             />
                         </div>
                     {/* </> */}
-                    <VoiceChatRoom />
-                    <ChatBox game_id={'0'} socket={socket} />
+                    <GameCommsPanel socket={socket}/>
+                    {/* <VoiceChatRoom />
+                    <ChatBox game_id={'0'} socket={socket} /> */}
                 </div>
             </div>
         </div >

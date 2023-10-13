@@ -1,0 +1,37 @@
+.comms-panel-container {
+    display: flex;
+    width: 20rem;
+    height: 100%;
+    background-color: var(--background);
+    flex-direction: column;
+    padding: 1.5rem;
+    float: right;
+    
+    /* Make fixed position top right corner */
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 9999;
+}
+
+hr {
+    margin: 1rem 0 1rem 0;
+}
+
+.tabs {
+    margin-bottom: 1.5rem;
+}
+
+.tabs .tab {
+    background-color: transparent;
+    display: inline-block;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-right: 1rem;
+    border: none;
+    cursor: pointer;
+}
+
+.tab.active {
+    border-bottom: 6px solid var(--accent);
+}

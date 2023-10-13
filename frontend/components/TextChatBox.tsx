@@ -4,8 +4,8 @@ import { Socket } from "socket.io-client";
 
 import { CHAT_MESSAGE_RECEIVED } from "../../shared/constants.ts"
 import { ArrowRight } from "@phosphor-icons/react";
-import { Button } from '../components/Button.tsx';
-import "../stylesheets/Chat.css"
+import { Button } from './Button.tsx';
+import "../stylesheets/TextChat.css"
 
 interface ChatMessage { // Interface to define the shape of the ChatMessage data returned from the API call to get list of chat messages
     username: string;
@@ -13,7 +13,7 @@ interface ChatMessage { // Interface to define the shape of the ChatMessage data
     timestamp: string;
 }
 
-function ChatBox({ game_id, socket }: { game_id: string, socket: Socket }) {
+function TextChatBox({ game_id, socket }: { game_id: string, socket: Socket }) {
 
     /***************************************************************************
      * Message retrieval (below)
@@ -74,7 +74,6 @@ function ChatBox({ game_id, socket }: { game_id: string, socket: Socket }) {
 
     return (
         <div>
-            <h1>Chat</h1>
             <div className="chat-container">
                 <h2>Text</h2>
                 <div className="messages">
@@ -109,4 +108,4 @@ function ChatBox({ game_id, socket }: { game_id: string, socket: Socket }) {
     )
 }
 
-export default ChatBox;
+export default TextChatBox;

@@ -10,7 +10,7 @@ import { Button } from '../components/Button.tsx';
 
 import { Board } from '../components/game/Board.tsx';
 import VoiceChatRoom from '../components/voice/VoiceChatRoom.tsx';
-import ChatBox from '../components/ChatBox.tsx';
+import ChatBox from '../components/TextChatBox.tsx';
 
 import "../stylesheets/GameSession.css";
 

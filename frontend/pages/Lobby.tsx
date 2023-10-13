@@ -5,7 +5,7 @@ import io from "socket.io-client";
 import axiosInstance from '../../backend/axiosInstance.ts';
 import { GAME_JOINED } from "../../shared/constants.ts";
 
-import ChatBox from '../components/ChatBox.tsx';
+import ChatBox from '../components/TextChatBox.tsx';
 import VoiceChatRoom from '../components/voice/VoiceChatRoom.tsx';
 import { Link } from "react-router-dom";
 import { Button } from '../components/Button.tsx';

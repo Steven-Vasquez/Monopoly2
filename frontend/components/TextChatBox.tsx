@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axiosInstance from "../../backend/axiosInstance.ts";
 import { Socket } from "socket.io-client";
 
 import { CHAT_MESSAGE_RECEIVED } from "../../shared/constants.ts"
-import { ArrowRight } from "@phosphor-icons/react";
+import { PaperPlaneRight } from "@phosphor-icons/react";
 import { Button } from './Button.tsx';
-import "../stylesheets/TextChat.css"
+import "../stylesheets/Chat.css"
 
 interface ChatMessage { // Interface to define the shape of the ChatMessage data returned from the API call to get list of chat messages
     username: string;
@@ -13,7 +13,7 @@ interface ChatMessage { // Interface to define the shape of the ChatMessage data
     timestamp: string;
 }
 
-function TextChatBox({ game_id, socket }: { game_id: string, socket: Socket }) {
+function TextChatBox({ game_id, socket, height }: { game_id: string, socket: Socket, height: number }) {
 
     /***************************************************************************
      * Message retrieval (below)
@@ -73,37 +73,34 @@ function TextChatBox({ game_id, socket }: { game_id: string, socket: Socket }) {
     }
 
     return (
-        <div>
-            <div className="chat-container">
-                <h2>Text</h2>
+        <div className="chat-container" id="text-chat" style={{maxHeight: height}}>
+            <h3>Text</h3>
                 <div className="messages">
-                    <ul>
-                        {chatMessages.map((message: { username: string, message: string, timestamp: string }) => (
-                            <li className="message-line" key={message.timestamp}>
-                                <p className="username">TestUser: {message.username}</p>
-                                <p className="timestamp">{getTimestamp()}</p>
-                                <p className="body">This is a test message: {message.message}</p>
-                            </li>
-                        ))}
-                    </ul>
+
+                    {chatMessages.map((message: { username: string, message: string, timestamp: string }, index) => (
+                        <div className="message-line" key={message.timestamp}>
+                            <p className="username">TestUser: {message.username}</p>
+                            <p className="timestamp">{getTimestamp()}</p>
+                            <p className="body">{index} This is a test message: {message.message}</p>
+                        </div>
+                    ))}
+
                 </div>
-                <div className="message-input">
-                    <form onSubmit={sendMessage}>
-                        <label className="input-textfield">
-                            <input
-                                type="text"
-                                value={message}
-                                placeholder="Type here..."
-                                onChange={(e) => setMessage(e.target.value)} />
-                        </label>
-                        <span title="Send message">
-                            <Button type="submit" style={{ padding: "0.3rem 0.33rem 0.2rem 0.33rem", verticalAlign: "middle" }} >
-                                <ArrowRight size={20} color="#fff" weight="bold" />
-                            </Button>
-                        </span>
-                    </form>
-                </div>
-            </div>
+
+                <form onSubmit={sendMessage} className="message-input">
+                    <label className="input-textfield">
+                        <input
+                            type="text"
+                            value={message}
+                            placeholder="Type here..."
+                            onChange={(e) => setMessage(e.target.value)} />
+                    </label>
+                    <span title="Send message">
+                        <button type="submit" title="send" id="send-message-button">
+                            <PaperPlaneRight size={20} color="#fff" weight="bold" />
+                        </button>
+                    </span>
+            </form>
         </div>
     )
 }

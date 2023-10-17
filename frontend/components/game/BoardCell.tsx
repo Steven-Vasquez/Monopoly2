@@ -18,7 +18,7 @@ export function BoardCell(props: BoardCellProps) {
     const container = useRef<HTMLDivElement>(null);
     const [dim, setDim] = useState({ width: 0, height: 0 });
     useEffect(() => {
-        console.log("use effect", container)
+        // console.log("use effect", container)
         function resize() {
 
             if (container.current) {

@@ -182,8 +182,8 @@ function VoiceChatRoom() {
     }, [socket]);
 
     return (
-        <div className="voice-chat-room-container">
-            <h2>Voice</h2>
+        <div className="voice-chat-room-container" id="voice-chat-room">
+            <h3>Voice</h3>
             {inVoiceChat ? (
                 <div>
                     <span title="Leave voice chat">

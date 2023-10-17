@@ -1,25 +1,37 @@
 .comms-panel-container {
-    display: flex;
-    width: 20rem;
-    height: 100%;
+    height: calc(100svw - (100svw - 100%));
+    width: 320px;
     background-color: var(--background);
+    display: flex;
     flex-direction: column;
-    padding: 1.5rem;
-    float: right;
+    /* padding: 1.5rem; */
+    /* float: right; */
     
     /* Make fixed position top right corner */
     position: fixed;
     top: 0;
     right: 0;
     z-index: 9999;
+    /* box-sizing: content-box; */
 }
 
-hr {
-    margin: 1rem 0 1rem 0;
+.panel-contents {
+    height: 100%;
+    position: relative;
+    /* display: flex;
+    flex-direction: column; */
+    display: flex;
+    flex-direction: column;
+}
+
+hr.divider {
+    /* margin: 2rem 0 2rem 0; */
+    border: 1px solid var(--gray)
 }
 
 .tabs {
-    margin-bottom: 1.5rem;
+    /* margin-bottom: 1.5rem; */
+    padding: 1rem;
 }
 
 .tabs .tab {
@@ -34,4 +46,13 @@ hr {
 
 .tab.active {
     border-bottom: 6px solid var(--accent);
+}
+
+.chat {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    /* box-sizing: content-box; */
+    height: 100%;
+    overflow-y: auto;
 }

@@ -1,10 +1,33 @@
 import '../stylesheets/GameCommsPanel.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import TextChatBox from './TextChatBox.tsx';
 import VoiceChatRoom from './voice/VoiceChatRoom.tsx';
 import GameActionsLog from './GameActionsLog.tsx';
 
 export function GameCommsPanel(props: any) {
+
+    const chatbox = useRef<HTMLDivElement>(null);
+    const tabs = useRef<HTMLDivElement>(null);
+    const [chatHeight, setChatHeight] = useState(0)
+
+    useEffect(() => {
+        if (chatbox.current && tabs.current) {
+            const tabsHeight = tabs.current!.getBoundingClientRect().height;
+            const chatBoxHeight = chatbox.current!.getBoundingClientRect().height;
+            const voiceHeight = chatbox.current!.querySelector('#voice-chat-room')!.getBoundingClientRect().height;
+            // console.log(chatbox.current!)
+            setChatHeight(chatBoxHeight - voiceHeight);
+            // .getBoundingClientRect().height;
+            window.addEventListener('resize', () => {
+                const tabsHeight = tabs.current!.getBoundingClientRect().height;
+                const chatBoxHeight = chatbox.current!.getBoundingClientRect().height;
+                const voiceHeight = chatbox.current!.querySelector('#voice-chat-room')!.getBoundingClientRect().height;
+                // console.log(chatbox.current!)
+                setChatHeight(chatBoxHeight - voiceHeight);
+            })
+        }
+    }, []);
+
     const [showLog, setShowLog] = useState(false);
 
     // Show/hide chat and log when corresponding tab is clicked
@@ -28,19 +51,19 @@ export function GameCommsPanel(props: any) {
 
     return (
         <div className="comms-panel-container">
-            <div className="tabs">
+            <div className="tabs" ref={tabs}>
                 <button type="button" className="tab" onClick={toggleChat}>Chat</button>
                 <button type="button" className="tab" onClick={toggleLog}>Action Log</button>
             </div>
-            <div className="log" style={{ display: showLog ? 'block' : 'none' }}>
+            {(showLog) ? (
                 <GameActionsLog />
-            </div>
-            <div className="chat" style={{ display: showLog ? 'none' : 'block' }}>
-                <VoiceChatRoom />
-                <hr></hr>
-                <TextChatBox game_id={'0'} socket={props.socket} />
-            </div>
-
+                ) :
+                <div className="chat" ref={chatbox}>
+                    <VoiceChatRoom />
+                    {/* <hr className="divider"></hr> */}
+                    <TextChatBox game_id={'0'} socket={props.socket} height={chatHeight}/>
+                </div>
+            } 
         </div>
     );
 };

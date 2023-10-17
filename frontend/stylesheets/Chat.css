@@ -1,0 +1,119 @@
+.chat-container {
+    /* display: flex;
+    height: auto; */
+    /* min-width: 18rem;
+    max-width: 24rem; */
+    /* flex-direction: column;
+    justify-content: space-between; */
+    /* padding: 1rem; */
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 1rem;
+    gap: 1rem;
+}
+
+.chat-container h3 {
+    line-height: 1;
+}
+
+.messages-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.messages {
+    /* height: 25rem; */
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 0.5rem;
+    margin-top: auto;
+    /* box-sizing: content-box; */
+    /* margin-top: 0.5rem; */
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    /* gap: 0.5rem; */
+    /* padding-right: 0.5rem; */
+    /* Make scrollable and fade-out effect */
+    overflow-y: auto;
+    /* scrollbar-width: none; */
+    mask-image: linear-gradient(to bottom, transparent 0, black 1rem, black calc(100% - 1rem), transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, black 1rem, black calc(100% - 1rem), transparent 100%);
+}
+
+/* Hide scrollbar */
+/* .messages::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+} */
+
+.message-line {
+    font-family: var(--body-font);
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto;
+    flex-direction: column;
+    align-items: flex-start;
+    position: relative;
+}
+
+.messages .username {
+    font-weight: 600;
+    /* position: absolute; */
+}
+
+.message-line .timestamp {
+    color: var(--gray);
+    margin-left: auto;
+    font-size: 0.8rem;
+    margin-top: 0.2rem;
+}
+
+.message-line .body {
+    margin-top: 0.2rem;
+    grid-area: 2 / 1 / 3 / 3;
+}
+
+.message-input {
+    flex-shrink: 1;
+}
+
+.input-textfield {
+    width: 100%;
+}
+
+.input-textfield input {
+    padding: 0.5rem 0.5rem;
+    background-color: #fff;
+    border: 2px solid var(--accent);
+    border-right: none;
+    border-radius: 0px;
+    font-size: 16px;
+    outline-offset: 2px;
+    transition: background-color 0.25s;
+    width: 100%;
+    height: 36px;
+}
+
+.input-textfield input:focus {
+    background-color: var(--background);
+}
+
+.message-input{
+    display: flex;
+    flex-direction: row;
+}
+
+
+#send-message-button {
+    width: 36px;
+    height: 36px;
+    border-radius: 0px;
+    background-color: var(--accent);
+    transition: background-color 0.25s;
+    border: none;
+}
+
+#send-message-button:hover {
+    background-color: var(--accent-dark);
+}

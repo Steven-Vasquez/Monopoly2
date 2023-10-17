@@ -11,14 +11,16 @@
 
 .messages {
     display: flex;
+    gap: 8px;
     flex-direction: column-reverse;
-    /* Make scrollable*/
-    overflow-y: hidden;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    /* padding-right: 0.5rem; */
+    /* Make scrollable and fade-out effect */
+    overflow-y: scroll;
     scrollbar-width: none;
-
-    /* Transparency fade out effect at top */
-    /* mask-image: linear-gradient(to bottom, transparent, black 1rem);
-    -webkit-mask-image: linear-gradient(to bottom, transparent, black 1rem); */
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, black 1rem, black calc(100% - 1rem), transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0, black 1rem, black calc(100% - 1rem), transparent 100%);
 }
 
 .messages:hover {
@@ -28,7 +30,6 @@
 .message-line {
     font-family: var(--body-font);
     display: flex;
-    margin-bottom: 1rem;
     flex-direction: column;
     align-items: flex-start;
     position: relative;

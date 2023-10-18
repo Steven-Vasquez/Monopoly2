@@ -1,11 +1,4 @@
 .chat-container {
-    /* display: flex;
-    height: auto; */
-    /* min-width: 18rem;
-    max-width: 24rem; */
-    /* flex-direction: column;
-    justify-content: space-between; */
-    /* padding: 1rem; */
     display: flex;
     flex-direction: column;
     flex: 1;
@@ -23,55 +16,44 @@
 }
 
 .messages {
-    /* height: 25rem; */
+
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
     gap: 0.5rem;
     margin-top: auto;
-    /* box-sizing: content-box; */
-    /* margin-top: 0.5rem; */
     padding-top: 1rem;
     padding-bottom: 1rem;
-    /* gap: 0.5rem; */
-    /* padding-right: 0.5rem; */
     /* Make scrollable and fade-out effect */
     overflow-y: auto;
-    /* scrollbar-width: none; */
     mask-image: linear-gradient(to bottom, transparent 0, black 1rem, black calc(100% - 1rem), transparent 100%);
     -webkit-mask-image: linear-gradient(to bottom, transparent 0, black 1rem, black calc(100% - 1rem), transparent 100%);
 }
 
-/* Hide scrollbar */
-/* .messages::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-} */
+.message {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.user-line {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
 
 .message-line {
     font-family: var(--body-font);
-    display: grid;
-    grid-template-columns: auto auto;
-    grid-template-rows: auto auto;
-    flex-direction: column;
-    align-items: flex-start;
     position: relative;
 }
 
-.messages .username {
+.username {
     font-weight: 600;
-    /* position: absolute; */
 }
 
-.message-line .timestamp {
+.timestamp {
     color: var(--gray);
-    margin-left: auto;
-    font-size: 0.8rem;
-    margin-top: 0.2rem;
-}
-
-.message-line .body {
-    margin-top: 0.2rem;
-    grid-area: 2 / 1 / 3 / 3;
+    font-size: 12px;
 }
 
 .message-input {
@@ -83,16 +65,23 @@
 }
 
 .input-textfield input {
-    padding: 0.5rem 0.5rem;
+    padding: 12px;
     background-color: #fff;
     border: 2px solid var(--accent);
     border-right: none;
     border-radius: 0px;
     font-size: 16px;
+    font-family: var(--body-font);
     outline-offset: 2px;
     transition: background-color 0.25s;
     width: 100%;
     height: 36px;
+}
+
+.input-textfield input::placeholder {
+    font-size: 14px;
+    font-family: var(--body-font);
+    font-weight: 600;
 }
 
 .input-textfield input:focus {
@@ -103,7 +92,6 @@
     display: flex;
     flex-direction: row;
 }
-
 
 #send-message-button {
     width: 36px;

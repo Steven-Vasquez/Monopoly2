@@ -78,10 +78,14 @@ function TextChatBox({ game_id, socket, height }: { game_id: string, socket: Soc
                 <div className="messages">
 
                     {chatMessages.map((message: { username: string, message: string, timestamp: string }, index) => (
-                        <div className="message-line" key={message.timestamp}>
-                            <p className="username">TestUser: {message.username}</p>
-                            <p className="timestamp">{getTimestamp()}</p>
-                            <p className="body">{index} This is a test message: {message.message}</p>
+                        <div className="message">
+                            <div className="user-line">
+                                <p className="username">TestUser: {message.username}</p>
+                                <p className="timestamp">{getTimestamp()}</p>
+                            </div>
+                            <div className="message-line" key={message.timestamp}>
+                                <p className="body">{index} This is a test message: {message.message}</p>
+                            </div>
                         </div>
                     ))}
 

@@ -161,18 +161,18 @@ function VoiceChatRoom() {
         } else {
             console.warn("Leaving participant not found.");
         }
+        setInVoiceChat(false);
     };
 
+    // // Handle mute/unmute
+    // const toggleMute = () => {
+    //     setMuted(!muted);
+    // };
 
-    // Handle mute/unmute
-    const toggleMute = () => {
-        setMuted(!muted);
-    };
-
-    // Handle deafen/undeafen
-    const toggleDeafen = () => {
-        setDeafened(!deafened);
-    };
+    // // Handle deafen/undeafen
+    // const toggleDeafen = () => {
+    //     setDeafened(!deafened);
+    // };
 
     // Disconnect from socket when component unmounts
     useEffect(() => {
@@ -184,47 +184,66 @@ function VoiceChatRoom() {
     return (
         <div className="voice-chat-room-container" id="voice-chat-room">
             <h3>Voice</h3>
-            {inVoiceChat ? (
-                <div>
+            <div id="voice-controls">
+                {inVoiceChat ? (
+                    <>
+                        <button className="voice-toggle" onClick={() => handleLeaveVoiceChat(user_id)}>
+                            <PhoneX size={24} color="#fff" weight="bold" />
+                            Leave Voice
+                        </button>
+                        <button className="toggle-icon-button" onClick={() => {setMuted(!muted)}}>
+                            {muted ? <span title="Unmute mic"><MicrophoneSlash size={20} color="#fff" weight="bold" /></span> : <span title="Mute mic"><Microphone size={20} weight="bold" /></span>}
+                        </button>
+                        <button className="toggle-icon-button" onClick={() => {setDeafened(!deafened)}}>
+                            {deafened ? <span title="Unmute voice chat"><SpeakerSlash size={20} color="#fff" weight="bold" /></span> : <span title="Mute voice chat"><SpeakerHigh size={20} weight="bold" /></span>}
+                        </button>
+                    </>
+                ) : (
+                    <button className="voice-toggle" onClick={() => handleJoinVoiceChat(user_id)}>
+                        <PhoneCall size={24} color="#fff" weight="bold" />
+                        Join Voice
+                    </button>
+                )}
+
+            </div>
+            <div>
+                {participants.map((participant) => (
+                    <div>
+                        <span key={participant.id}>{participant.id}</span>
+                        <audio
+                            autoPlay
+                            muted={muted}
+                            ref={(audioElement) => {
+                                if (audioElement) {
+                                    audioElement.srcObject = participant.audioStream;
+                                }
+                            }}
+                        />
+
+                    </div>
+                ))}
+            </div>
+
+            {/* {inVoiceChat ? (
+                <div id="voice-controls">
                     <span title="Leave voice chat">
                         <Button variant="primary" style={{ width: "auto", padding: "0.3rem 0.5rem 0.6rem 0.5rem" }} onClick={() => handleLeaveVoiceChat(user_id)}>
                             <PhoneX size={20} color="#fff" weight="bold" /> Leave Voice
                         </Button>
                     </span>
-                    <Button variant="secondary" style={{ width: "auto", padding: "0.3rem 0.5rem 0.6rem 0.5rem", marginLeft: "0.5rem" }} onClick={() => toggleMute} >{muted ? <span title="Unmute mic"><MicrophoneSlash size={20} color="#fff" weight="bold" /></span> : <span title="Mute mic"><Microphone size={20} weight="bold" /></span>}</Button>
-                    <Button variant="secondary" style={{ width: "auto", padding: "0.3rem 0.5rem 0.6rem 0.5rem", marginLeft: "0.5rem" }} onClick={() => toggleDeafen} >{deafened ? <span title="Unmute voice chat"><SpeakerSlash size={20} color="#fff" weight="bold" /></span> : <span title="Mute voice chat"><SpeakerHigh size={20} weight="bold" /></span>}</Button>
-                    <div>
-                        {participants.map((participant) => (
-                            <div>
-                                <span key={participant.id}>{participant.id}</span>
-                                <audio
-                                    autoPlay
-                                    muted={muted}
-                                    ref={(audioElement) => {
-                                        if (audioElement) {
-                                            audioElement.srcObject = participant.audioStream;
-                                        }
-                                    }}
-                                />
-
-                            </div>
-                        ))}
-                    </div>
 
                 </div>
 
             ) : (
-                <div>
+                <div> */}
                     {/* Replace '1' with the participant ID */}
-                    <span title="Join voice chat">
+                    {/* <span title="Join voice chat">
                         <Button variant="primary" style={{ width: "auto", padding: "0.3rem 0.5rem 0.6rem 0.5rem" }} onClick={() => handleJoinVoiceChat(user_id)}>
                             <PhoneCall size={20} color="#fff" weight="bold" /> Join Voice
                         </Button>
                     </span>
-                    <Button variant="secondary" style={{ width: "auto", padding: "0.3rem 0.5rem 0.6rem 0.5rem", marginLeft: "0.5rem" }} onClick={() => toggleMute} >{muted ? <span title="Unmute mic"><MicrophoneSlash size={20} color="#fff" weight="bold" /></span> : <span title="Mute mic"><Microphone size={20} weight="bold" /></span>}</Button>
-                    <Button variant="secondary" style={{ width: "auto", padding: "0.3rem 0.5rem 0.6rem 0.5rem", marginLeft: "0.5rem" }} onClick={() => toggleDeafen} >{deafened ? <span title="Unmute voice chat"><SpeakerSlash size={20} color="#fff" weight="bold" /></span> : <span title="Mute voice chat"><SpeakerHigh size={20} weight="bold" /></span>}</Button>
                 </div>
-            )}
+            )} */}
 
         </div>
     );

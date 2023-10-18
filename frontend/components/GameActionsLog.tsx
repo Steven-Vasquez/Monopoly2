@@ -24,11 +24,9 @@ export function GameActionsLog(props: any) {
 
     return (
         <div className="log-container">
-            <ol className="log-items">
-                {gameActions.map((action, index) => (
-                    <li className="log-item" key={index}>{action}</li>
-                ))}
-            </ol>
+            {gameActions.map((action, index) => (
+                <div className="log-item" key={index}>{action}</div>
+            ))}
         </div>
     );
 };

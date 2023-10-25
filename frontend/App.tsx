@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { useState, useEffect, Suspense } from 'react'
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate, Outlet } from 'react-router-dom';
 import axiosInstance from '../backend/axiosInstance.ts';
 import './App.css'
 
@@ -13,65 +13,68 @@ import GameHub from './pages/GameHub.tsx';
 import GameSession from './pages/GameSession.tsx';
 import Test from './pages/BoardTest.tsx';
 
+import { Toaster } from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 
-function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [username, setUsername] = useState("");
 
+function ProtectedRoute(): JSX.Element {
+  const [loggedIn, setLoggedIn] = useState<boolean | null>(null);  
   useEffect(() => {
-
     axiosInstance.get("/checkLogin")
       .then(res => {
         console.log("logged in status is " + res.data.loggedIn);
 
         if (res.data.loggedIn === true) {
           setLoggedIn(true);
-          setUsername(res.data.user.username);
-        } else {
+          // setUsername(res.data.user.username);
+          // authenticated = true;
+          
+        }
+        else {
+          // setLoggedIn(false);
+          console.log("user not logged in");
+          toast.error("You must log in first.");
           setLoggedIn(false);
         }
       })
       .catch(err => {
         console.log(err);
+        toast.error(`Error logging in. ${err}`);
+        setLoggedIn(false);
       })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
-
-
-  if (loading) {
-    return (
-      <div>
-        <h1>Loading...</h1>
-      </div>
-    );
+  }, [loggedIn]);
+  // console.log(loggedIn);
+  if (loggedIn === null) {
+    return <><h1>Loading...</h1></>
   }
-
-  if (username !== "") {
-    console.log("The username in App.js is: ");
-    console.log(username);
+  else if (loggedIn) {
+    toast.success("User is authenticated");
+    return <Outlet />
+  } else {
+    toast.error("You must log in first.");
+    return <Navigate to="/login" replace></Navigate>
   }
+}
+
+function App() {
 
   return (
     <>
       <Router>
         <Routes>
-          <Route path="*" element={<><NavBar loggedIn={loggedIn} /><Navigate to="/" /></>} />
-          <Route path="/" element={<><NavBar loggedIn={loggedIn} /><Home loggedIn={loggedIn} /></>} />
-          <Route path="/signup" element={<><NavBar loggedIn={loggedIn} /><Register /></>} />
-          <Route path="/login" element={<><NavBar loggedIn={loggedIn} /><Login /></>} />
+          <Route path="*" element={<><NavBar /><Navigate to="/" /></>} />
+          <Route index path="/" element={<><NavBar /><Home /></>} />
+          <Route path="/signup" element={<><NavBar /><Register /></>} />
+          <Route path="/login" element={<><NavBar /><Login /></>} />
           <Route path="/test" element={<><Test /></>} />
-          {loggedIn ? (
-            <>
-              <Route path="/hub" element={<GameHub />} />
-              <Route path="/lobby/:lobbyID" element={<Lobby />} />
-              <Route path="/game/:lobbyID" element={<GameSession />} />
-            </>
-          ) : null}
+          <Route element={<ProtectedRoute />} >
+            <Route path="/hub" element={<><NavBar /><GameHub /></>} />
+            <Route path="/lobby/:lobbyID" element={<Lobby />} />
+            <Route path="/game/:lobbyID" element={<GameSession />} />
+          </Route>
         </Routes>
       </Router>
+      <Toaster />
     </>
   )
 }

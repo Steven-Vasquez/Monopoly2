@@ -4,6 +4,8 @@ import { TextField } from '../components/TextField.tsx';
 import "../stylesheets/AccountsForms.css"
 import axiosInstance from '../../backend/axiosInstance.ts';
 import { Button } from '../components/Button.tsx';
+import { toast } from 'react-hot-toast';
+import { useNavigate } from "react-router-dom";
 
 function Login() {
     const [identifier, setIdentifier] = useState(''); // Combined email/username input
@@ -11,6 +13,7 @@ function Login() {
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState('');
 
+    const navigate = useNavigate();
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -32,8 +35,10 @@ function Login() {
                     console.log(res.data.message);
                     alert(res.data.message);
                 } else {
-                    alert(`Welcome back, ${identifier}!`);
-                    window.location.href = "/lobby";
+                    // alert(`Welcome back, ${res.data.username}!`);
+                    // toast.success(`Welcome back, ${res.data.username}!`);
+                    navigate("/hub");
+                    // window.location.href = "/lobby";
                 }
             })
             .catch(err => {

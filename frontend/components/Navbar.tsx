@@ -1,12 +1,28 @@
 import { Link } from 'react-router-dom';
 import axiosInstance from '../../backend/axiosInstance.ts';
 import '../stylesheets/Navbar.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from './Button.tsx';
 import { Logo } from './Logo.tsx';
 
-function NavBar(props: any) {
-    const { loggedIn, /*username*/ } = props;
+function NavBar() {
+    // const { loggedIn, /*username*/ } = props;
+    const [loggedIn, setLoggedIn] = useState<boolean>(false);  
+
+    useEffect(() => {
+        axiosInstance.get("/checkLogin")
+        .then(res => {
+            if (res.data.loggedIn === true) {
+                setLoggedIn(true);
+            }
+            else {
+            setLoggedIn(false);
+            }
+        })
+        .catch(err => {
+            setLoggedIn(false);
+        })
+    } ,[loggedIn]);
 
     const [scrollPos, setScrollPos] = useState(0);
 

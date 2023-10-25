@@ -46,7 +46,7 @@ function ProtectedRoute(): JSX.Element {
   else if (loggedIn) {
     return <Outlet />
   } else {
-    toast.error("You must log in first.");
+    toast.error("You must log in first.", {id: 'no-auth-error'});
     return <Navigate to="/login" replace></Navigate>
   }
 }
@@ -69,7 +69,34 @@ function App() {
           </Route>
         </Routes>
       </Router>
-      <Toaster />
+      <Toaster 
+      containerStyle={{
+        top: 80
+      }}
+
+      toastOptions={{
+        className: 'toast',
+        style: {
+          backgroundColor: 'var(--background)',
+          border: '3px solid var(--accent)',
+          boxShadow: '0px 2px 6px rgba(0,0,0,0.2)',
+          color: 'var(--black)',
+          borderRadius: '0',
+          padding: '8px 16px',
+        },
+        success: {
+          iconTheme: {
+            primary: 'var(--accent)',
+            secondary: 'var(--background)',
+          },
+        },
+        error: {
+          iconTheme: {
+            primary: 'var(--accent)',
+            secondary: 'var(--background)',
+          },
+        },
+      }}/>
     </>
   )
 }

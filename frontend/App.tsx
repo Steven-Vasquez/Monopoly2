@@ -26,29 +26,24 @@ function ProtectedRoute(): JSX.Element {
 
         if (res.data.loggedIn === true) {
           setLoggedIn(true);
-          // setUsername(res.data.user.username);
-          // authenticated = true;
-          
+
         }
         else {
-          // setLoggedIn(false);
           console.log("user not logged in");
-          toast.error("You must log in first.");
           setLoggedIn(false);
         }
       })
       .catch(err => {
         console.log(err);
-        toast.error(`Error logging in. ${err}`);
+
         setLoggedIn(false);
       })
   }, [loggedIn]);
   // console.log(loggedIn);
   if (loggedIn === null) {
-    return <><h1>Loading...</h1></>
+    return <><p>Authenicating...</p></>
   }
   else if (loggedIn) {
-    toast.success("User is authenticated");
     return <Outlet />
   } else {
     toast.error("You must log in first.");

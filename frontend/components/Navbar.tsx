@@ -4,10 +4,13 @@ import '../stylesheets/Navbar.css';
 import { useState, useEffect } from 'react';
 import { Button } from './Button.tsx';
 import { Logo } from './Logo.tsx';
+import { useNavigate } from "react-router-dom";
 
 function NavBar() {
     // const { loggedIn, /*username*/ } = props;
     const [loggedIn, setLoggedIn] = useState<boolean>(false);  
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         axiosInstance.get("/checkLogin")
@@ -30,7 +33,7 @@ function NavBar() {
         axiosInstance.get("/logout")
             .then(res => {
                 console.log(res);
-                window.location.href = "/";
+                navigate("/login");
             })
             .catch(err => {
                 console.log(err);

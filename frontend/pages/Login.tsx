@@ -36,7 +36,7 @@ function Login() {
                     alert(res.data.message);
                 } else {
                     // alert(`Welcome back, ${res.data.username}!`);
-                    // toast.success(`Welcome back, ${res.data.username}!`);
+                    toast.success(`Welcome back, ${res.data.username}!`);
                     navigate("/hub");
                     // window.location.href = "/lobby";
                 }

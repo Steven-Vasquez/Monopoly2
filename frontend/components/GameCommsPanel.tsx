@@ -10,6 +10,9 @@ export function GameCommsPanel(props: any) {
     const tabs = useRef<HTMLDivElement>(null);
     const [chatHeight, setChatHeight] = useState(0)
 
+    const [activeTab, setActiveTab] = useState('true'); // No tabs are active by default (for underline animation)
+    const [showLog, setShowLog] = useState(false);  // Log is hidden by default
+
     useEffect(() => {
         if (chatbox.current && tabs.current) {
             const tabsHeight = tabs.current!.getBoundingClientRect().height;
@@ -26,44 +29,42 @@ export function GameCommsPanel(props: any) {
                 setChatHeight(chatBoxHeight - voiceHeight);
             })
         }
+
+        // Set chat tab as active by default
+        setActiveTab('chat');
     }, []);
 
-    const [showLog, setShowLog] = useState(false);
+    function toggleTab(tab: string) {
+        return () => {
+            setActiveTab(tab);
 
-    // Show/hide chat and log when corresponding tab is clicked
-    function toggleChat(event: React.MouseEvent<HTMLButtonElement>) {
-        setShowLog(false);
-        event.currentTarget.classList.add('active'); // Add active class to clicked button for underline
-        event.currentTarget.nextElementSibling?.classList.remove('active');
-    }
-
-    function toggleLog(event: React.MouseEvent<HTMLButtonElement>) {
-        setShowLog(true);
-        event.currentTarget.classList.add('active'); // Add active class to clicked button for underline
-        event.currentTarget.previousElementSibling?.classList.remove('active');
-    }
-
-    useEffect(() => {
-        // Add active class to Chat button when component is first rendered (tab underline to be displayed on page load)
-        const chatButton = document.querySelector('.tab:nth-child(1)') as HTMLButtonElement;
-        chatButton.classList.add('active');
-    }, []);
+            // Show/hide chat and log when corresponding tab is clicked
+            if (tab === 'chat') {
+                setShowLog(false);
+            }
+            else if (tab === 'log') {
+                setShowLog(true);
+            }
+        };
+    };
 
     return (
         <div className="comms-panel-container">
             <div className="tabs" ref={tabs}>
-                <button type="button" className="tab" onClick={toggleChat}>Chat</button>
-                <button type="button" className="tab" onClick={toggleLog}>Action Log</button>
+                <button type="button" className={`tab ${activeTab === 'chat' ? 'active' : ''}`} // If tab is active, append 'active' to className (for underline to work)
+                    onClick={toggleTab('chat')}>Chat</button>
+                <button type="button" className={`tab ${activeTab === 'log' ? 'active' : ''}`}
+                    onClick={toggleTab('log')}>Log</button>
             </div>
             {(showLog) ? (
                 <GameActionsLog />
-                ) :
+            ) :
                 <div className="chat" ref={chatbox}>
                     <VoiceChatRoom />
                     {/* <hr className="divider"></hr> */}
-                    <TextChatBox game_id={'0'} socket={props.socket} height={chatHeight}/>
+                    <TextChatBox game_id={'0'} socket={props.socket} height={chatHeight} />
                 </div>
-            } 
+            }
         </div>
     );
 };

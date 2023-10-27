@@ -13,6 +13,8 @@ import CreateGame from "../components/CreateGame.tsx";
 import 'react-tabs/style/react-tabs.css';
 import "../stylesheets/GameHub.css"
 
+// import type { ReactTabsFunctionComponent, TabProps } from 'react-tabs';
+
 // Interface to define the shape of the Game data returned from the API call to get list of games
 interface Game {
     id: number;
@@ -40,9 +42,12 @@ export function Hub() {
     const socket = io("http://localhost:3001"); // Connecting to the socket room of the GameHub to update the list of games as needed
     console.log("Hub.tsx: socket: ", socket);
 
-    const [gamesList, setGamesList] = useState<Game[]>([]); // Array of joinable games
+    const [activeTab, setActiveTab] = useState('');                    // No tabs are active by default (for underline animation)
+    const [showJoinableGames, setShowJoinableGames] = useState(false); // My games tab content is hidden by default
+
+    const [gamesList, setGamesList] = useState<Game[]>([]);     // Array of joinable games
     const [myGamesList, setMyGamesList] = useState<Game[]>([]); // Array of games that the user is a part of
-    const [buttonPopup, setButtonPopup] = useState(false); // Handles popup window for creating a new game
+    const [buttonPopup, setButtonPopup] = useState(false);      // Handles popup window for creating a new game
 
     // Updates the list of joinable games
     async function getGamesList() {
@@ -64,12 +69,14 @@ export function Hub() {
         }
     }
 
-
-    useEffect(() => { // Initial fetch of games list
+    useEffect(() => {
+        // Initial fetch of games list
         getGamesList();
         getMyGamesList();
-    }, []);
 
+        // Set joinable games tab as active by default
+        setActiveTab('joinable-games');
+    }, []);
 
     socket.on(GAME_CREATED, (_data: any) => { // Updates the list of joinable games when a new game is created
         console.log("GAME_CREATED event received");
@@ -94,18 +101,35 @@ export function Hub() {
             socket.disconnect();
         }
     }, [socket]);
+
+    function toggleTab(tab: string) {
+        return () => {
+            setActiveTab(tab);
+
+            // Show/hide table contents when corresponding tab is clicked
+            if (tab === 'joinable-games') {
+                setShowJoinableGames(true);
+            }
+            else if (tab === 'my-games') {
+                setShowJoinableGames(false);
+            }
+        };
+    };
+
     return (
         <div>
             <h1>Games List</h1>
             <Button type="button" style={{ width: "auto" }} onClick={() => setButtonPopup(true)} >Create Game</Button>
             <div className="games-tabs-container">
+                <div className="tabs">
+                    <button type="button" className={`tab ${activeTab === 'joinable-games' ? 'active' : ''}`} // If tab is active, append 'active' to className (for underline to work)
+                        onClick={toggleTab('joinable-games')}>Joinable Games</button>
+                    <button type="button" className={`tab ${activeTab === 'my-games' ? 'active' : ''}`}
+                        onClick={toggleTab('my-games')}>My Games</button>
+                </div>
                 <Tabs>
-                    <TabList>
-                        <Tab>Joinable Games</Tab>
-                        <Tab>My Games</Tab>
-                    </TabList>
-
-                    <TabPanel>
+                    {(showJoinableGames) ? (
+                        // FIRST TAB SHOWS JOINABLE GAMES
                         <ul className="game-list">
                             <li>
                                 <ul className="game-info-labels">
@@ -117,11 +141,13 @@ export function Hub() {
                                 </ul>
                             </li>
                             {gamesList.length === 0 ? (
+                                // NO USER-CREATED GAMES AVAILABLE
                                 <div className="empty-games-list">
                                     <li>No games available. Create a new game or refresh the page.</li>
                                     <Button type="button" style={{ width: "auto" }} onClick={() => setButtonPopup(true)}>Create Game</Button>
                                 </div>
                             ) : (
+                                // USER-CREATED GAMES AVAILABLE
                                 <>
                                     {gamesList.map(game => (
                                         <li key={game.id} className="game">
@@ -143,9 +169,8 @@ export function Hub() {
                                 </>
                             )}
                         </ul>
-                    </TabPanel>
-
-                    <TabPanel>
+                    ) :
+                        // SECOND TAB SHOWS MY GAMES
                         <ul className="game-list">
                             <li>
                                 <ul className="game-info-labels">
@@ -157,11 +182,13 @@ export function Hub() {
                                 </ul>
                             </li>
                             {myGamesList.length === 0 ? (
+                                // NONE OF MY GAMES ARE AVAILABLE
                                 <div className="empty-games-list">
                                     <li>No games available. Create a new game or refresh the page.</li>
                                     <Button type="button" style={{ width: "auto" }} onClick={() => setButtonPopup(true)}>Create Game</Button>
                                 </div>
                             ) : (
+                                // MY GAMES ARE AVAILABLE
                                 <>
                                     {myGamesList.map(game => (
                                         <li key={game.id} className="game">
@@ -191,7 +218,8 @@ export function Hub() {
                                 </>
                             )}
                         </ul>
-                    </TabPanel>
+                        // </TabPanel>
+                    }
                 </Tabs>
             </div >
             <CreateGame trigger={buttonPopup} setTrigger={setButtonPopup} />

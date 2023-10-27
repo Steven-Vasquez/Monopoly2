@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axiosInstance from "../../../backend/axiosInstance.ts";
 import io from "socket.io-client";
 
 import { createPeerConnection, createOffer, createAnswer } from "./utility/webRTCUtils.ts";
 import "../../stylesheets/VoiceChatRoom.css";
-import { Button } from "../Button.tsx";
 import { PhoneCall, PhoneX, Microphone, MicrophoneSlash, SpeakerHigh, SpeakerSlash } from "@phosphor-icons/react";
 
 function VoiceChatRoom() {

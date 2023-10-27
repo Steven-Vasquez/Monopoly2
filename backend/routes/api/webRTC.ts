@@ -34,3 +34,4 @@ const rtcServerConfig = {
   };
 
 router.get("/getWebRTCServers", async (request: any, response: any) => {
+});

@@ -42,3 +42,8 @@
     font-size: 0.8rem;
     padding: 0.5em;
 }
+
+.tabs a {
+    text-decoration: none;
+    color: #000;
+}

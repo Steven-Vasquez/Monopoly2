@@ -1,4 +1,3 @@
-import { InputHTMLAttributes } from "react";
 import '../stylesheets/Button.css'
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {

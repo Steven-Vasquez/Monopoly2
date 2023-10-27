@@ -57,8 +57,10 @@ function Login() {
             });
     }
 
+    // To get underline animation on page load
+    // Workaround to set activeTab state to 'login' on initial render since signup tab is on a different page
     useEffect(() => {
-        // Set a timeout to change the activeTab state after a brief delay for underline animation on page load
+        // Set a timeout to change the activeTab state after a brief delay for underline animation
         const timer = setTimeout(() => {
             setActiveTab('login'); // Set login tab as active by default
         }, 100);

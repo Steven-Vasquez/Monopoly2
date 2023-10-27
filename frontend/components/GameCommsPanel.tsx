@@ -10,8 +10,8 @@ export function GameCommsPanel(props: any) {
     const tabs = useRef<HTMLDivElement>(null);
     const [chatHeight, setChatHeight] = useState(0)
 
-    const [activeTab, setActiveTab] = useState('chat'); // Chat tab is active by default
-    const [showLog, setShowLog] = useState(false);      // Log is hidden by default
+    const [activeTab, setActiveTab] = useState('true'); // No tabs are active by default (for underline animation)
+    const [showLog, setShowLog] = useState(false);  // Log is hidden by default
 
     useEffect(() => {
         if (chatbox.current && tabs.current) {
@@ -29,6 +29,9 @@ export function GameCommsPanel(props: any) {
                 setChatHeight(chatBoxHeight - voiceHeight);
             })
         }
+
+        // Set chat tab as active by default
+        setActiveTab('chat');
     }, []);
 
     function toggleTab(tab: string) {

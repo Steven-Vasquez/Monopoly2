@@ -38,8 +38,10 @@ function Signup() {
             });
     };
 
+    // To get underline animation on page load
+    // Workaround to set activeTab state to 'signup' on initial render since login tab is on a different page
     useEffect(() => {
-        // Set a timeout to change the activeTab state after a brief delay for underline animation on page load
+        // Set a timeout to change the activeTab state after a brief delay for underline animation
         const timer = setTimeout(() => {
             setActiveTab('signup'); // Set signup tab as active by default
         }, 100);
@@ -98,7 +100,7 @@ function Signup() {
                         </TextField>
                         {/* <button type="submit">Register (DEV)</button> */}
                         <div className="form-button-container">
-                            <Button type="submit" style={{ width: "100%" }}>Sign Up</Button> 
+                            <Button type="submit" style={{ width: "100%" }}>Sign Up</Button>
                         </div>
                     </form>
                     <div className="account-action-links">

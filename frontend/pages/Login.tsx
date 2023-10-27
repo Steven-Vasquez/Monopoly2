@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { TextField } from '../components/TextField.tsx';
 import "../stylesheets/AccountsForms.css"
@@ -9,10 +9,9 @@ import { useNavigate } from "react-router-dom";
 
 function Login() {
     const [identifier, setIdentifier] = useState(''); // Combined email/username input
-
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState('');
-
+    const [activeTab, setActiveTab] = useState(''); // No tabs are active by default (for underline animation)
     const navigate = useNavigate();
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -56,14 +55,28 @@ function Login() {
                     console.log('Error', err.message);
                 }
             });
-
     }
+
+    useEffect(() => {
+        // Set a timeout to change the activeTab state after a brief delay for underline animation on page load
+        const timer = setTimeout(() => {
+            setActiveTab('login'); // Set login tab as active by default
+        }, 100);
+
+        // Clear the timeout when the component unmounts
+        return () => clearTimeout(timer);
+    }, [activeTab]);
+
     return (
         <div>
             <div className="form-page-container">
                 <h1>MONOPOLY</h1>
                 <div className="form-container">
-                    <h2>Log In</h2>
+                    {/* <h2>Log In</h2> */}
+                    <div className="tabs">
+                        <Link to="/login" className={`tab ${activeTab === 'login' ? 'active' : ''}`}>Log In</Link>
+                        <Link to="/signup" className={`tab ${activeTab === 'signup' ? 'active' : ''}`}>Sign Up</Link>
+                    </div>
                     {errorMessage && <div className="error-msg"><p>Error: {errorMessage}</p></div>}
                     <form onSubmit={handleSubmit}>
                         <TextField

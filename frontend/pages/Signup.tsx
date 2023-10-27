@@ -1,17 +1,16 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { TextField } from '../components/TextField.tsx';
 import { Button } from '../components/Button.tsx';
 import axiosInstance from '../../backend/axiosInstance.ts';
 
-function Register() {
+function Signup() {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-
-
+    const [activeTab, setActiveTab] = useState(''); // No tabs are active by default (for underline animation)
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
@@ -39,12 +38,26 @@ function Register() {
             });
     };
 
+    useEffect(() => {
+        // Set a timeout to change the activeTab state after a brief delay for underline animation on page load
+        const timer = setTimeout(() => {
+            setActiveTab('signup'); // Set signup tab as active by default
+        }, 100);
+
+        // Clear the timeout when the component unmounts
+        return () => clearTimeout(timer);
+    }, [activeTab]);
+
     return (
         <div>
             <div className="form-page-container">
                 <h1>MONOPOLY</h1>
                 <div className="form-container">
-                    <h2>Sign Up</h2>
+                    {/* <h2>Sign Up</h2> */}
+                    <div className="tabs">
+                        <Link to="/login" className={`tab ${activeTab === 'login' ? 'active' : ''}`}>Log In</Link>
+                        <Link to="/signup" className={`tab ${activeTab === 'signup' ? 'active' : ''}`}>Sign Up</Link>
+                    </div>
                     {errorMessage && <p>Error: {errorMessage}</p>}
                     <form onSubmit={handleSubmit}>
                         <TextField
@@ -97,4 +110,4 @@ function Register() {
     )
 }
 
-export default Register;
+export default Signup;

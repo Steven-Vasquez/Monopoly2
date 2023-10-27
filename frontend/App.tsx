@@ -5,7 +5,7 @@ import './App.css'
 
 import NavBar from './components/Navbar.tsx';
 
-import Register from './pages/Signup.tsx'
+import Signup from './pages/Signup.tsx'
 import Login from './pages/Login.tsx'
 import Home from './pages/Home.tsx';
 import Lobby from './pages/Lobby.tsx';
@@ -59,7 +59,7 @@ function App() {
         <Routes>
           <Route path="*" element={<><NavBar /><Navigate to="/" /></>} />
           <Route index path="/" element={<><NavBar /><Home /></>} />
-          <Route path="/signup" element={<><NavBar /><Register /></>} />
+          <Route path="/signup" element={<><NavBar /><Signup /></>} />
           <Route path="/login" element={<><NavBar /><Login /></>} />
           <Route path="/test" element={<><Test /></>} />
           <Route element={<ProtectedRoute />} >

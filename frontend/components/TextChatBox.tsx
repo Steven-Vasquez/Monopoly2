@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import axiosInstance from "../../backend/axiosInstance.ts";
 import { Socket } from "socket.io-client";
 
 import { CHAT_MESSAGE_RECEIVED } from "../../shared/constants.ts"
 import { PaperPlaneRight } from "@phosphor-icons/react";
-import { Button } from './Button.tsx';
 import "../stylesheets/Chat.css"
 
 interface ChatMessage { // Interface to define the shape of the ChatMessage data returned from the API call to get list of chat messages

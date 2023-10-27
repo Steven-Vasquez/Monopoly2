@@ -76,6 +76,7 @@ function App() {
 
       toastOptions={{
         className: 'toast',
+        duration: 3000,
         style: {
           backgroundColor: 'var(--background)',
           border: '3px solid var(--accent)',

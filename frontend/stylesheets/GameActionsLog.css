@@ -4,7 +4,6 @@
     flex-direction: column;
     gap: 1rem;
     flex: 1;
-    padding-top: 1rem;
     padding-bottom: 1rem;
     overflow-y: auto;
     mask-image: linear-gradient(to bottom, transparent 0, black 1rem, black calc(100% - 1rem), transparent 100%);

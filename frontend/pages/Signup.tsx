@@ -3,9 +3,12 @@ import { Link } from 'react-router-dom';
 import { TextField } from '../components/TextField.tsx';
 import { Button } from '../components/Button.tsx';
 import {Tab} from "../components/Tab.tsx";
+import usePageTitle from '../hooks/UsePageTitle.tsx';
 import axiosInstance from '../../backend/axiosInstance.ts';
 
 function Signup() {
+    usePageTitle('Sign Up');
+
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');

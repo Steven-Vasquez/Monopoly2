@@ -5,16 +5,17 @@ import io from "socket.io-client";
 import axiosInstance from '../../backend/axiosInstance.ts';
 import { GAME_JOINED } from "../../shared/constants.ts";
 
-import ChatBox from '../components/TextChatBox.tsx';
+import TextChatBox from '../components/TextChatBox.tsx';
 import VoiceChatRoom from '../components/voice/VoiceChatRoom.tsx';
 import { Link } from "react-router-dom";
 import { Button } from '../components/Button.tsx';
+import usePageTitle from '../hooks/UsePageTitle.tsx';
 
 function Lobby() {
     const navigate = useNavigate();
     const { lobbyID } = useParams<{ lobbyID: string }>();
+    usePageTitle(`Lobby for Game ${lobbyID}`);
 
-    
     // TODO: Check if user is player 1, and if so, show the start game button (must be host)
     // Otherwise, user must wait for player 1 to start the game
     const [isPlayerOne, setIsPlayerOne] = useState(true);  // NOTE: Set to true for testing purposes
@@ -96,7 +97,7 @@ function Lobby() {
             </ul>
 
             <VoiceChatRoom />
-            <ChatBox game_id={lobbyID} socket={socket} />
+            <TextChatBox game_id={lobbyID} socket={socket} height={100} />
             <>
                 {isPlayerOne ? (
                     <div className="action-links">

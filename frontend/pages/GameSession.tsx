@@ -10,7 +10,7 @@ import { Button } from '../components/Button.tsx';
 
 import { Board } from '../components/game/Board.tsx';
 import VoiceChatRoom from '../components/voice/VoiceChatRoom.tsx';
-import ChatBox from '../components/TextChatBox.tsx';
+import TextChatBox from '../components/TextChatBox.tsx';
 
 import "../stylesheets/GameSession.css";
 
@@ -102,7 +102,7 @@ function GameSession() {
                         </template>
                     </div>
                     <VoiceChatRoom />
-                    <ChatBox game_id={lobbyID} socket={socket} />
+                    <TextChatBox game_id={lobbyID} socket={socket} height={100} />
                     <div className="game-options-div">
                         {/* <form action="/api/games/<%= id %>/endGame" method="POST"> */}
                         <button type="submit" className="ms-btn ms-action" value="End Game">End Game</button>

@@ -2,9 +2,11 @@ import { Link } from "react-router-dom";
 import { Button } from "../components/Button.tsx";
 import ImageSlider from "../components/ImageSlider.tsx"
 import { Logo } from "../components/Logo.tsx";
+import usePageTitle from "../hooks/UsePageTitle.tsx";
 import "../stylesheets/Home.css";
 
 function Home(props: any) {
+    usePageTitle("Home");
     const { loggedIn } = props;
 
     // Content for slides (To be replaced with screenshots from website and corresponding descriptions)

@@ -6,9 +6,12 @@ import { Tab } from "../components/Tab.tsx";
 import { Button } from '../components/Button.tsx';
 import { toast } from 'react-hot-toast';
 import axiosInstance from '../../backend/axiosInstance.ts';
+import usePageTitle from '../hooks/UsePageTitle.tsx';
 import "../stylesheets/AccountsForms.css"
 
 function Login() {
+    usePageTitle('Log In');
+
     const [identifier, setIdentifier] = useState(''); // Combined email/username input
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState('');

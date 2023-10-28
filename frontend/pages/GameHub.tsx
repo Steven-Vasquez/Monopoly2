@@ -5,11 +5,12 @@ import { Tabs } from 'react-tabs';
 import { GlobeHemisphereWest, Lock } from "@phosphor-icons/react";
 import { Button } from "../components/Button.tsx";
 import { Tab } from "../components/Tab.tsx";
+import CreateGame from "../components/CreateGame.tsx";
+import usePageTitle from "../hooks/UsePageTitle.tsx";
 import axiosInstance from "../../backend/axiosInstance.ts";
 import io from "socket.io-client";
 
 import { GAME_CREATED } from "../../shared/constants.ts"
-import CreateGame from "../components/CreateGame.tsx";
 
 import 'react-tabs/style/react-tabs.css';
 import "../stylesheets/GameHub.css"
@@ -39,6 +40,8 @@ function TimeAgo({ date }: TimeAgoProps) {
 }
 
 export function Hub() {
+    usePageTitle('Game Hub');
+    
     const navigate = useNavigate();
     const socket = io("http://localhost:3001"); // Connecting to the socket room of the GameHub to update the list of games as needed
     console.log("Hub.tsx: socket: ", socket);

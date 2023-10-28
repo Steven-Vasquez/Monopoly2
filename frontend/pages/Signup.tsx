@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { TextField } from '../components/TextField.tsx';
 import { Button } from '../components/Button.tsx';
+import {Tab} from "../components/Tab.tsx";
 import axiosInstance from '../../backend/axiosInstance.ts';
 
 function Signup() {
@@ -55,12 +56,11 @@ function Signup() {
             <div className="form-page-container">
                 <h1>MONOPOLY</h1>
                 <div className="form-container">
-                    {/* <h2>Sign Up</h2> */}
                     <div className="tabs">
-                        <Link to="/login" className={`tab ${activeTab === 'login' ? 'active' : ''}`}>Log In</Link>
-                        <Link to="/signup" className={`tab ${activeTab === 'signup' ? 'active' : ''}`}>Sign Up</Link>
+                        <Tab variant="link" linkTo="/login" className={`tab ${activeTab === 'login' ? 'active' : ''}`}>Log In</Tab>
+                        <Tab variant="link" linkTo="/signup" className={`tab ${activeTab === 'signup' ? 'active' : ''}`}>Sign Up</Tab>
                     </div>
-                    {errorMessage && <p>Error: {errorMessage}</p>}
+                    {errorMessage && <div className="error-msg"><p>Error: {errorMessage}</p></div>}
                     <form onSubmit={handleSubmit}>
                         <TextField
                             label="Username"

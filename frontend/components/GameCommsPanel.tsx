@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import TextChatBox from './TextChatBox.tsx';
 import VoiceChatRoom from './voice/VoiceChatRoom.tsx';
 import GameActionsLog from './GameActionsLog.tsx';
+import { Tab } from "./Tab.tsx";
 
 export function GameCommsPanel(props: any) {
 
@@ -10,7 +11,7 @@ export function GameCommsPanel(props: any) {
     const tabs = useRef<HTMLDivElement>(null);
     const [chatHeight, setChatHeight] = useState(0)
 
-    const [activeTab, setActiveTab] = useState('true'); // No tabs are active by default (for underline animation)
+    const [activeTab, setActiveTab] = useState(''); // No tabs are active by default (for underline animation)
     const [showLog, setShowLog] = useState(false);  // Log is hidden by default
 
     useEffect(() => {
@@ -51,10 +52,9 @@ export function GameCommsPanel(props: any) {
     return (
         <div className="comms-panel-container">
             <div className="tabs" ref={tabs}>
-                <button type="button" className={`tab ${activeTab === 'chat' ? 'active' : ''}`} // If tab is active, append 'active' to className (for underline to work)
-                    onClick={toggleTab('chat')}>Chat</button>
-                <button type="button" className={`tab ${activeTab === 'log' ? 'active' : ''}`}
-                    onClick={toggleTab('log')}>Log</button>
+                {/* If tab is active, append 'active' to className (for underline to work) */} 
+                <Tab variant="button" linkTo="" className={`tab ${activeTab === 'chat' ? 'active' : ''}`} onClick={toggleTab('chat')}>Chat</Tab>
+                <Tab variant="button" linkTo="" className={`tab ${activeTab === 'log' ? 'active' : ''}`} onClick={toggleTab('log')}>Log</Tab>
             </div>
             {(showLog) ? (
                 <GameActionsLog />

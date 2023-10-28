@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from 'react-router-dom';
 import { formatDistanceToNow } from 'date-fns';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import { Tabs } from 'react-tabs';
 import { GlobeHemisphereWest, Lock } from "@phosphor-icons/react";
 import { Button } from "../components/Button.tsx";
+import { Tab } from "../components/Tab.tsx";
 import axiosInstance from "../../backend/axiosInstance.ts";
 import io from "socket.io-client";
 
@@ -42,8 +43,8 @@ export function Hub() {
     const socket = io("http://localhost:3001"); // Connecting to the socket room of the GameHub to update the list of games as needed
     console.log("Hub.tsx: socket: ", socket);
 
-    const [activeTab, setActiveTab] = useState('');                    // No tabs are active by default (for underline animation)
-    const [showJoinableGames, setShowJoinableGames] = useState(false); // My games tab content is hidden by default
+    const [activeTab, setActiveTab] = useState('');        // No tabs are active by default (for underline animation)
+    const [showMyGames, setShowMyGames] = useState(false); // My games tab content is hidden by default
 
     const [gamesList, setGamesList] = useState<Game[]>([]);     // Array of joinable games
     const [myGamesList, setMyGamesList] = useState<Game[]>([]); // Array of games that the user is a part of
@@ -108,10 +109,10 @@ export function Hub() {
 
             // Show/hide table contents when corresponding tab is clicked
             if (tab === 'joinable-games') {
-                setShowJoinableGames(true);
+                setShowMyGames(false);
             }
             else if (tab === 'my-games') {
-                setShowJoinableGames(false);
+                setShowMyGames(true);
             }
         };
     };
@@ -122,55 +123,13 @@ export function Hub() {
             <Button type="button" style={{ width: "auto" }} onClick={() => setButtonPopup(true)} >Create Game</Button>
             <div className="games-tabs-container">
                 <div className="tabs">
-                    <button type="button" className={`tab ${activeTab === 'joinable-games' ? 'active' : ''}`} // If tab is active, append 'active' to className (for underline to work)
-                        onClick={toggleTab('joinable-games')}>Joinable Games</button>
-                    <button type="button" className={`tab ${activeTab === 'my-games' ? 'active' : ''}`}
-                        onClick={toggleTab('my-games')}>My Games</button>
+                    {/* If tab is active, append 'active' to className (for underline to work) */}
+                    <Tab variant="button" linkTo="" className={`tab ${activeTab === 'joinable-games' ? 'active' : ''}`} onClick={toggleTab('joinable-games')}>Joinable Games</Tab>
+                    <Tab variant="button" linkTo="" className={`tab ${activeTab === 'my-games' ? 'active' : ''}`} onClick={toggleTab('my-games')}>My Games</Tab>
                 </div>
                 <Tabs>
-                    {(showJoinableGames) ? (
-                        // FIRST TAB SHOWS JOINABLE GAMES
-                        <ul className="game-list">
-                            <li>
-                                <ul className="game-info-labels">
-                                    <li>Game Title</li>
-                                    <li>Players</li>
-                                    <li>Privacy</li>
-                                    <li>Created</li>
-                                    <li>Join</li>
-                                </ul>
-                            </li>
-                            {gamesList.length === 0 ? (
-                                // NO USER-CREATED GAMES AVAILABLE
-                                <div className="empty-games-list">
-                                    <li>No games available. Create a new game or refresh the page.</li>
-                                    <Button type="button" style={{ width: "auto" }} onClick={() => setButtonPopup(true)}>Create Game</Button>
-                                </div>
-                            ) : (
-                                // USER-CREATED GAMES AVAILABLE
-                                <>
-                                    {gamesList.map(game => (
-                                        <li key={game.id} className="game">
-                                            <ul className="game-info">
-                                                <li className="game-title">{game.game_title}</li>
-                                                <li className="game-player-count">{game.player_count}/4</li>
-                                                <li className="game-type">{game.is_private ?
-                                                    <span title="private"><Lock size={22} color="#777" weight="fill" /></span> : <span title="public"><GlobeHemisphereWest size={22} color="#777" weight="fill" /></span>
-                                                }</li>
-                                                <li className="game-date"><TimeAgo date={game.created_at} /> </li>
-                                                <li>
-                                                    <Link className="join-button" to={''} onClick={() => handleJoinRequest(game.id)}>
-                                                        <Button type="button" style={{ height: "auto", fontSize: "0.9rem", padding: "12px 20px" }}>Join Game</Button>
-                                                    </Link>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                    ))}
-                                </>
-                            )}
-                        </ul>
-                    ) :
-                        // SECOND TAB SHOWS MY GAMES
+                    {(showMyGames) ? (
+                        // FIRST TAB SHOWS JOINABLE GAMES CREATED BY OTHER USERS
                         <ul className="game-list">
                             <li>
                                 <ul className="game-info-labels">
@@ -182,13 +141,13 @@ export function Hub() {
                                 </ul>
                             </li>
                             {myGamesList.length === 0 ? (
-                                // NONE OF MY GAMES ARE AVAILABLE
+                                // NO USER-CREATED GAMES AVAILABLE
                                 <div className="empty-games-list">
                                     <li>No games available. Create a new game or refresh the page.</li>
                                     <Button type="button" style={{ width: "auto" }} onClick={() => setButtonPopup(true)}>Create Game</Button>
                                 </div>
                             ) : (
-                                // MY GAMES ARE AVAILABLE
+                                // USER-CREATED GAMES ARE AVAILABLE
                                 <>
                                     {myGamesList.map(game => (
                                         <li key={game.id} className="game">
@@ -218,7 +177,47 @@ export function Hub() {
                                 </>
                             )}
                         </ul>
-                        // </TabPanel>
+                    ) :
+                        // SECOND TAB SHOWS GAMES CREATED BY ME
+                        <ul className="game-list">
+                            <li>
+                                <ul className="game-info-labels">
+                                    <li>Game Title</li>
+                                    <li>Players</li>
+                                    <li>Privacy</li>
+                                    <li>Created</li>
+                                    <li>Join</li>
+                                </ul>
+                            </li>
+                            {gamesList.length === 0 ? (
+                                // NONE OF MY GAMES ARE AVAILABLE
+                                <div className="empty-games-list">
+                                    <li>No games available. Create a new game or refresh the page.</li>
+                                    <Button type="button" style={{ width: "auto" }} onClick={() => setButtonPopup(true)}>Create Game</Button>
+                                </div>
+                            ) : (
+                                // MY GAMES AVAILABLE
+                                <>
+                                    {gamesList.map(game => (
+                                        <li key={game.id} className="game">
+                                            <ul className="game-info">
+                                                <li className="game-title">{game.game_title}</li>
+                                                <li className="game-player-count">{game.player_count}/4</li>
+                                                <li className="game-type">{game.is_private ?
+                                                    <span title="private"><Lock size={22} color="#777" weight="fill" /></span> : <span title="public"><GlobeHemisphereWest size={22} color="#777" weight="fill" /></span>
+                                                }</li>
+                                                <li className="game-date"><TimeAgo date={game.created_at} /> </li>
+                                                <li>
+                                                    <Link className="join-button" to={''} onClick={() => handleJoinRequest(game.id)}>
+                                                        <Button type="button" style={{ height: "auto", fontSize: "0.9rem", padding: "12px 20px" }}>Join Game</Button>
+                                                    </Link>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    ))}
+                                </>
+                            )}
+                        </ul>
                     }
                 </Tabs>
             </div >

@@ -8,7 +8,6 @@ import io from "socket.io-client";
 import GameCommsPanel from "../components/GameCommsPanel.tsx";
 
 export default function Test() {
-
     // Hard-coded socket connection for testing purposes
     const socket = io("http://localhost:3001");
     socket.emit("join", '0'); // Connecting to the socket room of the lobby for lobby-wide event updates

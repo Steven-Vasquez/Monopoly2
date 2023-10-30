@@ -1,3 +1,25 @@
+:root {
+	/*BOARD COLORS*/
+	--border-color: #271107;
+	--brown: #c28a5c;
+	--sky: #7bbed7;
+	--pink: #f2a3c7;
+	--orange: #f4955b;
+	--red: #ca6358;
+	--yellow: #ffbe6c;
+	--green: #87b152;
+	--blue: #556fa5;
+	--jail-color: #FFC885;
+	--space-background: #FFF4E6;
+	--corner-background: #FFE4C2;
+	--center-background: #FFF4E6;
+
+	--chance-card: #efa330;
+	--chance-card-hover: #c68e39;
+	--community-chest-card: #41b7e5;
+	--community-chest-card-hover: #3da0c7;
+}
+
 .board {
 	margin: auto;
 	display: grid;
@@ -13,7 +35,23 @@
 
 .board * {
 	box-sizing: border-box;
+	-webkit-user-select: none;
 	user-select: none;
+}
+
+.board .center {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: var(--center-background);
+}
+
+.board .center .monopoly-title {
+	gap: 1.5vmin;
+}
+
+.board .center .monopoly-title span {
+	font-size: 10.3vmin;
 }
 
 .board .bottom {

@@ -33,7 +33,6 @@ export default function Test() {
         <div>
             <div className="game-session-container">
                 <div className="game-session">
-                    <h1>Game Room</h1>
                     {/* <> */}
                         <div style={{ width: '100vw', height: '100vh' }} ref={container}>
 
@@ -74,8 +73,8 @@ export default function Test() {
                                         { type: "property", price: 240, color: "red", title: "Illinois Ave." },
                                         { type: "railroad", price: 200, title: "B & O Railroad" },
                                         { type: "property", price: 260, color: "yellow", title: "Atlantic Ave." },
-                                        { type: "chest" },
                                         { type: "property", price: 260, color: "yellow", title: "Ventnor Ave." },
+                                        {type: "water-works", price: 150},
                                         { type: "property", price: 280, color: "yellow", title: "Marvin Gardens" }
                                     ]
                                 }

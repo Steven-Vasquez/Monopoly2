@@ -1,7 +1,7 @@
 .comms-panel-container {
     height: calc(100svw - (100svw - 100%));
     width: 320px;
-    background-color: var(--background);
+    background-color: var(--background-dark);
     display: flex;
     flex-direction: column;
 

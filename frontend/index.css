@@ -6,42 +6,36 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 
-  --body-font: "Jost", sans-serif;
-  --display-font: "Staatliches", sans-serif;
-  --background: #f6dac1;
-  --background-dark: #f2c9a6;
-  --accent: #b44418;
-  --accent-dark: #7e3011;
-  --black: #271107;
-  --gray: #7e7e7e;
-  --error-red: #ff0000;
-
   --nav-height: 72px;
 
-  --border-color: black;
-	--brown: rgb(196 141 98);
-	--sky: rgb(139 209 212);
-	--pink: rgb(239 150 197);
-	--orange: rgb(240 150 107);
-	--red: rgb(255 111 97);
-	--yellow: rgb(250 216 98);
-	--green: rgb(121 200 105);
-	--blue: rgb(110 148 204);
-	--jail-color: rgb(189, 100, 52);
-	--space-background: rgb(246, 233, 198);
-	--space-background-hover: rgb(217, 203, 161);
-	--center-color: rgb(255, 248, 229);
+  --body-font: "Jost", sans-serif;
+  --display-font: "Staatliches", sans-serif;
 
-	--chance-card: #efa330;
-	--chance-card-hover: #c68e39;
-	--community-chest-card: #41b7e5;
-	--community-chest-card-hover: #3da0c7;
+  --background: #FFF4E6;
+  --background-dark: #FFE4C2;
+  --background-darker: #EABD85;
+
+  --secondary: #FFD399;
+  --secondary-dark: #FFC670;
+
+  --primary-light: #99350B;
+  --primary: #712708;
+  --primary-dark: #4C1B05;
+
+  --accent-light: #C9562C;
+  --accent: #A64724;
+  --accent-dark: #86391D;
+
+  --black: #271107;
+  --gray: #998873;
+  --error-red: #ff0000;
 }
 
 
 html, body {
   margin: 0;
   height: 100%;
+  background-color: var(--background);
 }
 
 h1 {

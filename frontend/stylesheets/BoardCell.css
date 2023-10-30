@@ -47,6 +47,11 @@
 	align-items: center;
 	height: 100%;
 	box-sizing: border-box;
+	background-color: var(--space-background);
+}
+
+.board-corner {
+	background-color: var(--corner-background);
 }
 
 .corner-contents {
@@ -196,7 +201,7 @@ img.cell-icon {
 .jail-grid #jail-cell {
 	height: 100%;
 	width: 100%;
-	background-color: var(--orange);
+	background-color: var(--jail-color);
 	position: relative;
 	border-left: 1px solid var(--border-color);
 	border-bottom: 1px solid var(--border-color);

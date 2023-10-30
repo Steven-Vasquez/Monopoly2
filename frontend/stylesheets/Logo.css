@@ -14,7 +14,7 @@
     animation: 5s ease-out infinite letter-jump;
   }
   
-  .monopoly-title:hover span {
+  .monopoly-title.link:hover span {
     color: var(--accent-dark);
   }
   

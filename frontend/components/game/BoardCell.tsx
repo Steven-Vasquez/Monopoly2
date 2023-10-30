@@ -256,7 +256,7 @@ export function BoardCell(props: BoardCellProps) {
                         style={{width: dim.width * 0.7, height: dim.height * 0.7}}
                     >
                         <h1>Go To</h1>
-                        {/* <img className="cell-icon" src="/frontend/assets/gameBoard/parking.svg" alt="" draggable="false"/> */}
+                        <img className="cell-icon" src="/frontend/assets/gameBoard/gotojail.svg" alt="" draggable="false"/>
                         <h1>Jail</h1>
                     </div>
                 </div>

@@ -14,7 +14,7 @@
     top: 50%;
     transform: translateY(-50%);
     left: 12px;
-    transition: all 0.15s, top 0.25s cubic-bezier(0.68, -0.4, 0.32, 1.4);
+    transition: all 0.15s, top 0.25s cubic-bezier(0.68, -0.8, 0.32, 1.8);
     pointer-events: none;
     color: var(--gray);
     font-size: 14px;

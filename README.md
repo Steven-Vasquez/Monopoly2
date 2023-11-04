@@ -19,7 +19,7 @@ We're a group of Computer Science majors who attended San Francisco State Univer
 **Team Duclings:**
 - [Steven Vasquez](https://github.com/Steven-Vasquez): Lead Developer, Backend Lead
 - [Kenny Leong](https://github.com/krleong): Frontend UI/UX, Backend 
-- [Andy Shi]((https://github.com/AndyShi1010)): Frontend UI/UX Lead
+- [Andy Shi](https://github.com/AndyShi1010): Frontend UI/UX Lead
 
 ### Technologies Used
 

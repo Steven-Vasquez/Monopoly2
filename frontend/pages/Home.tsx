@@ -42,7 +42,7 @@ function Home(props: any) {
                 </div>
                 <div id="about-section" className="sections">
                     <h2 className="headers">About Monopoly</h2>
-                    <p>The classic board game Monopoly is now available online for multiplayer! Compete with friends and strangers from all over the world in this fast-paced and strategic game.
+                    <p>The classic Parker Brothers/Hasbro multiplayer board game Monopoly is now available online! Compete with friends and strangers from all over the world in this fast-paced and strategic game.
                         <br></br>
                         <br></br>
                         Choose your game room, customize your character, and start playing today!</p>
@@ -53,7 +53,7 @@ function Home(props: any) {
                 </div>
                 <div id="about-section" className="sections">
                     <h2 className="headers">More About Monopoly</h2>
-                    <p>Monopoly is a classic board game that brings together the thrill of business and property management. Players roll dice to move around the game board, buying and trading properties, and developing them with houses and hotels. The game is won by bankrupting the other players. In our online version, you can enjoy the same strategic gameplay with friends or players from around the world, right from the comfort of your home.
+                    <p>Monopoly is a classic board game that brings together the thrill of business and property management. Players roll dice to move around the game board, buying and trading properties, and developing them with houses and hotels. The game is won by bankrupting the other players. Using our online web application, you can enjoy the same strategic gameplay with friends or players from around the world right from the comfort of your own home!
                         <br></br>
                         <br></br>
                         Get ready to experience the highs and lows of real estate with Monopoly online!</p>

@@ -36,26 +36,27 @@ const initSockets = (app: Express, sessionMiddleware: any): SocketServer => {
     /**************  Voice chat rooms **************/
     socket.on("joinVoice", (game_id: string) => {
       socket.join("voiceChat:" + game_id); // ex: voiceChat:1
+
+      // Broadcast to voice chat room that a user has joined
+      io.to("voiceChat:" + game_id).emit("userJoinedVoiceChat", socket.id);
     });
-    /*
-    socket.on("joinVoiceChat", (game_id: string, data: any) => {
 
-      socket.join("voiceChat:" + game_id); // ex: voiceChat:1
-
-      // Cleanup when user leaves voice chat by disconnecting
-      socket.on("disconnect", () => {
-        socket.broadcast.to("voiceChat:" + game_id).emit("userLeftVoiceChat", socket.id);
-      });
-
-      // Send signal to other user that someone is joining voice chat
-      socket.broadcast.to("voiceChat:" + game_id).emit("offer", { signal: data.signalData, from: data.from, name: data.name });
-
-      // Send signal from users to receive the offer
-      socket.on("answer", (data: any) => {
-        socket.to(data.to).emit("callAccepted", data.signal);
+    // When a user joins, send an offer to all other connected clients
+    socket.on("newParticipant", async data => {
+      // Broadcast the new participant information to all connected clients
+      io.to("voiceChat:" + data.game_id).emit("offer", {
+        id: data.id,
+        offer: data.offer,
       });
     });
-    */
+
+    socket.on("leaveVoice", (game_id: string) => {
+      console.log("User " + socket.id + " is leaving voice chat room: " + game_id);
+      socket.leave("voiceChat:" + game_id); // ex: voiceChat:1
+
+      // Broadcast to voice chat room that a user has left
+      io.to("voiceChat:" + game_id).emit("userLeftVoiceChat", socket.id);
+    });
     /**********************************************/
 
     socket.on("disconnect", () => {

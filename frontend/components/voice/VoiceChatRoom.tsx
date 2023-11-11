@@ -23,7 +23,17 @@ function VoiceChatRoom() {
     // Connecting to the socket room of the lobby for lobby-wide event updates
     const { lobbyID } = useParams<{ lobbyID: string }>();
     const socket = io("http://localhost:3001");
-    socket.emit("joinVoice", lobbyID); // Joins voice chat socket room (for example: voiceChat:1)
+
+
+    useEffect(() => {
+        socket.emit("joinVoice", lobbyID); // Joins voice chat socket room (for example: voiceChat:1)
+        return () => {
+            socket.emit("leaveVoice", lobbyID);
+            socket.disconnect();
+        }
+    }, [lobbyID, socket]);
+
+    //socket.emit("joinVoice", lobbyID); // Joins voice chat socket room (for example: voiceChat:1)
 
 
     socket.on("offer", (data: any) => {
@@ -92,9 +102,10 @@ function VoiceChatRoom() {
 
     useEffect(() => {
         // Get the current user's ID
+        //console.log("Getting user id");
         axiosInstance.get("/getUserID")
             .then(res => {
-                setUser_id(res.data.user_id);
+                setUser_id(res.data.id);
             })
             .catch(err => {
                 console.log(err);
@@ -104,18 +115,26 @@ function VoiceChatRoom() {
 
     // Handle joining the chat
     const handleJoinVoiceChat = async (participantId: number) => {
-
         // Create a new RTCPeerConnection for this participant
         const peerConnection = createPeerConnection();
 
         try {
             const audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
-            // Add the new participant to the list
-            setParticipants([...participants, { id: participantId, audioStream, peerConnection }]);
+            // Add the new participant to the list. Functional form of setParticipants is used to ensure that the state is updated correctly.
+            setParticipants(prevParticipants => [...prevParticipants, { id: participantId, audioStream, peerConnection }]);
 
+            // Notify other users about the new participant and include relevant details for connection setup
+            socket.emit("newParticipant", {
+                id: participantId,
+                offer: await createOffer(peerConnection), // Include the offer for connection setup
+                game_id: lobbyID,
+            });
+
+            /*
             // Send an offer to all other participants
             participants.forEach((participant) => {
+                console.log("participant id is: ", participant.id);
                 if (participant.id !== participantId) {
                     createOffer(peerConnection).then((offer) => {
                         console.log("Sending offer to:", participant.id + ": " + offer);
@@ -127,6 +146,7 @@ function VoiceChatRoom() {
                     });
                 }
             });
+            */
 
             // Add the audio stream to the peer connection
             audioStream.getTracks().forEach((track) => {
@@ -156,7 +176,7 @@ function VoiceChatRoom() {
 
             // Notify the server or other participants, if needed
             // For example, you can emit a "userLeftVoiceChat" event to inform others
-            socket.emit("userLeftVoiceChat", participantId);
+            socket.emit("leaveVoice", lobbyID);
         } else {
             console.warn("Leaving participant not found.");
         }
@@ -164,9 +184,9 @@ function VoiceChatRoom() {
     };
 
     // // Handle mute/unmute
-    // const toggleMute = () => {
-    //     setMuted(!muted);
-    // };
+    const toggleMute = () => {
+        setMuted(!muted);
+    };
 
     // // Handle deafen/undeafen
     // const toggleDeafen = () => {
@@ -190,10 +210,10 @@ function VoiceChatRoom() {
                             <PhoneX size={24} color="#fff" weight="bold" />
                             Leave Voice
                         </button>
-                        <button className="toggle-icon-button" onClick={() => {setMuted(!muted)}}>
+                        <button className="toggle-icon-button" onClick={() => { setMuted(!muted) }}>
                             {muted ? <span title="Unmute mic"><MicrophoneSlash size={20} color="#fff" weight="bold" /></span> : <span title="Mute mic"><Microphone size={20} weight="bold" /></span>}
                         </button>
-                        <button className="toggle-icon-button" onClick={() => {setDeafened(!deafened)}}>
+                        <button className="toggle-icon-button" onClick={() => { setDeafened(!deafened) }}>
                             {deafened ? <span title="Unmute voice chat"><SpeakerSlash size={20} color="#fff" weight="bold" /></span> : <span title="Mute voice chat"><SpeakerHigh size={20} weight="bold" /></span>}
                         </button>
                     </>
@@ -207,8 +227,8 @@ function VoiceChatRoom() {
             </div>
             <div>
                 {participants.map((participant) => (
-                    <div>
-                        <span key={participant.id}>{participant.id}</span>
+                    <div key={participant.id}>
+                        <span>{participant.id}</span>
                         <audio
                             autoPlay
                             muted={muted}
@@ -235,8 +255,8 @@ function VoiceChatRoom() {
 
             ) : (
                 <div> */}
-                    {/* Replace '1' with the participant ID */}
-                    {/* <span title="Join voice chat">
+            {/* Replace '1' with the participant ID */}
+            {/* <span title="Join voice chat">
                         <Button variant="primary" style={{ width: "auto", padding: "0.3rem 0.5rem 0.6rem 0.5rem" }} onClick={() => handleJoinVoiceChat(user_id)}>
                             <PhoneCall size={20} color="#fff" weight="bold" /> Join Voice
                         </Button>

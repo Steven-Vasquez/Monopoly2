@@ -22,6 +22,7 @@ app.get("/getUserID", (req: any, res: any) => {
 	if (req.session.user) { // There is a user session active
 		res.send({ id: req.session.user.id });
 	} else { // There is no user session active
+		console.log("No user session active");
 		res.send({ id: null });
 	}
 });

@@ -8,6 +8,7 @@ import "../../stylesheets/VoiceChatRoom.css";
 import { PhoneCall, PhoneX, Microphone, MicrophoneSlash, SpeakerHigh, SpeakerSlash } from "@phosphor-icons/react";
 
 function VoiceChatRoom() {
+    const [joinedVoice, setJoinedVoice] = useState(false);
     const [inVoiceChat, setInVoiceChat] = useState(false); // State to manage whether the user is in the voice chat or not
     const [participants, setParticipants] = useState<{ // Use state to manage the participants in the chat
         id: number;
@@ -24,18 +25,29 @@ function VoiceChatRoom() {
     const { lobbyID } = useParams<{ lobbyID: string }>();
     const socket = io("http://localhost:3001");
 
+    if(!joinedVoice) {
+        socket.emit("joinVoice", lobbyID); // Joins voice chat socket room (for example: voiceChat:1)
+    }
 
     useEffect(() => {
-        socket.emit("joinVoice", lobbyID); // Joins voice chat socket room (for example: voiceChat:1)
+        if (!joinedVoice) {
+            console.log("Joining voice chat socket room: " + lobbyID);
+            socket.emit("joinVoice", lobbyID); // Joins voice chat socket room (for example: voiceChat:1)
+            setJoinedVoice(true); // Set the state to indicate that the join has occurred
+            socket.emit("test", lobbyID);
+        }
+        else {
+            console.log("Already joined voice chat socket room");
+        }
         /*
         return () => {
             socket.emit("leaveVoice", lobbyID);
             socket.disconnect();
         }*/
-    }, [lobbyID, socket]);
+    }, [ lobbyID]);
 
     socket.on("userJoinedVoiceChat", (data: any) => {
-        //console.log("the test io.to event was received");
+        console.log("A user has joined the voice room (not chat)");
     });
 
     socket.on("offer", async (from: number, offer: RTCSessionDescriptionInit) => {
@@ -184,6 +196,14 @@ function VoiceChatRoom() {
         }
     }, []);
 
+    const testFunction = () => {
+        console.log("test function");
+        socket.emit("test", lobbyID);
+    }
+
+    socket.on("testReceived", (data: any) => {
+        console.log("test received");
+    });
 
     return (
         <div className="voice-chat-room-container" id="voice-chat-room">
@@ -208,6 +228,7 @@ function VoiceChatRoom() {
                         Join Voice
                     </button>
                 )}
+                <button onClick={() => testFunction()}>Test</button>
 
             </div>
             <div>

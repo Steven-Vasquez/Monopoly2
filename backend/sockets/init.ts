@@ -61,10 +61,12 @@ const initSockets = (app: Express, sessionMiddleware: any): SocketServer => {
     // When a user joins, send an offer to all other connected clients
     socket.on("newParticipant", (id: number, offer: RTCSessionDescriptionInit, game_id: string) => {
       console.log("a new participant is joining");
+      console.log("id: " + id);
+      console.log("offer: " + offer);
+      console.log("game_id: " + game_id);
       // Broadcast the new participant information to all connected clients
       
       const roomName = "voiceChat:" + game_id;
-      io.to(roomName).emit("testReceived", "success");
       io.to(roomName).emit("offer", {
         from: id,
         offer: offer,

@@ -52,7 +52,7 @@ function VoiceChatRoom() {
 
     socket.on("offer", async (from: number, offer: RTCSessionDescriptionInit) => {
         console.log("Received an offer from another user");
-        if (inVoiceChat) {
+        if (inVoiceChat && from !== user_id) {
             console.log("Received an offer from user:", from);
 
             // Create a new RTCPeerConnection for the current user
@@ -128,6 +128,7 @@ function VoiceChatRoom() {
     // Handle joining the chat
     const handleJoinVoiceChat = async (participantId: number) => {
         // Create a new RTCPeerConnection for this participant
+        console.log("handleJoinVoiceChat is being called");
         const peerConnection = createPeerConnection();
         try {
             const audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -141,13 +142,27 @@ function VoiceChatRoom() {
             setParticipants(prevParticipants => [...prevParticipants, { id: participantId, audioStream, peerConnection }]);
 
             const offer = await createOffer(peerConnection); // Create an offer for connection setup
+            
+            if(offer === null) {
+                console.log("Offer is null");
+                return;
+            }
+            
+            console.log("Sending offer to server:");
+            console.log("id: " + participantId);
+            console.log("offer: " + offer);
+            console.log("game_id: " + lobbyID);
 
+            const offerData = {
+                type: offer.type,
+                sdp: offer.sdp,
+            };
             // Notify other users about the new participant and include relevant details for connection setup
-            socket.emit("newParticipant", {
-                id: participantId,
-                offer: offer, // Include the offer for connection setup
-                game_id: lobbyID,
-            });
+            socket.emit("newParticipant", 
+                participantId,
+                offer, // Include the offer for connection setup
+                lobbyID,
+            );
 
         } catch (error) {
             console.error("Error accessing SpeakerHigh:", error);

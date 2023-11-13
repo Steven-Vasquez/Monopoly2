@@ -35,18 +35,21 @@ const initSockets = (app: Express, sessionMiddleware: any): SocketServer => {
 
     /**************  Voice chat rooms **************/
     socket.on("joinVoice", (game_id: string) => {
-      socket.join("voiceChat:" + game_id); // ex: voiceChat:1
+      const roomName = "voiceChat:" + game_id;
+      socket.join(roomName); // ex: voiceChat:1
 
       // Broadcast to voice chat room that a user has joined
       io.to("voiceChat:" + game_id).emit("userJoinedVoiceChat", socket.id);
     });
 
     // When a user joins, send an offer to all other connected clients
-    socket.on("newParticipant", async data => {
+    socket.on("newParticipant", (id: number, offer: RTCSessionDescriptionInit, game_id: string) => {
+      console.log("a new participant is joining");
       // Broadcast the new participant information to all connected clients
-      io.to("voiceChat:" + data.game_id).emit("offer", {
-        id: data.id,
-        offer: data.offer,
+      const roomName = "voiceChat:" + game_id;
+      io.to(roomName).emit("offer", {
+        from: id,
+        offer: offer,
       });
     });
 

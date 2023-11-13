@@ -35,27 +35,49 @@ const initSockets = (app: Express, sessionMiddleware: any): SocketServer => {
 
     /**************  Voice chat rooms **************/
     socket.on("joinVoice", (game_id: string) => {
-      socket.join("voiceChat:" + game_id); // ex: voiceChat:1
+      const roomName = "voiceChat:" + game_id;
+      try{
+        console.log("User " + socket.id + " is joining socket room: " + roomName);
+        socket.join(roomName); // ex: voiceChat:1
+      } catch (error) {
+        console.log("Error joining room: " + roomName);
+        console.log(error);
+      }
+      console.log("User " + socket.id + " is joining voice chat room: " + game_id);
+
+      // Broadcast to voice chat room that a user has joined
+      io.to("voiceChat:" + game_id).emit("userJoinedVoiceChat", socket.id);
     });
-    /*
-    socket.on("joinVoiceChat", (game_id: string, data: any) => {
+  
+    // A test function to see if users are still connected to the same socket room
+    socket.on("test", (game_id: string) => {
+      console.log("test emitting to room: " + game_id);
+      console.log(io.sockets.adapter.rooms.get("voiceChat:" + game_id));
+      console.log("All socket rooms connected:");
+      console.log(io.sockets.adapter.rooms);
+      io.to("voiceChat:"+ game_id).emit("testReceived", "success");
+    });
 
-      socket.join("voiceChat:" + game_id); // ex: voiceChat:1
-
-      // Cleanup when user leaves voice chat by disconnecting
-      socket.on("disconnect", () => {
-        socket.broadcast.to("voiceChat:" + game_id).emit("userLeftVoiceChat", socket.id);
-      });
-
-      // Send signal to other user that someone is joining voice chat
-      socket.broadcast.to("voiceChat:" + game_id).emit("offer", { signal: data.signalData, from: data.from, name: data.name });
-
-      // Send signal from users to receive the offer
-      socket.on("answer", (data: any) => {
-        socket.to(data.to).emit("callAccepted", data.signal);
+    // When a user joins, send an offer to all other connected clients
+    socket.on("newParticipant", (id: number, offer: RTCSessionDescriptionInit, game_id: string) => {
+      console.log("a new participant is joining");
+      // Broadcast the new participant information to all connected clients
+      
+      const roomName = "voiceChat:" + game_id;
+      io.to(roomName).emit("testReceived", "success");
+      io.to(roomName).emit("offer", {
+        from: id,
+        offer: offer,
       });
     });
-    */
+
+    socket.on("leaveVoice", (game_id: string) => {
+      console.log("User " + socket.id + " is leaving voice chat room: " + game_id);
+      socket.leave("voiceChat:" + game_id); // ex: voiceChat:1
+
+      // Broadcast to voice chat room that a user has left
+      io.to("voiceChat:" + game_id).emit("userLeftVoiceChat", socket.id);
+    });
     /**********************************************/
 
     socket.on("disconnect", () => {

@@ -85,7 +85,7 @@ function Lobby() {
         return () => {
             socket.disconnect();
         }
-    }, [socket]);
+    }, []);
 
     return (
         <div>

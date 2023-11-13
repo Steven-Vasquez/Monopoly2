@@ -8,6 +8,7 @@ import "../../stylesheets/VoiceChatRoom.css";
 import { PhoneCall, PhoneX, Microphone, MicrophoneSlash, SpeakerHigh, SpeakerSlash } from "@phosphor-icons/react";
 
 function VoiceChatRoom() {
+    const [joinedVoice, setJoinedVoice] = useState(false);
     const [inVoiceChat, setInVoiceChat] = useState(false); // State to manage whether the user is in the voice chat or not
     const [participants, setParticipants] = useState<{ // Use state to manage the participants in the chat
         id: number;
@@ -23,46 +24,67 @@ function VoiceChatRoom() {
     // Connecting to the socket room of the lobby for lobby-wide event updates
     const { lobbyID } = useParams<{ lobbyID: string }>();
     const socket = io("http://localhost:3001");
-    socket.emit("joinVoice", lobbyID); // Joins voice chat socket room (for example: voiceChat:1)
 
+    if(!joinedVoice) {
+        socket.emit("joinVoice", lobbyID); // Joins voice chat socket room (for example: voiceChat:1)
+    }
 
-    socket.on("offer", (data: any) => {
+    useEffect(() => {
+        if (!joinedVoice) {
+            console.log("Joining voice chat socket room: " + lobbyID);
+            socket.emit("joinVoice", lobbyID); // Joins voice chat socket room (for example: voiceChat:1)
+            setJoinedVoice(true); // Set the state to indicate that the join has occurred
+            socket.emit("test", lobbyID);
+        }
+        else {
+            console.log("Already joined voice chat socket room");
+        }
+        /*
+        return () => {
+            socket.emit("leaveVoice", lobbyID);
+            socket.disconnect();
+        }*/
+    }, [ lobbyID]);
+
+    socket.on("userJoinedVoiceChat", (data: any) => {
+        console.log("A user has joined the voice room (not chat)");
+    });
+
+    socket.on("offer", async (from: number, offer: RTCSessionDescriptionInit) => {
+        console.log("Received an offer from another user");
         if (inVoiceChat) {
-            console.log("Received an offer from user:", data.from);
+            console.log("Received an offer from user:", from);
 
+            // Create a new RTCPeerConnection for the current user
             const peerConnection = createPeerConnection();
 
-            // Assuming you have a participant with the given `data.from` ID in your participants state.
-            const senderParticipant = participants.find((participant) => participant.id === data.from);
+            // Set the remote description of the current user's peer connection with the received offer
+            await peerConnection.setRemoteDescription(offer);
 
-            if (senderParticipant) {
-                const senderStream = senderParticipant.audioStream;
+            // Handle the ontrack event to get the remote participant's audioStream
+            peerConnection.ontrack = (event) => {
+                const remoteAudioStream = event.streams[0];
 
-                // Add the sender's audio stream to the peer connection
-                senderStream.getTracks().forEach((track) => {
-                    peerConnection.addTrack(track, senderStream);
-                });
+                // Now you can use remoteAudioStream as needed
+                console.log("Received remote audio stream:", remoteAudioStream);
 
-                // Create an answer
-                createAnswer(peerConnection)
-                    .then((answer) => {
-                        // Set the local description of the peer connection
-                        return peerConnection.setLocalDescription(answer);
-                    })
-                    .then(() => {
-                        // Send the answer back to the sender
-                        socket.emit("answer", {
-                            to: data.from,
-                            from: user_id,
-                            answer: peerConnection.localDescription,
-                        });
-                    })
-                    .catch((error) => {
-                        console.error("Error creating answer:", error);
-                    });
-            } else {
-                console.warn("Sender participant not found.");
-            }
+                // Update the local state with the new participant and their peer connection
+                setParticipants(prevParticipants => [...prevParticipants, { id: from, audioStream: remoteAudioStream, peerConnection }]);
+            };
+
+            // Create an answer for the received offer
+            const answer = await createAnswer(peerConnection);
+
+            // Set the local description of the current user's peer connection to the created answer
+            await peerConnection.setLocalDescription(answer);
+
+            // Send the answer to the user who sent the offer
+            socket.emit("answer", {
+                to: from,
+                from: user_id,
+                answer: peerConnection.localDescription,
+            });
+
         }
     });
 
@@ -92,9 +114,10 @@ function VoiceChatRoom() {
 
     useEffect(() => {
         // Get the current user's ID
+        //console.log("Getting user id");
         axiosInstance.get("/getUserID")
             .then(res => {
-                setUser_id(res.data.user_id);
+                setUser_id(res.data.id);
             })
             .catch(err => {
                 console.log(err);
@@ -104,33 +127,26 @@ function VoiceChatRoom() {
 
     // Handle joining the chat
     const handleJoinVoiceChat = async (participantId: number) => {
-
         // Create a new RTCPeerConnection for this participant
         const peerConnection = createPeerConnection();
-
         try {
             const audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
-            // Add the new participant to the list
-            setParticipants([...participants, { id: participantId, audioStream, peerConnection }]);
-
-            // Send an offer to all other participants
-            participants.forEach((participant) => {
-                if (participant.id !== participantId) {
-                    createOffer(peerConnection).then((offer) => {
-                        console.log("Sending offer to:", participant.id + ": " + offer);
-                        socket.emit("offer", {
-                            to: participant.id,
-                            from: user_id,
-                            offer,
-                        });
-                    });
-                }
-            });
-
-            // Add the audio stream to the peer connection
+            // Add the local audio track to the peer connection
             audioStream.getTracks().forEach((track) => {
                 peerConnection.addTrack(track, audioStream);
+            });
+
+            // Add the new participant to the list. Functional form of setParticipants is used to ensure that the state is updated correctly.
+            setParticipants(prevParticipants => [...prevParticipants, { id: participantId, audioStream, peerConnection }]);
+
+            const offer = await createOffer(peerConnection); // Create an offer for connection setup
+
+            // Notify other users about the new participant and include relevant details for connection setup
+            socket.emit("newParticipant", {
+                id: participantId,
+                offer: offer, // Include the offer for connection setup
+                game_id: lobbyID,
             });
 
         } catch (error) {
@@ -156,7 +172,7 @@ function VoiceChatRoom() {
 
             // Notify the server or other participants, if needed
             // For example, you can emit a "userLeftVoiceChat" event to inform others
-            socket.emit("userLeftVoiceChat", participantId);
+            socket.emit("leaveVoice", lobbyID);
         } else {
             console.warn("Leaving participant not found.");
         }
@@ -164,9 +180,9 @@ function VoiceChatRoom() {
     };
 
     // // Handle mute/unmute
-    // const toggleMute = () => {
-    //     setMuted(!muted);
-    // };
+    const toggleMute = () => {
+        setMuted(!muted);
+    };
 
     // // Handle deafen/undeafen
     // const toggleDeafen = () => {
@@ -178,7 +194,16 @@ function VoiceChatRoom() {
         return () => {
             socket.disconnect();
         }
-    }, [socket]);
+    }, []);
+
+    const testFunction = () => {
+        console.log("test function");
+        socket.emit("test", lobbyID);
+    }
+
+    socket.on("testReceived", (data: any) => {
+        console.log("test received");
+    });
 
     return (
         <div className="voice-chat-room-container" id="voice-chat-room">
@@ -190,10 +215,10 @@ function VoiceChatRoom() {
                             <PhoneX size={24} color="#fff" weight="bold" />
                             Leave Voice
                         </button>
-                        <button className="toggle-icon-button" onClick={() => {setMuted(!muted)}}>
+                        <button className="toggle-icon-button" onClick={() => { setMuted(!muted) }}>
                             {muted ? <span title="Unmute mic"><MicrophoneSlash size={20} color="#fff" weight="bold" /></span> : <span title="Mute mic"><Microphone size={20} weight="bold" /></span>}
                         </button>
-                        <button className="toggle-icon-button" onClick={() => {setDeafened(!deafened)}}>
+                        <button className="toggle-icon-button" onClick={() => { setDeafened(!deafened) }}>
                             {deafened ? <span title="Unmute voice chat"><SpeakerSlash size={20} color="#fff" weight="bold" /></span> : <span title="Mute voice chat"><SpeakerHigh size={20} weight="bold" /></span>}
                         </button>
                     </>
@@ -203,24 +228,26 @@ function VoiceChatRoom() {
                         Join Voice
                     </button>
                 )}
+                <button onClick={() => testFunction()}>Test</button>
 
             </div>
             <div>
-                {participants.map((participant) => (
-                    <div>
-                        <span key={participant.id}>{participant.id}</span>
-                        <audio
-                            autoPlay
-                            muted={muted}
-                            ref={(audioElement) => {
-                                if (audioElement) {
-                                    audioElement.srcObject = participant.audioStream;
-                                }
-                            }}
-                        />
-
-                    </div>
-                ))}
+                {participants
+                    .filter((participant) => participant.id !== user_id)
+                    .map((participant) => (
+                        <div key={participant.id}>
+                            <span>{participant.id}</span>
+                            <audio
+                                autoPlay
+                                muted={muted}
+                                ref={(audioElement) => {
+                                    if (audioElement) {
+                                        audioElement.srcObject = participant.audioStream;
+                                    }
+                                }}
+                            />
+                        </div>
+                    ))}
             </div>
 
             {/* {inVoiceChat ? (
@@ -235,8 +262,8 @@ function VoiceChatRoom() {
 
             ) : (
                 <div> */}
-                    {/* Replace '1' with the participant ID */}
-                    {/* <span title="Join voice chat">
+            {/* Replace '1' with the participant ID */}
+            {/* <span title="Join voice chat">
                         <Button variant="primary" style={{ width: "auto", padding: "0.3rem 0.5rem 0.6rem 0.5rem" }} onClick={() => handleJoinVoiceChat(user_id)}>
                             <PhoneCall size={20} color="#fff" weight="bold" /> Join Voice
                         </Button>

@@ -15,7 +15,7 @@
   }
   
   .monopoly-title.link:hover span {
-    color: var(--accent-dark);
+    color: var(--primary);
   }
   
   @keyframes letter-jump {

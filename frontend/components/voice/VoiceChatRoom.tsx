@@ -51,8 +51,13 @@ function VoiceChatRoom() {
     });
 
     socket.on("offer", async (from: number, offer: RTCSessionDescriptionInit) => {
-        console.log("Received an offer from another user");
-        if (inVoiceChat && from !== user_id) {
+        //console.log("Received an offer from another user");
+        console.log("from: " + from);
+        const res = await axiosInstance.get("/getUserID");
+        const tempUserID = res.data.id;
+        console.log("user id in offer is " + tempUserID);
+          
+        if (inVoiceChat && from !== tempUserID) {
             console.log("Received an offer from user:", from);
 
             // Create a new RTCPeerConnection for the current user
@@ -112,9 +117,9 @@ function VoiceChatRoom() {
         }
     });
 
+
     useEffect(() => {
         // Get the current user's ID
-        //console.log("Getting user id");
         axiosInstance.get("/getUserID")
             .then(res => {
                 setUser_id(res.data.id);
@@ -124,11 +129,15 @@ function VoiceChatRoom() {
             });
     }, []);
 
+    useEffect(() => {
+        console.log("user_id from useEffect:", user_id);
+    }, [user_id]);
 
     // Handle joining the chat
     const handleJoinVoiceChat = async (participantId: number) => {
         // Create a new RTCPeerConnection for this participant
         console.log("handleJoinVoiceChat is being called");
+        
         const peerConnection = createPeerConnection();
         try {
             const audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -213,6 +222,7 @@ function VoiceChatRoom() {
 
     const testFunction = () => {
         console.log("test function");
+        console.log("user_id: " + user_id);
         socket.emit("test", lobbyID);
     }
 

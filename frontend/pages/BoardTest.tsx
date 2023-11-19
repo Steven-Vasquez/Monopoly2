@@ -4,6 +4,9 @@ import PlayerInventory from "../components/game/PlayerInventory.tsx";
 import { BoardCell } from "../components/game/BoardCell.tsx";
 import { useState, useEffect, useRef } from 'react'
 
+import { GameModel } from '../models/GameModel.ts'
+import { Player } from '../models/Player.ts'
+
 // Kenny's Imports
 import "../stylesheets/GameSession.css";
 import io from "socket.io-client";
@@ -17,6 +20,8 @@ export default function Test() {
 
     const container = useRef<HTMLDivElement>(null);
     const [dim, setDim] = useState({ width: 0, height: 0 });
+
+    const [gameModel, setGameModel] = useState(new GameModel([]))
     useEffect(() => {
         if (container.current) {
             setDim({
@@ -31,6 +36,17 @@ export default function Test() {
             })
         }
     }, []);
+
+    let [index, setIndex] = useState(0);
+
+    const addPlayer = () => {
+        // gameModel.addPlayer(player);
+        const newGame = new GameModel([...gameModel.players, new Player(index, "Top Hat", 0,0,0)]);
+        setIndex(index += 1)
+        setGameModel((newGame));
+        console.log(newGame)
+    }
+
     return (
         <div>
             <div className="game-session-container">
@@ -101,6 +117,15 @@ export default function Test() {
                     <PlayerInventory />
                     {/* <VoiceChatRoom />
                     <ChatBox game_id={'0'} socket={socket} /> */}
+
+                    <>
+                        <h1>Testing stuff</h1>
+                        <h3>Current players in gameModel</h3>
+                        {gameModel.players.map((i, index) => (
+                            <p key={index}>{i.playerId} {i.token}</p>
+                        ))}
+                        <button onClick={addPlayer}>Add new player</button>
+                    </>
                 </div>
             </div>
         </div >

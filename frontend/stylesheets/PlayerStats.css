@@ -1,12 +1,19 @@
 .player-stats-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     width: 320px;
-    height: auto;
+    height: calc(100svw - (100svw - 100%));
+    gap: 1.3rem;
     padding: 1rem;
     font-family: var(--body-font);
 
-    display: grid;
-    grid-template-rows: repeat(4, auto);
-    grid-row-gap: 1.3rem;
+    /* make fixed position mid left */
+    position: fixed;
+    top: 50%;
+    left: 0;
+    z-index: 9999;
+    transform: translateY(-50%);
 
     /* colors for debugging */
     /* background-color: lightcoral;
@@ -59,7 +66,6 @@
 
 .player-vc {
     margin-left: 5px;
-    font-style: italic;
 }
 
 .player-properties {

@@ -1,5 +1,6 @@
 import Board from "../components/game/Board.tsx";
 import PlayerStats from "../components/game/PlayerStats.tsx";
+import PlayerInventory from "../components/game/PlayerInventory.tsx";
 import { BoardCell } from "../components/game/BoardCell.tsx";
 import { useState, useEffect, useRef } from 'react'
 
@@ -97,6 +98,7 @@ export default function Test() {
                     {/* </> */}
                     <GameCommsPanel socket={socket} />
                     <PlayerStats />
+                    <PlayerInventory />
                     {/* <VoiceChatRoom />
                     <ChatBox game_id={'0'} socket={socket} /> */}
                 </div>

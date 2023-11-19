@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { useRef } from "react";
 import axiosInstance from "../../../backend/axiosInstance.ts";
 import io from "socket.io-client";
 
@@ -10,6 +11,9 @@ import { PhoneCall, PhoneX, Microphone, MicrophoneSlash, SpeakerHigh, SpeakerSla
 function VoiceChatRoom() {
     const [joinedVoice, setJoinedVoice] = useState(false);
     const [inVoiceChat, setInVoiceChat] = useState(false); // State to manage whether the user is in the voice chat or not
+    const [user_id, setUser_id] = useState(0);
+    const inVoiceChatRef = useRef(inVoiceChat);
+    const user_idRef = useRef(user_id);
     const [participants, setParticipants] = useState<{ // Use state to manage the participants in the chat
         id: number;
         audioStream: MediaStream
@@ -19,13 +23,12 @@ function VoiceChatRoom() {
     const [muted, setMuted] = useState(false); // State to manage mute/unmute
     // TODO
     const [deafened, setDeafened] = useState(false); // State to manage deafen/undeafen
-    const [user_id, setUser_id] = useState(0);
 
     // Connecting to the socket room of the lobby for lobby-wide event updates
     const { lobbyID } = useParams<{ lobbyID: string }>();
     const socket = io("http://localhost:3001");
 
-    if(!joinedVoice) {
+    if (!joinedVoice) {
         socket.emit("joinVoice", lobbyID); // Joins voice chat socket room (for example: voiceChat:1)
     }
 
@@ -44,90 +47,116 @@ function VoiceChatRoom() {
             socket.emit("leaveVoice", lobbyID);
             socket.disconnect();
         }*/
-    }, [ lobbyID]);
+    }, [lobbyID]);
 
-    socket.on("userJoinedVoiceChat", (data: any) => {
-        console.log("A user has joined the voice room (not chat)");
-    });
+    // Update the ref of "inVoiceChat" when the state changes
+    useEffect(() => {
+        inVoiceChatRef.current = inVoiceChat;
+        console.log("Updated inVoiceChatRef:", inVoiceChatRef.current);
+    }, [inVoiceChat]);
 
-    socket.on("offer", async (from: number, offer: RTCSessionDescriptionInit) => {
-        console.log("Received an offer from another user");
-        if (inVoiceChat) {
-            console.log("Received an offer from user:", from);
+    // Update the ref of "user_id" when the state changes
+    useEffect(() => {
+        user_idRef.current = user_id;
+        console.log("Updated user_idRef:", user_idRef.current);
+    }, [user_id]);
 
-            // Create a new RTCPeerConnection for the current user
-            const peerConnection = createPeerConnection();
-
-            // Set the remote description of the current user's peer connection with the received offer
-            await peerConnection.setRemoteDescription(offer);
-
-            // Handle the ontrack event to get the remote participant's audioStream
-            peerConnection.ontrack = (event) => {
-                const remoteAudioStream = event.streams[0];
-
-                // Now you can use remoteAudioStream as needed
-                console.log("Received remote audio stream:", remoteAudioStream);
-
-                // Update the local state with the new participant and their peer connection
-                setParticipants(prevParticipants => [...prevParticipants, { id: from, audioStream: remoteAudioStream, peerConnection }]);
-            };
-
-            // Create an answer for the received offer
-            const answer = await createAnswer(peerConnection);
-
-            // Set the local description of the current user's peer connection to the created answer
-            await peerConnection.setLocalDescription(answer);
-
-            // Send the answer to the user who sent the offer
-            socket.emit("answer", {
-                to: from,
-                from: user_id,
-                answer: peerConnection.localDescription,
-            });
-
+    // Handle receiving a new participant
+    useEffect(() => {
+        socket.on("userJoinedVoiceChat", (data: any) => {
+            console.log("A user has joined the voice room (not chat)");
+        });
+        // Clean up the event listener
+        return () => {
+            socket.off("userJoinedVoiceChat");
         }
-    });
+    }, []);
 
-    socket.on("answer", (data: any) => {
-        if (inVoiceChat) {
-            console.log("Received an answer from user:", data.from);
+    // Handle receiving an offer from another user
+    useEffect(() => {
+        socket.on("offer", async (from: number, offer: RTCSessionDescriptionInit) => {
+            //console.log("Received an offer from another user");
+            console.log("from: " + from);
 
-            // Find the receiver's participant based on the data.from ID
-            const receiverParticipant = participants.find((participant) => participant.id === data.from);
+            console.log("inVoiceChatRef from \"offer\":" + inVoiceChatRef.current);
+            console.log(from !== user_idRef.current);
+            if (inVoiceChat && from !== user_idRef.current) {
+                console.log("Received an offer from user:", from);
 
-            if (receiverParticipant) {
-                const peerConnection = receiverParticipant.peerConnection;
+                // Create a new RTCPeerConnection for the current user
+                const peerConnection = createPeerConnection();
 
-                // Set the remote description of the peer connection with the received answer
-                peerConnection.setRemoteDescription(data.answer)
-                    .then(() => {
-                        console.log("Remote description set successfully.");
-                    })
-                    .catch((error) => {
-                        console.error("Error setting remote description:", error);
-                    });
-            } else {
-                console.warn("Receiver participant not found.");
+                // Set the remote description of the current user's peer connection with the received offer
+                await peerConnection.setRemoteDescription(offer);
+
+                // Handle the ontrack event to get the remote participant's audioStream
+                peerConnection.ontrack = (event) => {
+                    const remoteAudioStream = event.streams[0];
+
+                    // Now you can use remoteAudioStream as needed
+                    console.log("Received remote audio stream:", remoteAudioStream);
+
+                    // Update the local state with the new participant and their peer connection
+                    setParticipants(prevParticipants => [...prevParticipants, { id: from, audioStream: remoteAudioStream, peerConnection }]);
+                };
+
+                // Create an answer for the received offer
+                const answer = await createAnswer(peerConnection);
+
+                // Set the local description of the current user's peer connection to the created answer
+                await peerConnection.setLocalDescription(answer);
+
+                // Send the answer to the user who sent the offer
+                socket.emit("answer", {
+                    to: from,
+                    from: user_id,
+                    answer: peerConnection.localDescription,
+                });
+
             }
+        });
+        // Clean up the event listener
+        return () => {
+            socket.off("offer");
         }
-    });
+    }, []);
 
     useEffect(() => {
-        // Get the current user's ID
-        //console.log("Getting user id");
-        axiosInstance.get("/getUserID")
-            .then(res => {
-                setUser_id(res.data.id);
-            })
-            .catch(err => {
-                console.log(err);
-            });
+        socket.on("answer", (data: any) => {
+            if (inVoiceChat) {
+                console.log("Received an answer from user:", data.from);
+
+                // Find the receiver's participant based on the data.from ID
+                const receiverParticipant = participants.find((participant) => participant.id === data.from);
+
+                if (receiverParticipant) {
+                    const peerConnection = receiverParticipant.peerConnection;
+
+                    // Set the remote description of the peer connection with the received answer
+                    peerConnection.setRemoteDescription(data.answer)
+                        .then(() => {
+                            console.log("Remote description set successfully.");
+                        })
+                        .catch((error) => {
+                            console.error("Error setting remote description:", error);
+                        });
+                } else {
+                    console.warn("Receiver participant not found.");
+                }
+            }
+        });
+        // Clean up the event listener
+        return () => {
+            socket.off("answer");
+        }
     }, []);
 
 
     // Handle joining the chat
     const handleJoinVoiceChat = async (participantId: number) => {
         // Create a new RTCPeerConnection for this participant
+        console.log("handleJoinVoiceChat is being called");
+
         const peerConnection = createPeerConnection();
         try {
             const audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -142,17 +171,32 @@ function VoiceChatRoom() {
 
             const offer = await createOffer(peerConnection); // Create an offer for connection setup
 
+            if (offer === null) {
+                console.log("Offer is null");
+                return;
+            }
+
+            console.log("Sending offer to server:");
+            console.log("id: " + participantId);
+            console.log("offer: " + offer);
+            console.log("game_id: " + lobbyID);
+
+            const offerData = {
+                type: offer.type,
+                sdp: offer.sdp,
+            };
             // Notify other users about the new participant and include relevant details for connection setup
-            socket.emit("newParticipant", {
-                id: participantId,
-                offer: offer, // Include the offer for connection setup
-                game_id: lobbyID,
-            });
+            setInVoiceChat(true); // Set inVoiceChat to true
+
+            socket.emit("newParticipant",
+                participantId,
+                offer, // Include the offer for connection setup
+                lobbyID,
+            );
 
         } catch (error) {
             console.error("Error accessing SpeakerHigh:", error);
         }
-        setInVoiceChat(true); // Set inVoiceChat to true
     };
 
     // Handle leaving the chat
@@ -189,6 +233,22 @@ function VoiceChatRoom() {
     //     setDeafened(!deafened);
     // };
 
+
+    useEffect(() => {
+        // Get the current user's ID
+        axiosInstance.get("/getUserID")
+            .then(res => {
+                setUser_id(res.data.id);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }, []);
+
+    useEffect(() => {
+        console.log("user_id from useEffect:", user_id);
+    }, [user_id]);
+
     // Disconnect from socket when component unmounts
     useEffect(() => {
         return () => {
@@ -198,12 +258,18 @@ function VoiceChatRoom() {
 
     const testFunction = () => {
         console.log("test function");
+        console.log("user_id: " + user_id);
         socket.emit("test", lobbyID);
     }
 
     socket.on("testReceived", (data: any) => {
         console.log("test received");
     });
+
+    useEffect(() => {
+        console.log("inVoiceChat: " + inVoiceChat);
+    }
+        , [inVoiceChat]);
 
     return (
         <div className="voice-chat-room-container" id="voice-chat-room">

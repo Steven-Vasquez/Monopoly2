@@ -53,8 +53,8 @@ function PlayerStats() {
                     <div className="player-properties">
                         {player.properties.map((property, propertyIndex) => (
                             <div className="player-property" key={propertyIndex}>
-                                <div className="vertical-rectangle">
-                                    <div className="horizontal-rectangle"></div>
+                                <div className="vertical-rectangle-small">
+                                    <div className="horizontal-rectangle-small"></div>
                                     <div className="number-container">
                                         <span>{property}</span>
                                     </div>

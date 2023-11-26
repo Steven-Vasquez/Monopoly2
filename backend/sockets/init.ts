@@ -63,6 +63,7 @@ const initSockets = (app: Express, sessionMiddleware: any): SocketServer => {
       console.log("a new participant is joining");
       console.log("id: " + id);
       console.log("offer: " + offer);
+      console.log(offer);
       console.log("game_id: " + game_id);
       // Broadcast the new participant information to all connected clients
       

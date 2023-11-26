@@ -32,6 +32,7 @@ function VoiceChatRoom() {
         socket.emit("joinVoice", lobbyID); // Joins voice chat socket room (for example: voiceChat:1)
     }
 
+    /*
     useEffect(() => {
         if (!joinedVoice) {
             console.log("Joining voice chat socket room: " + lobbyID);
@@ -42,42 +43,46 @@ function VoiceChatRoom() {
         else {
             console.log("Already joined voice chat socket room");
         }
-        /*
-        return () => {
-            socket.emit("leaveVoice", lobbyID);
-            socket.disconnect();
-        }*/
     }, [lobbyID]);
+    */
 
     // Update the ref of "inVoiceChat" when the state changes
     useEffect(() => {
         inVoiceChatRef.current = inVoiceChat;
-        console.log("Updated inVoiceChatRef:", inVoiceChatRef.current);
+        //console.log("Updated inVoiceChatRef:", inVoiceChatRef.current);
     }, [inVoiceChat]);
 
     // Update the ref of "user_id" when the state changes
     useEffect(() => {
         user_idRef.current = user_id;
-        console.log("Updated user_idRef:", user_idRef.current);
+        //console.log("Updated user_idRef:", user_idRef.current);
     }, [user_id]);
 
     // Handle receiving a new participant
     useEffect(() => {
+        console.log("a socket listener is being added");
         socket.on("userJoinedVoiceChat", (data: any) => {
             console.log("A user has joined the voice room (not chat)");
         });
         // Clean up the event listener
         return () => {
+            console.log("a socket listener is being removed");
             socket.off("userJoinedVoiceChat");
         }
     }, []);
 
     // Handle receiving an offer from another user
     useEffect(() => {
-        socket.on("offer", async (from: number, offer: RTCSessionDescriptionInit) => {
+        interface OfferData {
+            from: number;
+            offer: RTCSessionDescriptionInit;
+        }
+
+        socket.on("offer", async (data: OfferData) => {
+            const { from, offer } = data;
+
             //console.log("Received an offer from another user");
             console.log("from: " + from);
-
             console.log("inVoiceChatRef from \"offer\":" + inVoiceChatRef.current);
             console.log(from !== user_idRef.current);
             if (inVoiceChat && from !== user_idRef.current) {
@@ -85,10 +90,22 @@ function VoiceChatRoom() {
 
                 // Create a new RTCPeerConnection for the current user
                 const peerConnection = createPeerConnection();
+                peerConnection.addEventListener('icegatheringstatechange', () => {
+                    console.log('ICE Gathering State:', peerConnection.iceGatheringState);
+                });
 
                 // Set the remote description of the current user's peer connection with the received offer
+                console.log("Setting remote description");
                 await peerConnection.setRemoteDescription(offer);
 
+
+                
+                // Create an answer for the received offer, setting peerConnection.localDescription properly
+                // Wait for createAnswer to complete before accessing localDescription
+                const answer = await createAnswer(peerConnection);
+
+                const localDescription = peerConnection.localDescription;
+                
                 // Handle the ontrack event to get the remote participant's audioStream
                 peerConnection.ontrack = (event) => {
                     const remoteAudioStream = event.streams[0];
@@ -100,28 +117,17 @@ function VoiceChatRoom() {
                     setParticipants(prevParticipants => [...prevParticipants, { id: from, audioStream: remoteAudioStream, peerConnection }]);
                 };
 
-                // Create an answer for the received offer
-                const answer = await createAnswer(peerConnection);
-
-                // Set the local description of the current user's peer connection to the created answer
-                await peerConnection.setLocalDescription(answer);
-
                 // Send the answer to the user who sent the offer
                 socket.emit("answer", {
                     to: from,
                     from: user_id,
-                    answer: peerConnection.localDescription,
+                    answer: localDescription,
                 });
 
             }
         });
-        // Clean up the event listener
-        return () => {
-            socket.off("offer");
-        }
-    }, []);
 
-    useEffect(() => {
+
         socket.on("answer", (data: any) => {
             if (inVoiceChat) {
                 console.log("Received an answer from user:", data.from);
@@ -145,11 +151,13 @@ function VoiceChatRoom() {
                 }
             }
         });
+
         // Clean up the event listener
         return () => {
+            socket.off("offer");
             socket.off("answer");
         }
-    }, []);
+    }, [socket]);
 
 
     // Handle joining the chat
@@ -262,14 +270,19 @@ function VoiceChatRoom() {
         socket.emit("test", lobbyID);
     }
 
-    socket.on("testReceived", (data: any) => {
-        console.log("test received");
-    });
+    useEffect(() => {
+        socket.on("testReceived", (data: any) => {
+            console.log("test received");
+        });
+        // Clean up the event listener
+        return () => {
+            socket.off("testReceived");
+        }
+    }, [socket]);
 
     useEffect(() => {
         console.log("inVoiceChat: " + inVoiceChat);
-    }
-        , [inVoiceChat]);
+    }, [inVoiceChat]);
 
     return (
         <div className="voice-chat-room-container" id="voice-chat-room">

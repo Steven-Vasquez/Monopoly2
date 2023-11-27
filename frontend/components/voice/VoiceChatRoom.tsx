@@ -90,22 +90,7 @@ function VoiceChatRoom() {
 
                 // Create a new RTCPeerConnection for the current user
                 const peerConnection = createPeerConnection();
-                peerConnection.addEventListener('icegatheringstatechange', () => {
-                    console.log('ICE Gathering State:', peerConnection.iceGatheringState);
-                });
 
-                // Set the remote description of the current user's peer connection with the received offer
-                console.log("Setting remote description");
-                await peerConnection.setRemoteDescription(offer);
-
-
-                
-                // Create an answer for the received offer, setting peerConnection.localDescription properly
-                // Wait for createAnswer to complete before accessing localDescription
-                const answer = await createAnswer(peerConnection);
-
-                const localDescription = peerConnection.localDescription;
-                
                 // Handle the ontrack event to get the remote participant's audioStream
                 peerConnection.ontrack = (event) => {
                     const remoteAudioStream = event.streams[0];
@@ -115,40 +100,95 @@ function VoiceChatRoom() {
 
                     // Update the local state with the new participant and their peer connection
                     setParticipants(prevParticipants => [...prevParticipants, { id: from, audioStream: remoteAudioStream, peerConnection }]);
+                    console.log("Participants:", participants);
                 };
 
-                // Send the answer to the user who sent the offer
-                socket.emit("answer", {
-                    to: from,
-                    from: user_id,
-                    answer: localDescription,
+                
+                peerConnection.addEventListener('icegatheringstatechange', () => {
+                    console.log('ICE Gathering State:', peerConnection.iceGatheringState);
                 });
+                
+
+                // Set the remote description of the current user's peer connection with the received offer
+                console.log("Setting remote description");
+                await peerConnection.setRemoteDescription(offer);
+
+                try {
+                    const localParticipant = participants.find((participant) => participant.id === user_idRef.current);
+                    if(!localParticipant) {
+                        console.log("localParticipant is null");
+                        return;
+                    }
+                    const audioStream = localParticipant.audioStream;
+
+                    // Add the local audio track to the peer connection
+                    audioStream.getTracks().forEach((track) => {
+                        peerConnection.addTrack(track, audioStream);
+                    });
+                }
+                catch (error) {
+                    console.error("Error adding the audioStream to PeerConnection in offer socket listener", error);
+                }
+
+
+                // Create an answer for the received offer, setting peerConnection.localDescription properly
+                // Wait for createAnswer to complete before accessing localDescription
+                const answer = await createAnswer(peerConnection);
+
+                const localDescription = peerConnection.localDescription;
+
+
+                // Send the answer to the user who sent the offer
+                socket.emit("sendingAnswer",
+                    from, // to
+                    user_id, // from
+                    localDescription, // answer
+                    lobbyID, // game_id
+                );
 
             }
         });
 
 
         socket.on("answer", (data: any) => {
-            if (inVoiceChat) {
-                console.log("Received an answer from user:", data.from);
+            const { to, from, answer } = data; // To is the user who sent the offer, from is the user who sent the answer
 
-                // Find the receiver's participant based on the data.from ID
-                const receiverParticipant = participants.find((participant) => participant.id === data.from);
+            // 1. Retrieve own peer connection from participants array where user's id matches the "to" field
+            // 2. Set the remote description of the peer connection with the received answer
+            // 3. Add the remote user to the participants array using their id (from), media stream, and peer connection 
+            console.log("answer listener activated");
+            if (inVoiceChat && to === user_idRef.current) {
+                console.log("Received an answer from user:", from);
 
-                if (receiverParticipant) {
-                    const peerConnection = receiverParticipant.peerConnection;
+                const localPeerConnection = participants.find((participant) => participant.id === to)?.peerConnection;
+                console.log("localPeerConnection:", localPeerConnection);
 
-                    // Set the remote description of the peer connection with the received answer
-                    peerConnection.setRemoteDescription(data.answer)
-                        .then(() => {
-                            console.log("Remote description set successfully.");
-                        })
-                        .catch((error) => {
-                            console.error("Error setting remote description:", error);
-                        });
-                } else {
-                    console.warn("Receiver participant not found.");
+
+                try {
+                    if (!localPeerConnection) {
+                        console.log("localPeerConnection is null");
+                        return;
+                    }
+                    localPeerConnection.ontrack = (event) => {
+                        const remoteAudioStream = event.streams[0];
+
+                        // Now you can use remoteAudioStream as needed
+                        console.log("Received remote audio stream:", remoteAudioStream);
+                        
+                        // Update the local state with the new participant and their peer connection
+                        setParticipants(prevParticipants => [...prevParticipants, { id: from, audioStream: remoteAudioStream, peerConnection: localPeerConnection }]);
+                        console.log("Participants:", participants);
+                    };
+                    
+                    localPeerConnection.setRemoteDescription(answer);
+
+                    // id: from
+                    // audioStream: ?
+                    // peerConnection: ?
+                } catch (error) {
+                    console.error("Error setting remote description in answer socket listener", error);
                 }
+
             }
         });
 
@@ -184,15 +224,14 @@ function VoiceChatRoom() {
                 return;
             }
 
+            // Set the local description of the peer connection with the offer
+            await peerConnection.setLocalDescription(offer);
+
             console.log("Sending offer to server:");
             console.log("id: " + participantId);
             console.log("offer: " + offer);
             console.log("game_id: " + lobbyID);
 
-            const offerData = {
-                type: offer.type,
-                sdp: offer.sdp,
-            };
             // Notify other users about the new participant and include relevant details for connection setup
             setInVoiceChat(true); // Set inVoiceChat to true
 
@@ -273,6 +312,7 @@ function VoiceChatRoom() {
     useEffect(() => {
         socket.on("testReceived", (data: any) => {
             console.log("test received");
+            console.log(participants);
         });
         // Clean up the event listener
         return () => {

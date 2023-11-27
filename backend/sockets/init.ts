@@ -62,7 +62,7 @@ const initSockets = (app: Express, sessionMiddleware: any): SocketServer => {
     socket.on("newParticipant", (id: number, offer: RTCSessionDescriptionInit, game_id: string) => {
       console.log("a new participant is joining");
       console.log("id: " + id);
-      console.log("offer: " + offer);
+      console.log("offer: ");
       console.log(offer);
       console.log("game_id: " + game_id);
       // Broadcast the new participant information to all connected clients
@@ -73,6 +73,22 @@ const initSockets = (app: Express, sessionMiddleware: any): SocketServer => {
         offer: offer,
       });
     });
+
+    socket.on("sendingAnswer", (to: number, from: number, answer: RTCSessionDescription, game_id: string) => {
+      const roomName = "voiceChat:" + game_id;
+      console.log("Sending answer to: " + to);
+      console.log("From: " + from);
+      console.log("Answer: ");
+      console.log(answer);
+      console.log("game_id: " + game_id);
+      // Broadcast the answer to all connected clients
+      io.to(roomName).emit("answer", {
+        to: to,
+        from: from,
+        answer: answer,
+      });
+    });
+    
 
     socket.on("leaveVoice", (game_id: string) => {
       console.log("User " + socket.id + " is leaving voice chat room: " + game_id);

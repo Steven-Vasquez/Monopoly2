@@ -15,8 +15,10 @@ import GameCommsPanel from "../components/GameCommsPanel.tsx";
 export default function Test() {
     // Hard-coded socket connection for testing purposes
     const socket = io("http://localhost:3001");
-    socket.emit("join", '0'); // Connecting to the socket room of the lobby for lobby-wide event updates
+    const game_id = '0';
+    socket.emit("join", game_id); // Connecting to the socket room of the lobby for lobby-wide event updates
 
+    
 
     const container = useRef<HTMLDivElement>(null);
     const [dim, setDim] = useState({ width: 0, height: 0 });

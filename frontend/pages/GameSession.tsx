@@ -14,10 +14,20 @@ import TextChatBox from '../components/TextChatBox.tsx';
 
 import "../stylesheets/GameSession.css";
 
+import GameUser from '../../backend/cutsom_types/GameUser.ts';
+
+interface GameUserDict {
+    [key: string]: GameUser;
+}
+
 function GameSession() {
     const navigate = useNavigate();
     const { lobbyID } = useParams<{ lobbyID: string }>();
 
+    const gameUsers = useState<GameUserDict>({});
+    //function to populate gameUsers with all info from game_users and inventory tables linked to user_id
+
+    
     /*************************************************************
      * User authentication (route protection for users not in the game)  
      *************************************************************/

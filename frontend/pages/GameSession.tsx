@@ -14,7 +14,7 @@ import TextChatBox from '../components/TextChatBox.tsx';
 
 import "../stylesheets/GameSession.css";
 
-import GameUser from '../../backend/cutsom_types/GameUser.ts';
+import GameUser from '../../backend/custom_types/GameUser.ts';
 
 interface GameUserDict {
     [key: string]: GameUser;
@@ -112,7 +112,7 @@ function GameSession() {
                         </template>
                     </div>
                     <VoiceChatRoom />
-                    <TextChatBox game_id={lobbyID} socket={socket} height={100} />
+                    <TextChatBox game_id={lobbyID} socket={socket}/>
                     <div className="game-options-div">
                         {/* <form action="/api/games/<%= id %>/endGame" method="POST"> */}
                         <button type="submit" className="ms-btn ms-action" value="End Game">End Game</button>

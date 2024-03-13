@@ -16,13 +16,12 @@
 }
 
 .messages {
-
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 1rem;
     margin-top: auto;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+    /* padding-top: 1rem; */
+    padding-bottom: rem;
     /* Make scrollable and fade-out effect */
     overflow-y: auto;
     mask-image: linear-gradient(to bottom, transparent 0, black 1rem, black calc(100% - 1rem), transparent 100%);
@@ -32,7 +31,6 @@
 .message {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
 }
 
 .user-line {
@@ -45,10 +43,16 @@
 .message-line {
     font-family: var(--body-font);
     position: relative;
+    word-wrap: break-word;
 }
 
 .username {
     font-weight: 600;
+
+    /* Truncate long usernames */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .timestamp {
@@ -88,7 +92,7 @@
     background-color: var(--background);
 }
 
-.message-input{
+.message-input {
     display: flex;
     flex-direction: row;
 }

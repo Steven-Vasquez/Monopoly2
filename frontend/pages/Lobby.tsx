@@ -97,7 +97,7 @@ function Lobby() {
             </ul>
 
             <VoiceChatRoom />
-            <TextChatBox game_id={lobbyID} socket={socket} height={100} />
+            <TextChatBox game_id={lobbyID} socket={socket} />
             <>
                 {isPlayerOne ? (
                     <div className="action-links">

@@ -1,8 +1,20 @@
 import db from "./connection.ts";
 
 const create = (game_id: number, sender_id: number, message: string) =>
+    // db.one(
+    //     "INSERT INTO chat (game_id, sender_id, message) VALUES ($1, $2, $3) RETURNING created_at, message",
+    //     [game_id, sender_id, message]
+    // );
+
+    // Creates temorary table to return username (from diff table) with chat message
     db.one(
-        "INSERT INTO chat (game_id, sender_id, message) VALUES ($1, $2, $3) RETURNING created_at",
+        `WITH temp AS (
+        INSERT INTO chat (game_id, sender_id, message) 
+        VALUES ($1, $2, $3) 
+        RETURNING *
+    )
+    SELECT temp.*, (SELECT username FROM users WHERE id = temp.sender_id) AS username
+    FROM temp`,
         [game_id, sender_id, message]
     );
 

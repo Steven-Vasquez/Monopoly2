@@ -23,6 +23,7 @@ router.post("/sendMessage/:id", async (request: any, response: any) => {
         const io = request.app.get("io");
 
         const chatMessage = await Chat.create(game_id, sender_id, message);
+        console.log("chat message", chatMessage)
         io.to(game_id).emit(CHAT_MESSAGE_RECEIVED, chatMessage);
         response.json(chatMessage);
     } catch (error) {

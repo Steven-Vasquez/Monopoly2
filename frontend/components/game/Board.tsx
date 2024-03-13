@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import "../../stylesheets/Board.css"
 import { BoardCell } from "./BoardCell.tsx";
 import { BoardCellProps } from "./BoardCell.tsx";
+import PlayerTurnOptionsPopup from "../game/PlayerTurnOptionsPopup.tsx";
 import { Logo } from "../Logo.tsx";
 
 // interface CellProps extends BoardCellProps {
@@ -22,7 +23,9 @@ interface BoardProps {
 }
 
 
-export function Board(props : BoardProps) {
+export function Board(props: BoardProps) {
+    const [buttonPopup, setButtonPopup] = useState(false);      // Handles popup window for creating a new game
+
     return (
         <div className="board" style={{
             height: props.height,
@@ -33,18 +36,18 @@ export function Board(props : BoardProps) {
                 <BoardCell type={"free-parking"} />
             </div>
             <div className="top">
-            {
-                props.top.map((e) => {
-                    return <BoardCell 
-                        type={e.type} 
-                        price={e.price} 
-                        color={e.color} 
-                        title={e.title} 
-                        description={e.description}
-                        orientation="to-bottom"
-                    />
-                })
-            }
+                {
+                    props.top.map((e) => {
+                        return <BoardCell
+                            type={e.type}
+                            price={e.price}
+                            color={e.color}
+                            title={e.title}
+                            description={e.description}
+                            orientation="to-bottom"
+                        />
+                    })
+                }
             </div>
             <div className="top-right">
                 <BoardCell type={"go-to-jail"} />
@@ -52,11 +55,11 @@ export function Board(props : BoardProps) {
             <div className="left">
                 {
                     props.left.map((e) => {
-                        return <BoardCell 
-                            type={e.type} 
-                            price={e.price} 
-                            color={e.color} 
-                            title={e.title} 
+                        return <BoardCell
+                            type={e.type}
+                            price={e.price}
+                            color={e.color}
+                            title={e.title}
                             description={e.description}
                             orientation="to-right"
                         />
@@ -74,37 +77,39 @@ export function Board(props : BoardProps) {
                     <span className="mt-letter" id="l7">L</span>
                     <span className="mt-letter" id="y8">Y</span>
                 </div>
+                <PlayerTurnOptionsPopup trigger={buttonPopup} setTrigger={setButtonPopup} />
+                <button onClick={() => setButtonPopup(true)}>Open Popup</button>
             </div>
             <div className="right">
-            {
-                props.right.map((e) => {
-                    return <BoardCell 
-                        type={e.type} 
-                        price={e.price} 
-                        color={e.color} 
-                        title={e.title} 
-                        description={e.description}
-                        orientation="to-left"
-                    />
-                })
-            }
+                {
+                    props.right.map((e) => {
+                        return <BoardCell
+                            type={e.type}
+                            price={e.price}
+                            color={e.color}
+                            title={e.title}
+                            description={e.description}
+                            orientation="to-left"
+                        />
+                    })
+                }
             </div>
             <div className="bottom-left">
                 <BoardCell type={"jail"} />
             </div>
             <div className="bottom">
-            {
-                props.bottom.map((e) => {
-                    return <BoardCell 
-                        type={e.type} 
-                        price={e.price} 
-                        color={e.color} 
-                        title={e.title} 
-                        description={e.description}
-                        orientation="to-top"
-                    />
-                })
-            }
+                {
+                    props.bottom.map((e) => {
+                        return <BoardCell
+                            type={e.type}
+                            price={e.price}
+                            color={e.color}
+                            title={e.title}
+                            description={e.description}
+                            orientation="to-top"
+                        />
+                    })
+                }
             </div>
             <div className="bottom-right">
                 <BoardCell type={"go"} />

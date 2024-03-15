@@ -98,21 +98,35 @@ function GameSession() {
         <div>
             <div className="game-session-container">
                 <div className="game-session">
-                    <h1>Game #{lobbyID}</h1>
-                    <div id="board-container">
-                        {/* <Board></Board> */}
+                    <h2>Game #{lobbyID}</h2>
+                    <div className="player-info">
+                        <p>Player Name</p>
+                        <p>{"{Player name here}"}</p>
+                        <p>Turn</p>
+                        <p>{"{Turn Number}"}</p>
+                        <p>Money</p>
+                        <p>{"{Money Amount}"}</p>
+                        
+                        <div className="player-actions">
+                            <button>Add $10</button>
+                            <button>Subtract $10</button>
+                        </div>
+                    </div>
+                    {/* <div id="board-container">
+                        <Board></Board>
                         <div id="player-pieces">
                             <div className="player" id="p1"></div>
                             <div className="player" id="p2"></div>
                             <div className="player" id="p3"></div>
-                        </div></div>
-                    <div id="users-list">
+                        </div>
+                    </div> */}
+                    {/* <div id="users-list">
                         <template id="user-item">
                             <div className="user"></div>
                         </template>
-                    </div>
-                    <VoiceChatRoom />
-                    <TextChatBox game_id={lobbyID} socket={socket}/>
+                    </div> */}
+                    {/* <VoiceChatRoom />
+                    <TextChatBox game_id={lobbyID} socket={socket} height={100} /> */}
                     <div className="game-options-div">
                         {/* <form action="/api/games/<%= id %>/endGame" method="POST"> */}
                         <button type="submit" className="ms-btn ms-action" value="End Game">End Game</button>

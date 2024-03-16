@@ -8,6 +8,7 @@
 
 .chat-container h3 {
     line-height: 1;
+    margin-bottom: -0.5rem;
 }
 
 .messages-container {
@@ -19,9 +20,9 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    margin-top: auto;
-    /* padding-top: 1rem; */
-    padding-bottom: rem;
+    /* margin-top: auto; */
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
     /* Make scrollable and fade-out effect */
     overflow-y: auto;
     mask-image: linear-gradient(to bottom, transparent 0, black 1rem, black calc(100% - 1rem), transparent 100%);
@@ -62,6 +63,8 @@
 
 .message-input {
     flex-shrink: 1;
+    margin-top: auto;
+
 }
 
 .input-textfield {

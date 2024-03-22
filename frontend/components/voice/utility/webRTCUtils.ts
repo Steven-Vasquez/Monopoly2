@@ -41,11 +41,11 @@ export const createPeerConnection = (): RTCPeerConnection => {
 };
 
 export const createOffer = async (peerConnection: RTCPeerConnection) => {
-    console.log('Creating offer...');
+    //console.log('Creating offer...');
     try {
         const offer = await peerConnection.createOffer();
         await peerConnection.setLocalDescription(offer);
-        console.log('Offer created:', offer);
+        //console.log('Offer created:', offer);
         return offer;
     } catch (error) {
         console.error('Error creating offer:', error);

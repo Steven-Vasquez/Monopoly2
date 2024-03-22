@@ -60,13 +60,13 @@ function VoiceChatRoom() {
 
     // Handle receiving a new participant
     useEffect(() => {
-        console.log("a socket listener is being added");
+        //console.log("a socket listener is being added");
         socket.on("userJoinedVoiceChat", (data: any) => {
-            console.log("A user has joined the voice room (not chat)");
+            //console.log("A user has joined the voice room (not chat)");
         });
         // Clean up the event listener
         return () => {
-            console.log("a socket listener is being removed");
+            //console.log("a socket listener is being removed");
             socket.off("userJoinedVoiceChat");
         }
     }, []);
@@ -82,11 +82,11 @@ function VoiceChatRoom() {
             const { from, offer } = data;
 
             //console.log("Received an offer from another user");
-            console.log("from: " + from);
-            console.log("inVoiceChatRef from \"offer\":" + inVoiceChatRef.current);
-            console.log(from !== user_idRef.current);
+            //console.log("from: " + from);
+            //console.log("inVoiceChatRef from \"offer\":" + inVoiceChatRef.current);
+            //console.log(from !== user_idRef.current);
             if (inVoiceChat && from !== user_idRef.current) {
-                console.log("Received an offer from user:", from);
+                //console.log("Received an offer from user:", from);
 
                 // Create a new RTCPeerConnection for the current user
                 const peerConnection = createPeerConnection();
@@ -96,27 +96,27 @@ function VoiceChatRoom() {
                     const remoteAudioStream = event.streams[0];
 
                     // Now you can use remoteAudioStream as needed
-                    console.log("Received remote audio stream:", remoteAudioStream);
+                    //console.log("Received remote audio stream:", remoteAudioStream);
 
                     // Update the local state with the new participant and their peer connection
                     setParticipants(prevParticipants => [...prevParticipants, { id: from, audioStream: remoteAudioStream, peerConnection }]);
-                    console.log("Participants:", participants);
+                    //console.log("Participants:", participants);
                 };
 
                 
                 peerConnection.addEventListener('icegatheringstatechange', () => {
-                    console.log('ICE Gathering State:', peerConnection.iceGatheringState);
+                    //console.log('ICE Gathering State:', peerConnection.iceGatheringState);
                 });
                 
 
                 // Set the remote description of the current user's peer connection with the received offer
-                console.log("Setting remote description");
+                //console.log("Setting remote description");
                 await peerConnection.setRemoteDescription(offer);
 
                 try {
                     const localParticipant = participants.find((participant) => participant.id === user_idRef.current);
                     if(!localParticipant) {
-                        console.log("localParticipant is null");
+                        //console.log("localParticipant is null");
                         return;
                     }
                     const audioStream = localParticipant.audioStream;
@@ -156,28 +156,28 @@ function VoiceChatRoom() {
             // 1. Retrieve own peer connection from participants array where user's id matches the "to" field
             // 2. Set the remote description of the peer connection with the received answer
             // 3. Add the remote user to the participants array using their id (from), media stream, and peer connection 
-            console.log("answer listener activated");
+            //console.log("answer listener activated");
             if (inVoiceChat && to === user_idRef.current) {
-                console.log("Received an answer from user:", from);
+                //console.log("Received an answer from user:", from);
 
                 const localPeerConnection = participants.find((participant) => participant.id === to)?.peerConnection;
-                console.log("localPeerConnection:", localPeerConnection);
+                //console.log("localPeerConnection:", localPeerConnection);
 
 
                 try {
                     if (!localPeerConnection) {
-                        console.log("localPeerConnection is null");
+                        //console.log("localPeerConnection is null");
                         return;
                     }
                     localPeerConnection.ontrack = (event) => {
                         const remoteAudioStream = event.streams[0];
 
                         // Now you can use remoteAudioStream as needed
-                        console.log("Received remote audio stream:", remoteAudioStream);
+                        //console.log("Received remote audio stream:", remoteAudioStream);
                         
                         // Update the local state with the new participant and their peer connection
                         setParticipants(prevParticipants => [...prevParticipants, { id: from, audioStream: remoteAudioStream, peerConnection: localPeerConnection }]);
-                        console.log("Participants:", participants);
+                        //console.log("Participants:", participants);
                     };
                     
                     localPeerConnection.setRemoteDescription(answer);
@@ -186,7 +186,7 @@ function VoiceChatRoom() {
                     // audioStream: ?
                     // peerConnection: ?
                 } catch (error) {
-                    console.error("Error setting remote description in answer socket listener", error);
+                    //console.error("Error setting remote description in answer socket listener", error);
                 }
 
             }
@@ -203,7 +203,7 @@ function VoiceChatRoom() {
     // Handle joining the chat
     const handleJoinVoiceChat = async (participantId: number) => {
         // Create a new RTCPeerConnection for this participant
-        console.log("handleJoinVoiceChat is being called");
+        //console.log("handleJoinVoiceChat is being called");
 
         const peerConnection = createPeerConnection();
         try {
@@ -220,17 +220,17 @@ function VoiceChatRoom() {
             const offer = await createOffer(peerConnection); // Create an offer for connection setup
 
             if (offer === null) {
-                console.log("Offer is null");
+                //console.log("Offer is null");
                 return;
             }
 
             // Set the local description of the peer connection with the offer
             await peerConnection.setLocalDescription(offer);
 
-            console.log("Sending offer to server:");
-            console.log("id: " + participantId);
-            console.log("offer: " + offer);
-            console.log("game_id: " + lobbyID);
+            //console.log("Sending offer to server:");
+            //console.log("id: " + participantId);
+            //console.log("offer: " + offer);
+            //console.log("game_id: " + lobbyID);
 
             // Notify other users about the new participant and include relevant details for connection setup
             setInVoiceChat(true); // Set inVoiceChat to true
@@ -242,7 +242,7 @@ function VoiceChatRoom() {
             );
 
         } catch (error) {
-            console.error("Error accessing SpeakerHigh:", error);
+            //console.error("Error accessing SpeakerHigh:", error);
         }
     };
 
@@ -265,7 +265,7 @@ function VoiceChatRoom() {
             // For example, you can emit a "userLeftVoiceChat" event to inform others
             socket.emit("leaveVoice", lobbyID);
         } else {
-            console.warn("Leaving participant not found.");
+            //console.warn("Leaving participant not found.");
         }
         setInVoiceChat(false);
     };
@@ -288,12 +288,12 @@ function VoiceChatRoom() {
                 setUser_id(res.data.id);
             })
             .catch(err => {
-                console.log(err);
+                //console.log(err);
             });
     }, []);
 
     useEffect(() => {
-        console.log("user_id from useEffect:", user_id);
+        //console.log("user_id from useEffect:", user_id);
     }, [user_id]);
 
     // Disconnect from socket when component unmounts
@@ -304,15 +304,15 @@ function VoiceChatRoom() {
     }, []);
 
     const testFunction = () => {
-        console.log("test function");
-        console.log("user_id: " + user_id);
+        //console.log("test function");
+        //console.log("user_id: " + user_id);
         socket.emit("test", lobbyID);
     }
 
     useEffect(() => {
         socket.on("testReceived", (data: any) => {
-            console.log("test received");
-            console.log(participants);
+            //console.log("test received");
+            //console.log(participants);
         });
         // Clean up the event listener
         return () => {
@@ -321,7 +321,7 @@ function VoiceChatRoom() {
     }, [socket]);
 
     useEffect(() => {
-        console.log("inVoiceChat: " + inVoiceChat);
+        //console.log("inVoiceChat: " + inVoiceChat);
     }, [inVoiceChat]);
 
     return (

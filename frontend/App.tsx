@@ -3,15 +3,15 @@ import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate, Outlet }
 import axiosInstance from '../backend/axiosInstance.ts';
 import './App.css'
 
-import NavBar from './components/Navbar.tsx';
+import NavBar from './components/general/Navbar/Navbar.tsx';
 
-import Signup from './pages/Signup.tsx'
-import Login from './pages/Login.tsx'
-import Home from './pages/Home.tsx';
-import Lobby from './pages/Lobby.tsx';
-import GameHub from './pages/GameHub.tsx';
-import GameSession from './pages/GameSession.tsx';
-import Test from './pages/BoardTest.tsx';
+import Signup from './pages/Signup/Signup.tsx'
+import Login from './pages/Login/Login.tsx'
+import Home from './pages/Home/Home.tsx';
+import Lobby from './pages/Lobby/Lobby.tsx';
+import GameHub from './pages/GameHub/GameHub.tsx';
+import GameSession from './pages/GameSession/GameSession.tsx';
+import Test from './pages/BoardTest/BoardTest.tsx';
 
 import { Toaster } from 'react-hot-toast';
 import { toast } from 'react-hot-toast';

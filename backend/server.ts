@@ -13,9 +13,9 @@ import db from "./database/connection.ts";
 import addSessionLocals from "./middleware/addSessionLocals.ts";
 import initSockets from "./sockets/init.ts";
 
-import authenticationRoutes from "./routes/static/authentication.ts";
-import apiGamesRoutes from "./routes/api/games.ts";
-import apiChatRoutes from "./routes/api/chat.ts";
+import authenticationRoutes from "./routes/authentication.ts";
+import apiGamesRoutes from "./routes/games.ts";
+import apiChatRoutes from "./routes/chat.ts";
 
 dotenv.config();
 

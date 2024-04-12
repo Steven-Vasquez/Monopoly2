@@ -1,4 +1,4 @@
-.login-page-container {
+.signup-page-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -10,7 +10,7 @@
     transform: translate(-50%, -50%);
 }
 
-.login-page-container .form-container {
+.signup-page-container .form-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -19,7 +19,7 @@
     width: 25rem;
 }
 
-.login-page-container .form-container form {
+.signup-page-container .form-container form {
     display: flex;
     flex-direction: column;
     /* align-items: center; */
@@ -28,22 +28,22 @@
     width: 100%;
 }
 
-.login-page-container .form-buttons {
+.signup-page-container .form-buttons {
     margin-top: 1rem;
     width: 100%;
 }
 
-.login-page-container .account-action-links {
+.signup-page-container .account-action-links {
     margin-top: 1rem;
 }
 
-.login-page-container .error-msg {
+.signup-page-container .error-msg {
     color: var(--error-red);
     font-size: 0.8rem;
     padding: 0.5em;
 }
 
-.login-page-container .form-container .tabs {
+.signup-page-container .form-container .tabs {
     padding: 1rem;
     display: flex;
     flex-direction: row;

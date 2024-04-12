@@ -26,7 +26,7 @@ function GameSession() {
     const gameUsers = useState<GameUserDict>({});
     //function to populate gameUsers with all info from game_users and inventory tables linked to user_id
 
-    
+
     /*************************************************************
      * User authentication (route protection for users not in the game)  
      *************************************************************/
@@ -58,6 +58,7 @@ function GameSession() {
      * Game Lobby
      *************************************************************/
     const [playerUsernames, setPlayerUsernames] = useState<string[]>([]);
+
 
     if (!lobbyID) { // To ensure that lobbyID is not undefined
         return <div>Invalid lobby ID</div>
@@ -105,11 +106,14 @@ function GameSession() {
                         <p>{"{Turn Number}"}</p>
                         <p>Money</p>
                         <p>{"{Money Amount}"}</p>
-                        
+
                         <div className="player-actions">
                             <button>Add $10</button>
                             <button>Subtract $10</button>
                         </div>
+
+
+
                     </div>
                     {/* <div id="board-container">
                         <Board></Board>

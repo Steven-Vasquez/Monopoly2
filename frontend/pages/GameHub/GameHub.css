@@ -1,3 +1,22 @@
+.game-hub-container {
+    padding-top: var(--nav-height);
+}
+
+/* Styling for the game list container */
+.games-tabs-container {
+    max-width: 70%;
+    margin: 0 auto; /* Center the container */
+}
+
+.games-tabs-container .tabs {
+    padding: 1rem;
+    display: flex;
+    flex-direction: row;
+    gap: 1.5rem;
+    align-items: flex-start;
+    text-decoration: none;
+}
+
 .game-info,
 .game-info-labels {
     display: grid;
@@ -26,12 +45,6 @@
 .game {
     border: 1px solid #ccc;
     padding: 0;
-}
-
-/* Styling for the game list container */
-.games-tabs-container {
-    max-width: 70%;
-    margin: 0 auto; /* Center the container */
 }
 
 .game-type {
@@ -82,27 +95,27 @@
 /***********************************/
 
 /* Styling for tabs */
-.react-tabs__tab-list {
+/* .react-tabs__tab-list {
     list-style: none;
     display: flex;
     margin: 0;
     padding: 0;
-}
+} */
 
-.react-tabs__tab {
+/* .react-tabs__tab {
     padding: 10px 15px;
     background-color: #f2f2f2;
     border: 1px solid #ccc;
     cursor: pointer;
     transition: background-color 0.2s ease-in-out;
-}
+} */
 
 /* Apply hover effect to non-selected tabs */
-.react-tabs__tab:not(.react-tabs__tab--selected):hover {
+/* .react-tabs__tab:not(.react-tabs__tab--selected):hover {
     background-color: #e0e0e0;
 }
 
 .react-tabs__tab--selected {
     background-color: #fff;
     border-bottom: 1px solid #fff;
-}
+} */

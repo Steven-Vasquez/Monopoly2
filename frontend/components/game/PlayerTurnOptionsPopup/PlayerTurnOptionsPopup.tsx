@@ -16,16 +16,16 @@ function PlayerTurnOptionsPopup(props: any) {
 
     return (props.trigger) ? (
         <div className="player-options-container">
-            {playerOptions.map((player, index) => (
-                <div className="player-options" key={index}>
+            {playerOptions.map((player, playerIndex) => (
+                <div className="player-options" key={playerIndex}>
                     <div className={"player-turn-name"}>
                         <span>It's {player.name}'s Turn!</span>
                     </div>
                     <div className="option-buttons">
                         {player.properties.map((option, optionIndex) => (
                             <div className="option-button" key={optionIndex}>
-                                    <div className="number-container">
-                                        <span>{option}</span>
+                                <div className="number-container">
+                                    <span>Choice: {option}</span>
                                 </div>
                             </div>
                         ))}

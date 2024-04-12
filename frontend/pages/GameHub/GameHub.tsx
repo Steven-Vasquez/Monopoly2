@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from 'react-router-dom';
 import { formatDistanceToNow } from 'date-fns';
-import { Tabs } from 'react-tabs';
 import { GlobeHemisphereWest, Lock } from "@phosphor-icons/react";
 import { Button } from "#components/general/Button/Button.tsx";
 import { Tab } from "#components/general/Tab/Tab.tsx";
@@ -121,7 +120,7 @@ export function Hub() {
     };
 
     return (
-        <div>
+        <div className="game-hub-container">
             <h1>Games List</h1>
             <Button type="button" style={{ width: "auto" }} onClick={() => setButtonPopup(true)} >Create Game</Button>
             <div className="games-tabs-container">
@@ -130,99 +129,97 @@ export function Hub() {
                     <Tab variant="button" linkTo="" className={`tab ${activeTab === 'joinable-games' ? 'active' : ''}`} onClick={toggleTab('joinable-games')}>Joinable Games</Tab>
                     <Tab variant="button" linkTo="" className={`tab ${activeTab === 'my-games' ? 'active' : ''}`} onClick={toggleTab('my-games')}>My Games</Tab>
                 </div>
-                <Tabs>
-                    {(showMyGames) ? (
-                        // FIRST TAB SHOWS JOINABLE GAMES CREATED BY OTHER USERS
-                        <ul className="game-list">
-                            <li>
-                                <ul className="game-info-labels">
-                                    <li>Game Title</li>
-                                    <li>Players</li>
-                                    <li>Privacy</li>
-                                    <li>Created</li>
-                                    <li>Join</li>
-                                </ul>
-                            </li>
-                            {myGamesList.length === 0 ? (
-                                // NO USER-CREATED GAMES AVAILABLE
-                                <div className="empty-games-list">
-                                    <li>No games available. Create a new game or refresh the page.</li>
-                                    <Button type="button" style={{ width: "auto" }} onClick={() => setButtonPopup(true)}>Create Game</Button>
-                                </div>
-                            ) : (
-                                // USER-CREATED GAMES ARE AVAILABLE
-                                <>
-                                    {myGamesList.map(game => (
-                                        <li key={game.id} className="game">
-                                            <ul className="game-info">
-                                                <li className="game-title">{game.game_title}</li>
-                                                <li className="game-player-count">{game.player_count}/4</li>
-                                                <li className="game-type">{game.is_private ?
-                                                    <span title="private"><Lock size={22} color="#777" weight="fill" /></span> : <span title="public"><GlobeHemisphereWest size={22} color="#777" weight="fill" /></span>
-                                                }</li>
-                                                <li className="game-date"><TimeAgo date={game.created_at} /> </li>
-                                                {!game.started ?
-                                                    <li>
-                                                        <Link className="join-button" to={`/lobby/${game.id}`}>
-                                                            <Button type="button" style={{ height: "auto", fontSize: "0.9rem", padding: "12px 20px" }}>Join Game</Button>
-                                                        </Link>
-                                                    </li>
-                                                    :
-                                                    <li>
-                                                        <Link className="join-button" to={`/game/${game.id}`}>
-                                                            <Button type="button" style={{ height: "auto", fontSize: "0.9rem", padding: "12px 20px" }}>Rejoin Game</Button>
-                                                        </Link>
-                                                    </li>
-                                                }
-                                            </ul>
-                                        </li>
-                                    ))}
-                                </>
-                            )}
-                        </ul>
-                    ) :
-                        // SECOND TAB SHOWS GAMES CREATED BY ME
-                        <ul className="game-list">
-                            <li>
-                                <ul className="game-info-labels">
-                                    <li>Game Title</li>
-                                    <li>Players</li>
-                                    <li>Privacy</li>
-                                    <li>Created</li>
-                                    <li>Join</li>
-                                </ul>
-                            </li>
-                            {gamesList.length === 0 ? (
-                                // NONE OF MY GAMES ARE AVAILABLE
-                                <div className="empty-games-list">
-                                    <li>No games available. Create a new game or refresh the page.</li>
-                                    <Button type="button" style={{ width: "auto" }} onClick={() => setButtonPopup(true)}>Create Game</Button>
-                                </div>
-                            ) : (
-                                // MY GAMES AVAILABLE
-                                <>
-                                    {gamesList.map(game => (
-                                        <li key={game.id} className="game">
-                                            <ul className="game-info">
-                                                <li className="game-title">{game.game_title}</li>
-                                                <li className="game-player-count">{game.player_count}/4</li>
-                                                <li className="game-type">{game.is_private ?
-                                                    <span title="private"><Lock size={22} color="#777" weight="fill" /></span> : <span title="public"><GlobeHemisphereWest size={22} color="#777" weight="fill" /></span>
-                                                }</li>
-                                                <li className="game-date"><TimeAgo date={game.created_at} /> </li>
+                {(showMyGames) ? (
+                    // FIRST TAB SHOWS JOINABLE GAMES CREATED BY OTHER USERS
+                    <ul className="game-list">
+                        <li>
+                            <ul className="game-info-labels">
+                                <li>Game Title</li>
+                                <li>Players</li>
+                                <li>Privacy</li>
+                                <li>Created</li>
+                                <li>Join</li>
+                            </ul>
+                        </li>
+                        {myGamesList.length === 0 ? (
+                            // NO USER-CREATED GAMES AVAILABLE
+                            <div className="empty-games-list">
+                                <li>No games available. Create a new game or refresh the page.</li>
+                                <Button type="button" style={{ width: "auto" }} onClick={() => setButtonPopup(true)}>Create Game</Button>
+                            </div>
+                        ) : (
+                            // USER-CREATED GAMES ARE AVAILABLE
+                            <>
+                                {myGamesList.map(game => (
+                                    <li key={game.id} className="game">
+                                        <ul className="game-info">
+                                            <li className="game-title">{game.game_title}</li>
+                                            <li className="game-player-count">{game.player_count}/4</li>
+                                            <li className="game-type">{game.is_private ?
+                                                <span title="private"><Lock size={22} color="#777" weight="fill" /></span> : <span title="public"><GlobeHemisphereWest size={22} color="#777" weight="fill" /></span>
+                                            }</li>
+                                            <li className="game-date"><TimeAgo date={game.created_at} /> </li>
+                                            {!game.started ?
                                                 <li>
-                                                    <Link className="join-button" to={''} onClick={() => handleJoinRequest(game.id)}>
+                                                    <Link className="join-button" to={`/lobby/${game.id}`}>
                                                         <Button type="button" style={{ height: "auto", fontSize: "0.9rem", padding: "12px 20px" }}>Join Game</Button>
                                                     </Link>
                                                 </li>
-                                            </ul>
-                                        </li>
-                                    ))}
-                                </>
-                            )}
-                        </ul>
-                    }
-                </Tabs>
+                                                :
+                                                <li>
+                                                    <Link className="join-button" to={`/game/${game.id}`}>
+                                                        <Button type="button" style={{ height: "auto", fontSize: "0.9rem", padding: "12px 20px" }}>Rejoin Game</Button>
+                                                    </Link>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </li>
+                                ))}
+                            </>
+                        )}
+                    </ul>
+                ) :
+                    // SECOND TAB SHOWS GAMES CREATED BY ME
+                    <ul className="game-list">
+                        <li>
+                            <ul className="game-info-labels">
+                                <li>Game Title</li>
+                                <li>Players</li>
+                                <li>Privacy</li>
+                                <li>Created</li>
+                                <li>Join</li>
+                            </ul>
+                        </li>
+                        {gamesList.length === 0 ? (
+                            // NONE OF MY GAMES ARE AVAILABLE
+                            <div className="empty-games-list">
+                                <li>No games available. Create a new game or refresh the page.</li>
+                                <Button type="button" style={{ width: "auto" }} onClick={() => setButtonPopup(true)}>Create Game</Button>
+                            </div>
+                        ) : (
+                            // MY GAMES AVAILABLE
+                            <>
+                                {gamesList.map(game => (
+                                    <li key={game.id} className="game">
+                                        <ul className="game-info">
+                                            <li className="game-title">{game.game_title}</li>
+                                            <li className="game-player-count">{game.player_count}/4</li>
+                                            <li className="game-type">{game.is_private ?
+                                                <span title="private"><Lock size={22} color="#777" weight="fill" /></span> : <span title="public"><GlobeHemisphereWest size={22} color="#777" weight="fill" /></span>
+                                            }</li>
+                                            <li className="game-date"><TimeAgo date={game.created_at} /> </li>
+                                            <li>
+                                                <Link className="join-button" to={''} onClick={() => handleJoinRequest(game.id)}>
+                                                    <Button type="button" style={{ height: "auto", fontSize: "0.9rem", padding: "12px 20px" }}>Join Game</Button>
+                                                </Link>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                ))}
+                            </>
+                        )}
+                    </ul>
+                }
             </div >
             <CreateGame trigger={buttonPopup} setTrigger={setButtonPopup} />
         </div >

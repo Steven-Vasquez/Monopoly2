@@ -5,6 +5,7 @@ import { Button } from '#components/general/Button/Button.tsx';
 import {Tab} from "#components/general/Tab/Tab.tsx";
 import usePageTitle from '../../hooks/UsePageTitle.tsx';
 import axiosInstance from '#backend/axiosInstance.ts';
+import "./Signup.css"
 
 function Signup() {
     usePageTitle('Sign Up');
@@ -56,7 +57,7 @@ function Signup() {
 
     return (
         <div>
-            <div className="form-page-container">
+            <div className="signup-page-container">
                 <h1>MONOPOLY</h1>
                 <div className="form-container">
                     <div className="tabs">
@@ -107,7 +108,7 @@ function Signup() {
                         </div>
                     </form>
                     <div className="account-action-links">
-                        <p><Link to="/login">Already have an account?</Link></p>
+                        <p>Already have an account? <Link to="/login">Log In!</Link></p>
                     </div>
                 </div>
             </div>

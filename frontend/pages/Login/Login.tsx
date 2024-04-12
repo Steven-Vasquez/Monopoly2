@@ -75,7 +75,7 @@ function Login() {
 
     return (
         <div>
-            <div className="form-page-container">
+            <div className="login-page-container">
                 <h1>MONOPOLY</h1>
                 <div className="form-container">
                     <div className="tabs">
@@ -102,12 +102,12 @@ function Login() {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}>
                         </TextField>
-                        <div className="form-button-container">
+                        <div className="form-buttons">
                             <Button type="submit" style={{ width: "100%" }}>Log In</Button>
                         </div>
                     </form>
                     <div className="account-action-links">
-                        <p><Link to="/signup">Don't have an account?</Link></p>
+                        <p>Don't have an account? <Link to="/signup">Sign Up!</Link></p>
                     </div>
                 </div>
             </div>

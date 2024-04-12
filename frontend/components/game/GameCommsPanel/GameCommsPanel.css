@@ -13,6 +13,15 @@
     /* box-sizing: content-box; */
 }
 
+.comms-panel-container .tabs {
+    padding: 1rem;
+    display: flex;
+    flex-direction: row;
+    gap: 1.5rem;
+    align-items: flex-start;
+    text-decoration: none;
+}
+
 .panel-contents {
     height: 100%;
     position: relative;

@@ -1,4 +1,4 @@
-#page-container {
+#homepage-container {
     display: flex;
     flex-direction: column;
     background-color: #e1d8d1;
@@ -6,12 +6,7 @@
     /* padding: 4rem; */
 }
 
-.headers {
-    text-align: center;
-    margin-bottom: 2rem;
-}
-
-.sections {
+#homepage-container .sections {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -19,6 +14,12 @@
     /*top right bottom left*/
     padding: 5rem 20% 5rem 20%;
 }
+
+#homepage-container .sections .section-heading {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
 
 #title-section {
     margin-top: var(--nav-height);
@@ -33,7 +34,7 @@
     text-align: center;
 }
 
-.action-links {
+#title-section .action-links {
     margin-top: 1rem;
 }
 

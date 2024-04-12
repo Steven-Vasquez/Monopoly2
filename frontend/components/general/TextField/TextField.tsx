@@ -1,15 +1,6 @@
 import {InputHTMLAttributes} from "react";
 import './TextField.css'
 
-// type TextFieldProps = {
-//     inputType?: HTMLInputTypeAttribute;
-//     value?: string;
-//     error?: boolean;
-//     disabled?: boolean;
-//     required?: boolean;
-//     placeholder?: string;
-// }
-
 interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
     label: string;
     

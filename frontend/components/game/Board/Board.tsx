@@ -3,7 +3,11 @@ import "./Board.css"
 import { BoardCell } from "../BoardCell/BoardCell.tsx";
 import { BoardCellProps } from "../BoardCell/BoardCell.tsx";
 import PlayerTurnOptionsPopup from "../PlayerTurnOptionsPopup/PlayerTurnOptionsPopup.tsx";
-import { Logo } from "../../general/Logo/Logo.tsx";
+
+
+
+import { DialoguePopup } from "#components/general/DialoguePopup/DialoguePopup.tsx";
+// import { Logo } from "../../general/Logo/Logo.tsx";
 
 // interface CellProps extends BoardCellProps {
 //     type: "property" | "income-tax" | "chest" | "chance" | "railroad" | "electric-company" | "water-works" | "luxury-tax",
@@ -67,7 +71,7 @@ export function Board(props: BoardProps) {
                 }
             </div>
             <div className="center">
-                <div className="monopoly-title">
+                <div className="center-monopoly-title">
                     <span className="mt-letter" id="m1">M</span>
                     <span className="mt-letter" id="o2">O</span>
                     <span className="mt-letter" id="n3">N</span>
@@ -78,6 +82,11 @@ export function Board(props: BoardProps) {
                     <span className="mt-letter" id="y8">Y</span>
                 </div>
                 <PlayerTurnOptionsPopup trigger={buttonPopup} setTrigger={setButtonPopup} />
+
+
+                {/* <DialoguePopup trigger={buttonPopup} setTrigger={setButtonPopup} title="Player 1's Turn" description="What would you like to do?" /> */}
+                <DialoguePopup trigger={buttonPopup} setTrigger={setButtonPopup} title="Hello" />
+
                 <button onClick={() => setButtonPopup(true)}>Open Popup</button>
             </div>
             <div className="right">

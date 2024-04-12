@@ -1,4 +1,4 @@
-.monopoly-title {
+.logo {
     font-family: var(--display-font);
     font-size: 128px;
     /* margin: 15vh 0px 64px 0px; */
@@ -9,12 +9,12 @@
     gap: 16px;
   }
   
-  .monopoly-title.animated span {
+  .logo.animated span {
     display: inline-block;
     animation: 5s ease-out infinite letter-jump;
   }
   
-  .monopoly-title.link:hover span {
+  .logo.link:hover span {
     color: var(--primary);
   }
   
@@ -33,34 +33,34 @@
     }
   }
   
-  .monopoly-title span:nth-child(1) {
+  .logo span:nth-child(1) {
     animation-delay: 0s;
   }
   
-  .monopoly-title span:nth-child(2) {
+  .logo span:nth-child(2) {
     animation-delay: 0.1s;
   }
   
-  .monopoly-title span:nth-child(3) {
+  .logo span:nth-child(3) {
     animation-delay: 0.2s;
   }
   
-  .monopoly-title span:nth-child(4) {
+  .logo span:nth-child(4) {
     animation-delay: 0.3s;
   }
   
-  .monopoly-title span:nth-child(5) {
+  .logo span:nth-child(5) {
     animation-delay: 0.4s;
   }
   
-  .monopoly-title span:nth-child(6) {
+  .logo span:nth-child(6) {
     animation-delay: 0.5s;
   }
   
-  .monopoly-title span:nth-child(7) {
+  .logo span:nth-child(7) {
     animation-delay: 0.6s;
   }
   
-  .monopoly-title span:nth-child(8) {
+  .logo span:nth-child(8) {
     animation-delay: 0.7s;
   }

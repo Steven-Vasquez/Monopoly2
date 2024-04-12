@@ -4,7 +4,7 @@ import { Socket } from "socket.io-client";
 
 import { CHAT_MESSAGE_RECEIVED } from "#constants"
 import { PaperPlaneRight } from "@phosphor-icons/react";
-import "./Chat.css"
+import "./TextChat.css"
 
 interface ChatMessage { // Interface to define the shape of the ChatMessage data returned from the API call to get list of chat messages
     username: string;

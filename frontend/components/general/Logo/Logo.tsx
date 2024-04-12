@@ -12,21 +12,21 @@ export function Logo({animated, size, spacing, ...props}: LogoProps): JSX.Elemen
     return (
         <>
         <Link 
-        className={"monopoly-title link " + (animated ? "animated" : "")} 
+        className={"logo link " + (animated ? "animated" : "")} 
         to="/" 
         style={
             {
                 fontSize: size, 
                 gap: spacing
             }} >
-        <span className="mt-letter" id="m1">M</span>
-        <span className="mt-letter" id="o2">O</span>
-        <span className="mt-letter" id="n3">N</span>
-        <span className="mt-letter" id="o4">O</span>
-        <span className="mt-letter" id="p5">P</span>
-        <span className="mt-letter" id="o6">O</span>
-        <span className="mt-letter" id="l7">L</span>
-        <span className="mt-letter" id="y8">Y</span>
+        <span id="m1">M</span>
+        <span id="o2">O</span>
+        <span id="n3">N</span>
+        <span id="o4">O</span>
+        <span id="p5">P</span>
+        <span id="o6">O</span>
+        <span id="l7">L</span>
+        <span id="y8">Y</span>
         </Link>
         </>
     );

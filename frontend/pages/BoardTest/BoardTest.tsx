@@ -3,12 +3,9 @@ import PlayerStats from "#components/game/PlayerStats/PlayerStats.tsx";
 import PlayerInventory from "#components/game/PlayerInventory/PlayerInventory.tsx";
 import { BoardCell } from "#components/game/BoardCell/BoardCell.tsx";
 import { useState, useEffect, useRef } from 'react'
-
 import { GameModel } from '../../models/GameModel.ts'
 import { Player } from '../../models/Player.ts'
 
-// Kenny's Imports
-// import "../stylesheets/GameSession.css";
 import io from "socket.io-client";
 import GameCommsPanel from "#components/game/GameCommsPanel/GameCommsPanel.tsx";
 

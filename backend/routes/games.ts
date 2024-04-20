@@ -43,9 +43,10 @@ router.get("/getPlayersList/:id", async (request: any, response: any) => {
         const username = await Users.getUsername(playerList[i].user_id);
         playerNames.push(username);
     }
-
     response.json(playerNames);
 });
+
+
 
 // Join a game
 router.post("/:id/join", async (request: any, response: any) => {

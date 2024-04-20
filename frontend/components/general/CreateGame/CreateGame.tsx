@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../Button/Button.tsx';
 import "./CreateGame.css"
-import { DialoguePopup } from '../DialoguePopup/DialoguePopup.tsx';
+import { DialogPopup } from '../DialogPopup/DialogPopup.tsx';
 import axiosInstance from '#backend/axiosInstance.ts';
 
 function CreateGame(props: any) {

@@ -14,18 +14,25 @@ import TextChatBox from '../../components/textChat/TextChatBox/TextChatBox.tsx';
 
 import "./GameSession.css";
 import GameUser from '#types/GameUser.ts';
+import Inventory from '#types/Inventory.ts';
+import PropertyInventory from '#types/PropertyInventory.ts';
+
 
 interface GameUserDict {
     [key: string]: GameUser;
 }
 
+interface InventoryDict {
+    [key: string]: Inventory;
+}
+
+interface PropertyInventoryDict {
+    [key: string]: PropertyInventory;
+}
+
 function GameSession() {
     const navigate = useNavigate();
     const { lobbyID } = useParams<{ lobbyID: string }>();
-
-    const gameUsers = useState<GameUserDict>({});
-    //function to populate gameUsers with all info from game_users and inventory tables linked to user_id
-
 
     /*************************************************************
      * User authentication (route protection for users not in the game)  
@@ -37,7 +44,6 @@ function GameSession() {
             const inGame = inGameResponse.data.inGame;
             console.log("inGame: ", inGame);
             if (inGame === false) {
-
                 navigate('/hub');
                 setTimeout(() => {
                     alert("You are not in this game!"); // Show the alert after a brief delay (to show after navigating)
@@ -54,27 +60,55 @@ function GameSession() {
         inGameCheck();
     }, [lobbyID]);
 
-    /*************************************************************
-     * Game Lobby
-     *************************************************************/
-    const [playerUsernames, setPlayerUsernames] = useState<string[]>([]);
-
-
     if (!lobbyID) { // To ensure that lobbyID is not undefined
         return <div>Invalid lobby ID</div>
     }
 
+    /*************************************************************
+     * Socket connection
+     *************************************************************/
     const socket = io("http://localhost:3001");
     socket.emit("join", lobbyID); // Connecting to the socket room of the lobby for lobby-wide event updates
 
+    /************************************************************
+     *  Game Data
+     ************************************************************/
+
+    const [gameUsersDict, setGameUsersDict] = useState<GameUserDict>({}); // Dictionary of all players in the game
+    const [inventoryDict, setInventoryDict] = useState<InventoryDict>({}); // Inventory of all players in the game
+    const [propertyInventoryDict, setPropertyInventoryDict] = useState<PropertyInventoryDict>({}); // Property inventory of all players in the game
+
+    // Function to update a specific GameUser object inside GameUsersDict
+    const updateGameUserObject = (key: string, newValues: Partial<GameUser>) => {
+        setGameUsersDict(prevGameUsersDict => ({
+            ...prevGameUsersDict,
+            [key]: { ...prevGameUsersDict[key], ...newValues } // Update the specified object with new values
+        }));
+    };
+
+    // Function to update a specific Inventory object inside InventoryDict
+    const updateInventoryObject = (key: string, newValues: Partial<Inventory>) => {
+        setInventoryDict(prevInventoryDict => ({
+            ...prevInventoryDict,
+            [key]: { ...prevInventoryDict[key], ...newValues } // Update the specified object with new values
+        }));
+    };
+
+    // Function to update a specific PropertyInventory object inside PropertyInventoryDict
+    const updatePropertyInventoryObject = (key: string, newValues: Partial<PropertyInventory>) => {
+        setPropertyInventoryDict(prevPropertyInventoryDict => ({
+            ...prevPropertyInventoryDict,
+            [key]: { ...prevPropertyInventoryDict[key], ...newValues } // Update the specified object with new values
+        }));
+    };
+
+    
     const fetchData = async () => {
         try {
-            const response = await axiosInstance.get(`/api/games/getPlayersList/${lobbyID}`);
-            const currentPlayers = response.data;
-            const usernames = currentPlayers.map((player: { username: string }) => player.username);
-            setPlayerUsernames(usernames);
+            const response = await axiosInstance.get("/api/players/getPlayerName");
+            console.log("Fetched username", response.data.username);
         } catch (error) {
-            console.log(error);
+            console.error("Error fetching player name: ", error);
         }
     };
 
@@ -93,6 +127,10 @@ function GameSession() {
             socket.disconnect();
         }
     }, [socket]);
+
+    const add10 = () => {
+        socket.emit("UPDATE_PLAYER_BALANCE",)
+    }
 
     return (
         <div>

@@ -1,16 +1,23 @@
-import './DialoguePopup.css';
+import './DialogPopup.css';
 
-interface DialogueProps {
+interface DialogProps {
     contents: JSX.Element;
+    isDialogVisible: boolean;
+    setDialogVisible: (isVisible: boolean) => void;
 }
 
-export function DialoguePopup({ contents, ...props }: DialogueProps): JSX.Element {
+export function DialogPopup({ contents, isDialogVisible, setDialogVisible, ...props }: DialogProps): JSX.Element {
+    if (!isDialogVisible) {
+        return null;
+    }
+
     return (
         <>
             <div className="popup-container">
                 <div className="popup">
                     <div className="popup-content">
                         {contents}
+                        <button onClick={() => setDialogVisible(false)}>Close</button>
                     </div>
                 </div>
             </div>
@@ -37,7 +44,7 @@ export function DialoguePopup({ contents, ...props }: DialogueProps): JSX.Elemen
 
 //     return(
 //         <>
-//             <DialoguePopup contents={dialogContents}/>
+//             <DialogPopup contents={dialogContents}/>
 //         </>
 //     )
 // }

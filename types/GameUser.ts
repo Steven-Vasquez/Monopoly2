@@ -1,4 +1,5 @@
 interface GameUser {
+    username: string;
     game_id: number;
     user_id: number;
     current_player: boolean;

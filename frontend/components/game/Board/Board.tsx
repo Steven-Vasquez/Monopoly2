@@ -2,11 +2,11 @@ import { useState, useEffect } from "react";
 import "./Board.css"
 import { BoardCell } from "../BoardCell/BoardCell.tsx";
 import { BoardCellProps } from "../BoardCell/BoardCell.tsx";
-import PlayerTurnOptionsPopup from "../PlayerTurnOptionsPopup/PlayerTurnOptionsPopup.tsx";
+import PlayerTurnDialogOptions from "../PlayerTurnDialogOptions/PlayerTurnDialogOptions.tsx";
 
 
 
-import { DialoguePopup } from "#components/general/DialoguePopup/DialoguePopup.tsx";
+import { DialogPopup } from "#components/general/DialogPopup/DialogPopup.tsx";
 // import { Logo } from "../../general/Logo/Logo.tsx";
 
 // interface CellProps extends BoardCellProps {
@@ -28,7 +28,8 @@ interface BoardProps {
 
 
 export function Board(props: BoardProps) {
-    const [buttonPopup, setButtonPopup] = useState(false);      // Handles popup window for creating a new game
+    const [isDialogVisible, setDialogVisible] = useState(false);  // Handles popup dialog window visibility for showing player turn options
+    const [dialogContents, setDialogContents] = useState(null);   // Handles the contents of the popup dialog window
 
     return (
         <div className="board" style={{
@@ -81,13 +82,8 @@ export function Board(props: BoardProps) {
                     <span className="mt-letter" id="l7">L</span>
                     <span className="mt-letter" id="y8">Y</span>
                 </div>
-                <PlayerTurnOptionsPopup trigger={buttonPopup} setTrigger={setButtonPopup} />
-
-
-                {/* <DialoguePopup trigger={buttonPopup} setTrigger={setButtonPopup} title="Player 1's Turn" description="What would you like to do?" /> */}
-                <DialoguePopup trigger={buttonPopup} setTrigger={setButtonPopup} title="Hello" />
-
-                <button onClick={() => setButtonPopup(true)}>Open Popup</button>
+                <PlayerTurnDialogOptions setDialogContents={setDialogContents} setDialogVisible={setDialogVisible} />
+                <DialogPopup contents={dialogContents} isDialogVisible={isDialogVisible} setDialogVisible={setDialogVisible} />
             </div>
             <div className="right">
                 {

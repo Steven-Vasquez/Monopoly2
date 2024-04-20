@@ -28,6 +28,8 @@ const initSockets = (app: Express, sessionMiddleware: any): SocketServer => {
     socket.on("join", (game_id: string) => {
       //console.log(socket.id + " is joining room: " + game_id);
       socket.join(game_id);
+
+
       //console.log("All socket rooms connected:");
       //console.log(io.sockets.adapter.rooms);
     });

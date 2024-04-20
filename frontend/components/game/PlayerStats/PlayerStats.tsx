@@ -55,6 +55,7 @@ function PlayerStats() {
                             <div className="player-property" key={propertyIndex}>
                                 <div className="vertical-rectangle-small">
                                     <div className="horizontal-rectangle-small"></div>
+                                    {/* Note: Temp placeholder reused class name- make unique when using */}
                                     <div className="number-container">
                                         <span>{property}</span>
                                     </div>

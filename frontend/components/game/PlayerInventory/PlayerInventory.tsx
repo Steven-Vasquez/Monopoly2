@@ -34,6 +34,7 @@ function PlayerInventory() {
                                 <div key={propertyIndex} className="property">
                                     <div className="vertical-rectangle-big">
                                         <div className="horizontal-rectangle-big" style={{ backgroundColor: player.color }}></div>
+                                        {/* Note: Temp placeholder reused class name- make unique when using */}
                                         <div className="number-container">
                                             <span>{property}</span>
                                         </div>

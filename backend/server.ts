@@ -16,6 +16,7 @@ import initSockets from "./sockets/init.ts";
 import authenticationRoutes from "./routes/authentication.ts";
 import apiGamesRoutes from "./routes/games.ts";
 import apiChatRoutes from "./routes/chat.ts";
+import apiPlayerRoutes from "./routes/players.ts"
 
 dotenv.config();
 
@@ -57,6 +58,7 @@ app.use(cors({
 app.use(authenticationRoutes); // Authentication routes
 app.use("/api/games", apiGamesRoutes); // Game routes
 app.use("/api/chat", apiChatRoutes); // Chat routes
+app.use("/api/players", apiPlayerRoutes);
 //app.use("/api/gameDisplay",)
 
 // Catch 404 and forward to error handler

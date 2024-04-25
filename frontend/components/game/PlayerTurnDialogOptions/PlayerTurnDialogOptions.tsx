@@ -1,52 +1,47 @@
 import { useState } from 'react';
 import axiosInstance from '#backend/axiosInstance.ts';
+import { DialogPopup } from '../../general/DialogPopup/DialogPopup.tsx';
 import "./PlayerTurnDialogOptions.css";
-import { DialogPopup } from '#components/general/DialogPopup/DialogPopup.js';
 
-function PlayerTurnDialogOptionsPopup({ setDialogContents, setDialogVisible }) {
+// function PlayerTurnDialogOptionsPopup({ setDialogContents, setDialogVisible }: ThisDialogProps) {
+export default function PlayerTurnDialogOptions(): JSX.Element {
+    const [isDialogVisible, setDialogVisible] = useState(false);
 
     const playerOptions = [
         {
-            name: "Player 1",
+            name: "Player 69",
             vc: "[VC]",
             properties: ["4", "2", "0"],
         },
 
         // Add more player objects as needed
     ];
-    
-    const handleClick = () => {
-        const contents = (
-            <div className="player-options-container">
-                {playerOptions.map((player, playerIndex) => (
-                    <div className="player-options" key={playerIndex}>
-                        <div className={"player-turn-name"}>
-                            <span>It's {player.name}'s Turn!</span>
-                        </div>
-                        <div className="option-buttons">
-                            {player.properties.map((option, optionIndex) => (
-                                <div className="option-button" key={optionIndex}>
-                                    <div className="option-container">
-                                        <span>Choice: {option}</span>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                ))}
-            </div>
-        );
-
-        // Update the contents and visibility of the dialog
-        setDialogContents(contents);
-        setDialogVisible(true);
-    };
 
     return (
         <div>
-            <button onClick={handleClick}>Open Popup</button>
+            <button onClick={() => setDialogVisible(true)}>Open Popup</button>
+            {isDialogVisible && (
+                <DialogPopup setDialogVisible={setDialogVisible}>
+                    <div className="player-options-dialog-container">
+                        {playerOptions.map((player, playerIndex) => (
+                            <div className="player-options" key={playerIndex}>
+                                <div className={"player-turn-name"}>
+                                    <h2>It's {player.name}'s Turn!</h2>
+                                </div>
+                                <div className="option-buttons">
+                                    {player.properties.map((option, optionIndex) => (
+                                        <div className="option-button" key={optionIndex}>
+                                            <div className="option-container">
+                                                <span>Choice: {option}</span>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </DialogPopup>
+            )}
         </div>
     );
 }
-
-export default PlayerTurnDialogOptionsPopup;

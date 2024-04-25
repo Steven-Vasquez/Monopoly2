@@ -2,7 +2,7 @@ import './GameCommsPanel.css';
 import { useState, useEffect, useRef } from 'react';
 import TextChatBox from '../../textChat/TextChatBox/TextChatBox.tsx';
 import VoiceChatRoom from '../../voiceChat/VoiceChatRoom/VoiceChatRoom.tsx';
-import GameActionsLog from '../../general/CreateGame/CreateGame.tsx';
+import GameActionsLog from '../../general/CreateGameDialog/CreateGameDialog.tsx';
 import { Tab } from '#components/general/Tab/Tab.tsx';
 
 export function GameCommsPanel(props: any) {

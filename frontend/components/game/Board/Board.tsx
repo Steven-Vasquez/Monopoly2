@@ -3,10 +3,6 @@ import "./Board.css"
 import { BoardCell } from "../BoardCell/BoardCell.tsx";
 import { BoardCellProps } from "../BoardCell/BoardCell.tsx";
 import PlayerTurnDialogOptions from "../PlayerTurnDialogOptions/PlayerTurnDialogOptions.tsx";
-
-
-
-import { DialogPopup } from "#components/general/DialogPopup/DialogPopup.tsx";
 // import { Logo } from "../../general/Logo/Logo.tsx";
 
 // interface CellProps extends BoardCellProps {
@@ -26,10 +22,7 @@ interface BoardProps {
     width: number;
 }
 
-
 export function Board(props: BoardProps) {
-    const [isDialogVisible, setDialogVisible] = useState(false);  // Handles popup dialog window visibility for showing player turn options
-    const [dialogContents, setDialogContents] = useState(null);   // Handles the contents of the popup dialog window
 
     return (
         <div className="board" style={{
@@ -82,8 +75,7 @@ export function Board(props: BoardProps) {
                     <span className="mt-letter" id="l7">L</span>
                     <span className="mt-letter" id="y8">Y</span>
                 </div>
-                <PlayerTurnDialogOptions setDialogContents={setDialogContents} setDialogVisible={setDialogVisible} />
-                <DialogPopup contents={dialogContents} isDialogVisible={isDialogVisible} setDialogVisible={setDialogVisible} />
+                <PlayerTurnDialogOptions />
             </div>
             <div className="right">
                 {

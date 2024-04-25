@@ -1,0 +1,26 @@
+.create-game-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.create-game-content h2 {
+    text-align: center;
+}
+
+.create-game-content>form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 18rem;
+}
+
+.create-game-content label.input-container {
+    width: 100%;
+}
+
+.create-game-content button {
+    margin-top: 0.5rem;
+}

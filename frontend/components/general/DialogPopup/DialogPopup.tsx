@@ -1,51 +1,21 @@
 import './DialogPopup.css';
 
 interface DialogProps {
-    contents: JSX.Element;
-    isDialogVisible: boolean;
     setDialogVisible: (isVisible: boolean) => void;
+    children: React.ReactNode;
 }
 
-export function DialogPopup({ contents, isDialogVisible, setDialogVisible, ...props }: DialogProps): JSX.Element {
-    if (!isDialogVisible) {
-        return null;
-    }
-
+export function DialogPopup({ setDialogVisible, children }: DialogProps): JSX.Element {
     return (
         <>
-            <div className="popup-container">
-                <div className="popup">
-                    <div className="popup-content">
-                        {contents}
-                        <button onClick={() => setDialogVisible(false)}>Close</button>
+            <div className="modal">
+                <div className="backdrop">
+                    <div className="dialog">
+                        {children}
+                        <button title="Close dialog" aria-label="Close dialog" onClick={() => setDialogVisible(false)}></button>
                     </div>
                 </div>
             </div>
         </>
     );
 }
-
-
-// export default function SomePage() {
-
-//     function dialogContents() {
-//         const doSomething = () => {
-//             console.log("Hello World")
-//         }
-
-//         return(
-//             <>
-//                 <h1>Title</h1>
-//                 <p>Lorem ipsum dolor sit amet</p>
-//                 <button onClick={dialogContents}></button>
-//             </>
-//         )
-//     }
-
-//     return(
-//         <>
-//             <DialogPopup contents={dialogContents}/>
-//         </>
-//     )
-// }
-

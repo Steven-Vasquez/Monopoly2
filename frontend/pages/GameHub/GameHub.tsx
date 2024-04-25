@@ -4,7 +4,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { GlobeHemisphereWest, Lock } from "@phosphor-icons/react";
 import { Button } from "#components/general/Button/Button.tsx";
 import { Tab } from "#components/general/Tab/Tab.tsx";
-import CreateGame from "#components/general/CreateGame/CreateGame.tsx";
+import CreateGameDialog from "#components/general/CreateGameDialog/CreateGameDialog.tsx";
 import usePageTitle from "../../hooks/UsePageTitle.tsx";
 import axiosInstance from "#backend/axiosInstance.ts";
 import io from "socket.io-client";
@@ -38,9 +38,9 @@ function TimeAgo({ date }: TimeAgoProps) {
     return <span>{timeAgo}</span>;
 }
 
-export function Hub() {
+export default function GameHub(): JSX.Element {
     usePageTitle('Game Hub');
-    
+
     const navigate = useNavigate();
     const socket = io("http://localhost:3001"); // Connecting to the socket room of the GameHub to update the list of games as needed
     console.log("Hub.tsx: socket: ", socket);
@@ -50,7 +50,6 @@ export function Hub() {
 
     const [gamesList, setGamesList] = useState<Game[]>([]);     // Array of joinable games
     const [myGamesList, setMyGamesList] = useState<Game[]>([]); // Array of games that the user is a part of
-    const [buttonPopup, setButtonPopup] = useState(false);      // Handles popup window for creating a new game
 
     // Updates the list of joinable games
     async function getGamesList() {
@@ -122,7 +121,7 @@ export function Hub() {
     return (
         <div className="game-hub-container">
             <h1>Games List</h1>
-            <Button type="button" style={{ width: "auto" }} onClick={() => setButtonPopup(true)} >Create Game</Button>
+            <CreateGameDialog />
             <div className="games-tabs-container">
                 <div className="tabs">
                     {/* If tab is active, append 'active' to className (for underline to work) */}
@@ -145,7 +144,7 @@ export function Hub() {
                             // NO USER-CREATED GAMES AVAILABLE
                             <div className="empty-games-list">
                                 <li>No games available. Create a new game or refresh the page.</li>
-                                <Button type="button" style={{ width: "auto" }} onClick={() => setButtonPopup(true)}>Create Game</Button>
+                                <CreateGameDialog />
                             </div>
                         ) : (
                             // USER-CREATED GAMES ARE AVAILABLE
@@ -194,7 +193,7 @@ export function Hub() {
                             // NONE OF MY GAMES ARE AVAILABLE
                             <div className="empty-games-list">
                                 <li>No games available. Create a new game or refresh the page.</li>
-                                <Button type="button" style={{ width: "auto" }} onClick={() => setButtonPopup(true)}>Create Game</Button>
+                                <CreateGameDialog />
                             </div>
                         ) : (
                             // MY GAMES AVAILABLE
@@ -221,9 +220,6 @@ export function Hub() {
                     </ul>
                 }
             </div >
-            <CreateGame trigger={buttonPopup} setTrigger={setButtonPopup} />
         </div >
     );
 }
-
-export default Hub;

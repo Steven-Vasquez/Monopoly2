@@ -1,15 +1,11 @@
 .player-options {
-    position: relative;
-    padding: 32px;
-    width: 100%;
-    max-width: 640px;
-    background-color: #FFF;
-
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 16px;
+
+    width: 15rem;
 }
 
 .player-turn-name {
@@ -37,4 +33,8 @@
 
     text-align: center;
     cursor: pointer;
+}
+
+.option-button:hover {
+    background-color: gray;
 }

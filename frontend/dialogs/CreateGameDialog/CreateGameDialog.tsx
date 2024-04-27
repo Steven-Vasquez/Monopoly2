@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from '../Button/Button.tsx';
-import { TextField } from '../TextField/TextField.tsx';
-import { DialogPopup } from '../DialogPopup/DialogPopup.tsx';
+import { Button } from '../../components/general/Button/Button.tsx';
+import { TextField } from '../../components/general/TextField/TextField.tsx';
+import { DialogPopup } from '../../components/general/DialogPopup/DialogPopup.tsx';
 import "./CreateGameDialog.css"
 import axiosInstance from '#backend/axiosInstance.ts';
 

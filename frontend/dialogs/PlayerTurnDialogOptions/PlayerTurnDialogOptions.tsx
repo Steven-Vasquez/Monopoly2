@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import axiosInstance from '#backend/axiosInstance.ts';
-import { DialogPopup } from '../../general/DialogPopup/DialogPopup.tsx';
+import { DialogPopup } from '../../components/general/DialogPopup/DialogPopup.tsx';
 import "./PlayerTurnDialogOptions.css";
 
 // function PlayerTurnDialogOptionsPopup({ setDialogContents, setDialogVisible }: ThisDialogProps) {

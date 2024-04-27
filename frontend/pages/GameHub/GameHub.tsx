@@ -4,7 +4,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { GlobeHemisphereWest, Lock } from "@phosphor-icons/react";
 import { Button } from "#components/general/Button/Button.tsx";
 import { Tab } from "#components/general/Tab/Tab.tsx";
-import CreateGameDialog from "#components/general/CreateGameDialog/CreateGameDialog.tsx";
+import CreateGameDialog from "../../dialogs/CreateGameDialog/CreateGameDialog.tsx";
 import usePageTitle from "../../hooks/UsePageTitle.tsx";
 import axiosInstance from "#backend/axiosInstance.ts";
 import io from "socket.io-client";

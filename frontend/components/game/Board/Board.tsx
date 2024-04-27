@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import "./Board.css"
 import { BoardCell } from "../BoardCell/BoardCell.tsx";
 import { BoardCellProps } from "../BoardCell/BoardCell.tsx";
-import PlayerTurnDialogOptions from "../PlayerTurnDialogOptions/PlayerTurnDialogOptions.tsx";
+import PlayerTurnDialogOptions from "../../../dialogs/PlayerTurnDialogOptions/PlayerTurnDialogOptions.tsx";
 // import { Logo } from "../../general/Logo/Logo.tsx";
 
 // interface CellProps extends BoardCellProps {

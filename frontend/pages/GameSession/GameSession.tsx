@@ -101,17 +101,21 @@ function GameSession() {
             [key]: { ...prevPropertyInventoryDict[key], ...newValues } // Update the specified object with new values
         }));
     };
-
     
     const fetchData = async () => {
+        console.log("Fetching data");
+        // Fetching GameUsers data upon loading the page
         try {
-            const response = await axiosInstance.get("/api/players/getPlayerName");
-            console.log("Fetched username", response.data.username);
+            const response = await axiosInstance.get(`/api/players/getGameUsers/${lobbyID}`);
+            const gameUsers: GameUser[] = response.data as GameUser[];
+            gameUsers.forEach((gameUser: GameUser) => {
+                updateGameUserObject(gameUser.user_id.toString(), gameUser);
+            });
         } catch (error) {
-            console.error("Error fetching player name: ", error);
+            console.error("Error fetching GameUsers: ", error);
         }
     };
-
+    
     useEffect(() => {
         fetchData();
     }, [lobbyID]);

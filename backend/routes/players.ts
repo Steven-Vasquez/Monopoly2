@@ -14,6 +14,7 @@ router.get("/getPlayerName", async (req: any, res: any) => {
     res.send(username);
 });
 
+// Get all the game_users database rows in the game
 router.get("/getGameUsers/:id", async (req: any, res: any) => {
     try {
         const { id: game_id } = req.params;
@@ -21,6 +22,36 @@ router.get("/getGameUsers/:id", async (req: any, res: any) => {
         const game_users = await Players.getGameUsers(game_id);
         console.log("Game users are " + game_users);
         res.json(game_users);
+    }
+    catch (error) {
+        console.error(error);
+        res.send("Error");
+    }
+});
+
+// Get all the inventories database rows in the game
+router.get("/getInventories/:id", async (req: any, res: any) => {
+    try {
+        const { id: game_id } = req.params;
+        //const { id: user_id } = req.session.user;
+        const inventories = await Players.getInventories(game_id);
+        console.log("Inventory is " + inventories);
+        res.json(inventories);
+    }
+    catch (error) {
+        console.error(error);
+        res.send("Error");
+    }
+});
+
+// Get all the property_inventory database rows in the game
+router.get("/getPropertyInventories/:id", async (req: any, res: any) => {
+    try {
+        const { id: game_id } = req.params;
+        //const { id: user_id } = req.session.user;
+        const property_inventories = await Players.getPropertyInventories(game_id);
+        console.log("Property inventory is " + property_inventories);
+        res.json(property_inventories);
     }
     catch (error) {
         console.error(error);

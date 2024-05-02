@@ -114,11 +114,39 @@ function GameSession() {
         } catch (error) {
             console.error("Error fetching GameUsers: ", error);
         }
+
+        // Fetching Inventory data upon loading the page
+        try {
+            const response = await axiosInstance.get(`/api/players/getInventories/${lobbyID}`);
+            const inventories: Inventory[] = response.data as Inventory[];
+            inventories.forEach((inventory: Inventory) => {
+                updateInventoryObject(inventory.user_id.toString(), inventory);
+            });
+        } catch (error) {
+            console.error("Error fetching Inventory: ", error);
+        }
+
+        // Fetching PropertyInventory data upon loading the page
+        try {
+            const response = await axiosInstance.get(`/api/players/getPropertyInventories/${lobbyID}`);
+            const propertyInventories: PropertyInventory[] = response.data as PropertyInventory[];
+            propertyInventories.forEach((propertyInventory: PropertyInventory) => {
+                updatePropertyInventoryObject(propertyInventory.user_id.toString(), propertyInventory);
+            });
+        } catch (error) {
+            console.error("Error fetching PropertyInventory: ", error);
+        }
     };
     
     useEffect(() => {
         fetchData();
     }, [lobbyID]);
+
+    useEffect(() => {
+        console.log("gameUsersDict: ", gameUsersDict);
+        console.log("inventoryDict: ", inventoryDict);
+        console.log("propertyInventoryDict: ", propertyInventoryDict);
+    }, [gameUsersDict, inventoryDict, propertyInventoryDict]);
 
     socket.on(GAME_JOINED, (_data: any) => {
         console.log("GAME_JOINED event received");

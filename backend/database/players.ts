@@ -14,7 +14,23 @@ const getGameUsers = async (game_id: number) => {
     );
 };
 
+const getInventories = async (game_id: number) => {
+    return db.manyOrNone(
+        `SELECT * FROM inventory WHERE game_id=$1`,
+        [game_id]
+    );
+}
+
+const getPropertyInventories = async (game_id: number) => {
+    return db.manyOrNone(
+        `SELECT * FROM property_inventory WHERE game_id=$1`,
+        [game_id]
+    );
+}
+
 export default {
     getUserIDS,
-    getGameUsers
+    getGameUsers,
+    getInventories,
+    getPropertyInventories
 }

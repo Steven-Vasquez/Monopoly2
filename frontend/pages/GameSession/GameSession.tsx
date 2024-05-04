@@ -18,17 +18,17 @@ import Inventory from '#types/Inventory.ts';
 import PropertyInventory from '#types/PropertyInventory.ts';
 
 
-interface GameUserDict {
-    [key: string]: GameUser;
-}
+// interface GameUserDict {
+//     [key: string]: GameUser;
+// }
 
-interface InventoryDict {
-    [key: string]: Inventory;
-}
+// interface InventoryDict {
+//     [key: string]: Inventory;
+// }
 
-interface PropertyInventoryDict {
-    [key: string]: PropertyInventory;
-}
+// interface PropertyInventoryDict {
+//     [key: string]: PropertyInventory;
+// }
 
 function GameSession() {
     const navigate = useNavigate();
@@ -74,54 +74,106 @@ function GameSession() {
      *  Game Data
      ************************************************************/
 
-    const [gameUsersDict, setGameUsersDict] = useState<GameUserDict>({}); // Dictionary of all players in the game
-    const [inventoryDict, setInventoryDict] = useState<InventoryDict>({}); // Inventory of all players in the game
-    const [propertyInventoryDict, setPropertyInventoryDict] = useState<PropertyInventoryDict>({}); // Property inventory of all players in the game
+    // const [gameUsersDict, setGameUsersDict] = useState<Map<string, GameUser>>(new Map()); // Dictionary of all players in the game
+    // const [inventoryDict, setInventoryDict] = useState<Map<string, Inventory>>(new Map()); // Inventory of all players in the game
+    // const [propertyInventoryDict, setPropertyInventoryDict] = useState<Map<string, PropertyInventory>>(new Map()); // Property inventory of all players in the game
 
-    // Function to update a specific GameUser object inside GameUsersDict
-    const updateGameUserObject = (key: string, newValues: Partial<GameUser>) => {
-        setGameUsersDict(prevGameUsersDict => ({
-            ...prevGameUsersDict,
-            [key]: { ...prevGameUsersDict[key], ...newValues } // Update the specified object with new values
-        }));
-    };
+    const [gameUsersDict, setGameUsersDict] = useState<GameUser[]>([]);
+    const [inventoryDict, setInventoryDict] = useState<Inventory[]>([]);
+    const [propertyInventoryDict, setPropertyInventoryDict] = useState<PropertyInventory[]>([]); // Property inventory of all players in the game
 
-    // Function to update a specific Inventory object inside InventoryDict
-    const updateInventoryObject = (key: string, newValues: Partial<Inventory>) => {
-        setInventoryDict(prevInventoryDict => ({
-            ...prevInventoryDict,
-            [key]: { ...prevInventoryDict[key], ...newValues } // Update the specified object with new values
-        }));
-    };
 
-    // Function to update a specific PropertyInventory object inside PropertyInventoryDict
-    const updatePropertyInventoryObject = (key: string, newValues: Partial<PropertyInventory>) => {
-        setPropertyInventoryDict(prevPropertyInventoryDict => ({
-            ...prevPropertyInventoryDict,
-            [key]: { ...prevPropertyInventoryDict[key], ...newValues } // Update the specified object with new values
-        }));
-    };
+    const updateGameUsers = (userId: number, newValues: Partial<GameUser>) => {
+        setGameUsersDict(gameUsersDict.map((e) => {
+            return e.user_id == userId ? {...e, ...newValues} : e
+        }))
+    }
+
+    const updateInventories = (userId: number, newValues: Partial<Inventory>) => {
+        setInventoryDict(inventoryDict.map((e) => {
+            return e.user_id == userId ? {...e, ...newValues} : e
+        }))
+    }
+
+    const updatePropertyInventories = (userId: number, newValues: Partial<PropertyInventory>) => {
+        setPropertyInventoryDict(propertyInventoryDict.map((e) => {
+            return e.user_id == userId ? {...e, ...newValues} : e
+        }))
+    }
+
+    // // Function to update a specific GameUser object inside GameUsersDict
+    // const updateGameUserObject = (key: string, newValues: Partial<GameUser>) => {
+
+    //     setGameUsersDict(prevState => {
+    //         const prevUser = prevState.get(key);
+    //         if (prevUser) {
+    //             const newUser: GameUser = { ...prevUser, ...newValues };
+    //             prevState.set(key, newUser);
+    //             return new Map(prevState);
+    //         } 
+    //         return prevState; // If key not found, return previous state
+    //     });
+    //     // setGameUsersDict(prevGameUsersDict => ({
+    //     //     ...prevGameUsersDict,
+    //     //     [key]: { ...prevGameUsersDict[key], ...newValues } // Update the specified object with new values
+    //     // }));
+    // };
+
+    // const addGameUserObject = (key: string, newUser: GameUser) => {
+    //     setGameUsersDict(prevState => {
+    //         // const prevUser = prevState.get(key);
+    //         // if (prevUser) {
+    //         prevState.set(key, newUser);
+    //         return new Map(prevState);
+    //         // If key not found, return previous state
+    //     })
+    //     // setGameUsersDict(prevGameUsersDict => ({
+    //     //     ...prevGameUsersDict,
+    //     //     [key]: { ...prevGameUsersDict[key], ...newValues } // Update the specified object with new values
+    //     // }));
+    // };
     
+
+    // // Function to update a specific Inventory object inside InventoryDict
+    // const updateInventoryObject = (key: string, newValues: Partial<Inventory>) => {
+    //     setInventoryDict(prevInventoryDict => ({
+    //         ...prevInventoryDict,
+    //         [key]: { ...prevInventoryDict[key], ...newValues } // Update the specified object with new values
+    //     }));
+    // };
+
+    // // Function to update a specific PropertyInventory object inside PropertyInventoryDict
+    // const updatePropertyInventoryObject = (key: string, newValues: Partial<PropertyInventory>) => {
+    //     setPropertyInventoryDict(prevPropertyInventoryDict => ({
+    //         ...prevPropertyInventoryDict,
+    //         [key]: { ...prevPropertyInventoryDict[key], ...newValues } // Update the specified object with new values
+    //     }));
+    // };
+
     const fetchData = async () => {
         console.log("Fetching data");
         // Fetching GameUsers data upon loading the page
         try {
             const response = await axiosInstance.get(`/api/players/getGameUsers/${lobbyID}`);
-            const gameUsers: GameUser[] = response.data as GameUser[];
-            gameUsers.forEach((gameUser: GameUser) => {
-                updateGameUserObject(gameUser.user_id.toString(), gameUser);
-            });
+            const gameUsers: GameUser[] = response.data;
+            console.log(response)
+            setGameUsersDict(gameUsers)
+            // gameUsers.forEach((gameUser: GameUser) => {
+            //     addGameUserObject(gameUser.user_id.toString(), gameUser)
+            //     // updateGameUserObject(gameUser.user_id.toString(), gameUser);
+            // });
         } catch (error) {
             console.error("Error fetching GameUsers: ", error);
         }
 
-        // Fetching Inventory data upon loading the page
+        //Fetching Inventory data upon loading the page
         try {
             const response = await axiosInstance.get(`/api/players/getInventories/${lobbyID}`);
             const inventories: Inventory[] = response.data as Inventory[];
-            inventories.forEach((inventory: Inventory) => {
-                updateInventoryObject(inventory.user_id.toString(), inventory);
-            });
+            setInventoryDict(inventories)
+            // inventories.forEach((inventory: Inventory) => {
+            //     updateInventoryObject(inventory.user_id.toString(), inventory);
+            // });
         } catch (error) {
             console.error("Error fetching Inventory: ", error);
         }
@@ -130,14 +182,15 @@ function GameSession() {
         try {
             const response = await axiosInstance.get(`/api/players/getPropertyInventories/${lobbyID}`);
             const propertyInventories: PropertyInventory[] = response.data as PropertyInventory[];
-            propertyInventories.forEach((propertyInventory: PropertyInventory) => {
-                updatePropertyInventoryObject(propertyInventory.user_id.toString(), propertyInventory);
-            });
+            setPropertyInventoryDict(propertyInventories)
+            // propertyInventories.forEach((propertyInventory: PropertyInventory) => {
+            //     updatePropertyInventoryObject(propertyInventory.user_id.toString(), propertyInventory);
+            // });
         } catch (error) {
             console.error("Error fetching PropertyInventory: ", error);
         }
     };
-    
+
     useEffect(() => {
         fetchData();
     }, [lobbyID]);
@@ -160,31 +213,57 @@ function GameSession() {
         }
     }, [socket]);
 
-    const add10 = () => {
-        socket.emit("UPDATE_PLAYER_BALANCE",)
-    }
+    const add10Balance = async (userId: number) => {
+        try {
+            const user = inventoryDict.find((e) => e.user_id == userId)
+            if (user) {
+                updateInventories(userId, {balance: user.balance + 10})
+            } else {
+                throw new Error("Could not find user")
+            }
+            const response = await axiosInstance.post(`/api/players/addBalance/${lobbyID}`);
+            console.log(response.data); // Log the response from the server
+            // Perform any additional actions based on the response if needed
+        } catch (error) {
+            console.error('Error adding balance:', error);
+            // Handle errors gracefully, e.g., show an error message to the user
+        }
+    };
+
+    const subtract10Balance = async (userId: number) => {
+        try {
+            const user = inventoryDict.find((e) => e.user_id == userId)
+            if (user) {
+                updateInventories(userId, {balance: user.balance - 10})
+            } else {
+                throw new Error("Could not find user")
+            }
+            const response = await axiosInstance.post(`/api/players/addBalance/${lobbyID}`);
+            console.log(response.data); // Log the response from the server
+            // Perform any additional actions based on the response if needed
+        } catch (error) {
+            console.error('Error adding balance:', error);
+            // Handle errors gracefully, e.g., show an error message to the user
+        }
+    };
 
     return (
         <div>
             <div className="game-session-container">
                 <div className="game-session">
                     <h2>Game #{lobbyID}</h2>
-                    <div className="player-info">
-                        <p>Player Name</p>
-                        <p>{"{Player name here}"}</p>
-                        <p>Turn</p>
-                        <p>{"{Turn Number}"}</p>
-                        <p>Money</p>
-                        <p>{"{Money Amount}"}</p>
 
-                        <div className="player-actions">
-                            <button>Add $10</button>
-                            <button>Subtract $10</button>
+                    {gameUsersDict.map((user) => (
+                        <div className="player-info" key={user.user_id}>
+                            <p><strong>{user.username}</strong></p>
+                            <p>Turn: {user.play_order}</p>
+                            <p>Money: {inventoryDict.find((e) => e.user_id == user.user_id)?.balance}</p>
+                            <div className="player-actions">
+                                <button onClick={() => add10Balance(user.user_id)}>Add $10</button>
+                                <button onClick={() => subtract10Balance(user.user_id)}>Subtract $10</button>
+                            </div>
                         </div>
-
-
-
-                    </div>
+                    ))}
                     {/* <div id="board-container">
                         <Board></Board>
                         <div id="player-pieces">

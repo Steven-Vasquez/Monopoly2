@@ -101,54 +101,6 @@ function GameSession() {
         }))
     }
 
-    // // Function to update a specific GameUser object inside GameUsersDict
-    // const updateGameUserObject = (key: string, newValues: Partial<GameUser>) => {
-
-    //     setGameUsersDict(prevState => {
-    //         const prevUser = prevState.get(key);
-    //         if (prevUser) {
-    //             const newUser: GameUser = { ...prevUser, ...newValues };
-    //             prevState.set(key, newUser);
-    //             return new Map(prevState);
-    //         } 
-    //         return prevState; // If key not found, return previous state
-    //     });
-    //     // setGameUsersDict(prevGameUsersDict => ({
-    //     //     ...prevGameUsersDict,
-    //     //     [key]: { ...prevGameUsersDict[key], ...newValues } // Update the specified object with new values
-    //     // }));
-    // };
-
-    // const addGameUserObject = (key: string, newUser: GameUser) => {
-    //     setGameUsersDict(prevState => {
-    //         // const prevUser = prevState.get(key);
-    //         // if (prevUser) {
-    //         prevState.set(key, newUser);
-    //         return new Map(prevState);
-    //         // If key not found, return previous state
-    //     })
-    //     // setGameUsersDict(prevGameUsersDict => ({
-    //     //     ...prevGameUsersDict,
-    //     //     [key]: { ...prevGameUsersDict[key], ...newValues } // Update the specified object with new values
-    //     // }));
-    // };
-    
-
-    // // Function to update a specific Inventory object inside InventoryDict
-    // const updateInventoryObject = (key: string, newValues: Partial<Inventory>) => {
-    //     setInventoryDict(prevInventoryDict => ({
-    //         ...prevInventoryDict,
-    //         [key]: { ...prevInventoryDict[key], ...newValues } // Update the specified object with new values
-    //     }));
-    // };
-
-    // // Function to update a specific PropertyInventory object inside PropertyInventoryDict
-    // const updatePropertyInventoryObject = (key: string, newValues: Partial<PropertyInventory>) => {
-    //     setPropertyInventoryDict(prevPropertyInventoryDict => ({
-    //         ...prevPropertyInventoryDict,
-    //         [key]: { ...prevPropertyInventoryDict[key], ...newValues } // Update the specified object with new values
-    //     }));
-    // };
 
     const fetchData = async () => {
         console.log("Fetching data");
@@ -191,6 +143,11 @@ function GameSession() {
         }
     };
 
+    // Whenever any data from gameUserDict, inventoryDict, or propertyInventoryDict changes, update the game info on everybody's end
+    socket.on("updateGameInfo", () => {
+        fetchData();
+    });
+
     useEffect(() => {
         fetchData();
     }, [lobbyID]);
@@ -215,14 +172,15 @@ function GameSession() {
 
     const add10Balance = async (userId: number) => {
         try {
+            const response = await axiosInstance.post(`/api/players/addBalance/${lobbyID}`);
+            console.log(response.data); // Log the response from the server
             const user = inventoryDict.find((e) => e.user_id == userId)
             if (user) {
                 updateInventories(userId, {balance: user.balance + 10})
             } else {
                 throw new Error("Could not find user")
             }
-            const response = await axiosInstance.post(`/api/players/addBalance/${lobbyID}`);
-            console.log(response.data); // Log the response from the server
+
             // Perform any additional actions based on the response if needed
         } catch (error) {
             console.error('Error adding balance:', error);
@@ -259,6 +217,7 @@ function GameSession() {
                             <p>Turn: {user.play_order}</p>
                             <p>Money: {inventoryDict.find((e) => e.user_id == user.user_id)?.balance}</p>
                             <div className="player-actions">
+                                <div>{user.user_id}</div>
                                 <button onClick={() => add10Balance(user.user_id)}>Add $10</button>
                                 <button onClick={() => subtract10Balance(user.user_id)}>Subtract $10</button>
                             </div>

@@ -34,6 +34,11 @@ const initSockets = (app: Express, sessionMiddleware: any): SocketServer => {
       //console.log(io.sockets.adapter.rooms);
     });
 
+    // When game data is updated, broadcast to all clients in the game room
+    socket.on("gameInfoUpdated", (game_id: string) => {
+      io.to(game_id).emit("updateGameInfo", game_id);
+    });
+
 
     /**************  Voice chat rooms **************/
     socket.on("joinVoice", (game_id: string) => {

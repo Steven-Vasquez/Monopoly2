@@ -62,10 +62,12 @@ router.get("/getPropertyInventories/:id", async (req: any, res: any) => {
 
 // For testing purposes- Add 10$ to user's balance
 router.post("/addBalance/:id", async (req: any, res: any) => {
+    const io = req.app.get("io");
     try {
         const { id: user_id } = req.session.user;
         const { id: game_id } = req.params;
         await Players.addBalance(user_id, game_id, 10);
+        io.to(game_id).emit("updateGameInfo");
         res.send("Success");
     }
     catch (error) {

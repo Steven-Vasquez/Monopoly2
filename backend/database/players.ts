@@ -30,9 +30,9 @@ const getPropertyInventories = async (game_id: number) => {
 
 const addBalance = async (user_id: number, game_id: number, amount: number) => {
     return db.none(
-        `UPDATE users 
+        `UPDATE inventory 
          SET balance = balance + $3 
-         WHERE id = $1 AND game_id = $2`,
+         WHERE user_id = $1 AND game_id = $2`,
         [user_id, game_id, amount]
     );
 };

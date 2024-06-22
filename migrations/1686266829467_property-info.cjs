@@ -5,7 +5,7 @@
  */
 exports.up = (pgm) => {
     pgm.createTable("property_info", {
-      board_position: {
+      property_id: {
         type: "integer",
         notNull: true,
       },
@@ -15,7 +15,6 @@ exports.up = (pgm) => {
       },
       property_color: {
         type: "varchar(255)",
-        notNull: true,
       },
       property_cost: {
         type: "integer",
@@ -31,48 +30,42 @@ exports.up = (pgm) => {
       },
       payout_base: {
         type: "integer",
-        notNull: true,
       },
-      house_cost_1: {
+      house_count: {
         type: "integer",
-        notNull: true,
+        default: 0,
       },
-      house_cost_2: {
+      house_hotel_cost: {
         type: "integer",
-        notNull: true,
-      },
-      house_cost_3: {
-        type: "integer",
-        notNull: true,
-      },
-      house_cost_4: {
-        type: "integer",
-        notNull: true,
-      },
-      hotel_cost: {
-        type: "integer",
-        notNull: true,
       },
       payout_house_1: {
         type: "integer",
-        notNull: true,
       },
       payout_house_2: {
         type: "integer",
-        notNull: true,
       },
       payout_house_3: {
         type: "integer",
-        notNull: true,
       },
       payout_house_4: {
         type: "integer",
-        notNull: true,
       },
       payout_hotel: {
         type: "integer",
-        notNull: true,
       },
+      mortgaged: {
+        type: "boolean",
+      },
+      property_owned: {
+        type: "boolean",
+      },
+      property_owner: {
+        type: "integer",
+      },
+      property_type: {
+        type: "varchar(255)",
+        notNull: true,
+      }
     });
   };
   

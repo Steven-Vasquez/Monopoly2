@@ -82,6 +82,8 @@ function GameSession() {
     const [inventoryDict, setInventoryDict] = useState<Inventory[]>([]);
     const [propertyInventoryDict, setPropertyInventoryDict] = useState<PropertyInventory[]>([]); // Property inventory of all players in the game
 
+    
+
 
     const updateGameUsers = (userId: number, newValues: Partial<GameUser>) => {
         setGameUsersDict(gameUsersDict.map((e) => {

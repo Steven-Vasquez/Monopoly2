@@ -2,6 +2,7 @@ import db from "./connection.ts";
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import fs from "fs";
+import Property from "#types/Property.ts";
 
 
 // Ensures the property_info table is populated. Otherwise, no game can be played properly
@@ -19,34 +20,35 @@ const checkPropertyInfo = async () => {
 
         console.log(propertiesPath);
         // Read the property data from the JSON file
-        const properties = JSON.parse(fs.readFileSync(propertiesPath, 'utf-8'));
+        const properties: Property[] = JSON.parse(fs.readFileSync(propertiesPath, 'utf-8'));
         // Insert the property data into the database
         for (const property of properties) {
             const query = {
                 text: `INSERT INTO property_info
-             (board_position, property_name, property_color, property_cost, mortgage_payout, unmortgage_cost, payout_base,
-              house_cost_1, house_cost_2, house_cost_3, house_cost_4, hotel_cost,
-              payout_house_1, payout_house_2, payout_house_3, payout_house_4, payout_hotel)
+             (property_id, property_name, property_type, property_color, property_cost, mortgage_payout, unmortgage_cost, payout_base,
+              house_count, house_hotel_cost, payout_house_1, payout_house_2, payout_house_3, payout_house_4, payout_hotel,
+              mortgaged, property_owned, property_owner)
              VALUES
-             ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)`,
+             ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)`,
                 values: [
-                    property.board_position,
+                    property.property_id,
                     property.property_name,
+                    property.property_type,
                     property.property_color,
                     property.property_cost,
                     property.mortgage_payout,
                     property.unmortgage_cost,
                     property.payout_base,
-                    property.house_cost_1,
-                    property.house_cost_2,
-                    property.house_cost_3,
-                    property.house_cost_4,
-                    property.hotel_cost,
+                    property.house_count,
+                    property.house_hotel_cost,
                     property.payout_house_1,
                     property.payout_house_2,
                     property.payout_house_3,
                     property.payout_house_4,
                     property.payout_hotel,
+                    false,
+                    false,
+                    null
                 ],
             };
             await db.query(query);
@@ -141,14 +143,14 @@ const createGameBoard = async (game_id: number) => {
     for (const boardSpace of boardSpaces) {
         const query = {
             text: `INSERT INTO board_spaces
-            (game_id, board_position, space_name, space_type)
+            (game_id, board_position, space_type, property_id)
             VALUES
             ($1, $2, $3, $4)`,
             values: [
                 game_id,
                 boardSpace.board_position,
-                boardSpace.space_name,
                 boardSpace.space_type,
+                boardSpace.property_id,
             ],
         };
         await db.query(query);

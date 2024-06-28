@@ -30,8 +30,8 @@ const initSockets = (app: Express, sessionMiddleware: any): SocketServer => {
       socket.join(game_id);
 
 
-      //console.log("All socket rooms connected:");
-      //console.log(io.sockets.adapter.rooms);
+      console.log("All socket rooms connected:");
+      console.log(io.sockets.adapter.rooms);
     });
 
     // When game data is updated, broadcast to all clients in the game room

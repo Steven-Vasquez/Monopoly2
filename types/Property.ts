@@ -1,5 +1,6 @@
 interface Property {
     property_id: number,
+    game_id: number,
     property_type: "color" | "railroad" | "utility",
     property_name: string,
     property_color?: "brown" | "light_blue" | "pink" | "orange" | "red" | "yellow" | "green" | "dark_blue",

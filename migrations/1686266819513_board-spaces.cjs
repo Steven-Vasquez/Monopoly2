@@ -5,10 +5,7 @@
  */
 exports.up = (pgm) => {
     pgm.createTable("board_spaces", {
-      game_id: {
-        type: "integer",
-        notNull: true,
-      },
+
       board_position: {
         type: "integer",
         notNull: true,

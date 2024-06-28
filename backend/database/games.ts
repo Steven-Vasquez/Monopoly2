@@ -6,56 +6,55 @@ import Property from "#types/Property.ts";
 
 
 // Ensures the property_info table is populated. Otherwise, no game can be played properly
-const checkPropertyInfo = async () => {
+const checkPropertyInfo = async (game_id: number) => {
     console.log("Checking if property info is correct...");
-    const rows = await db.any("SELECT * FROM property_info");
+    //const rows = await db.any("SELECT * FROM property_info");
 
-    const rowCount = rows.length;
+    //const rowCount = rows.length;
 
-    if (rowCount === 0) {
-        const __filename = fileURLToPath(import.meta.url);
-        const __dirname = dirname(__filename);
 
-        const propertiesPath = __dirname + "/../data/properties.json";
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = dirname(__filename);
 
-        console.log(propertiesPath);
-        // Read the property data from the JSON file
-        const properties: Property[] = JSON.parse(fs.readFileSync(propertiesPath, 'utf-8'));
-        // Insert the property data into the database
-        for (const property of properties) {
-            const query = {
-                text: `INSERT INTO property_info
-             (property_id, property_name, property_type, property_color, property_cost, mortgage_payout, unmortgage_cost, payout_base,
+    const propertiesPath = __dirname + "/../data/properties.json";
+
+    console.log(propertiesPath);
+    // Read the property data from the JSON file
+    const properties: Property[] = JSON.parse(fs.readFileSync(propertiesPath, 'utf-8'));
+    // Insert the property data into the database
+    for (const property of properties) {
+        const query = {
+            text: `INSERT INTO property_info
+             (property_id, game_id, property_name, property_type, property_color, property_cost, mortgage_payout, unmortgage_cost, payout_base,
               house_count, house_hotel_cost, payout_house_1, payout_house_2, payout_house_3, payout_house_4, payout_hotel,
               mortgaged, property_owned, property_owner)
              VALUES
-             ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)`,
-                values: [
-                    property.property_id,
-                    property.property_name,
-                    property.property_type,
-                    property.property_color,
-                    property.property_cost,
-                    property.mortgage_payout,
-                    property.unmortgage_cost,
-                    property.payout_base,
-                    property.house_count,
-                    property.house_hotel_cost,
-                    property.payout_house_1,
-                    property.payout_house_2,
-                    property.payout_house_3,
-                    property.payout_house_4,
-                    property.payout_hotel,
-                    false,
-                    false,
-                    null
-                ],
-            };
-            await db.query(query);
-        }
-    } else {
-        console.log("property_info table is already populated");
+             ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19)`,
+            values: [
+                property.property_id,
+                game_id,
+                property.property_name,
+                property.property_type,
+                property.property_color,
+                property.property_cost,
+                property.mortgage_payout,
+                property.unmortgage_cost,
+                property.payout_base,
+                property.house_count,
+                property.house_hotel_cost,
+                property.payout_house_1,
+                property.payout_house_2,
+                property.payout_house_3,
+                property.payout_house_4,
+                property.payout_hotel,
+                false,
+                false,
+                null
+            ],
+        };
+        await db.query(query);
     }
+
 };
 
 // Ensures the chance_cards table is populated. Otherwise, no game can be played properly
@@ -132,34 +131,42 @@ const checkCommunityChestCards = async () => {
 };
 
 // Creates a game board to be used for a new game
-const createGameBoard = async (game_id: number) => {
+const createGameBoard = async () => {
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = dirname(__filename);
 
-    const boardSpacesPath = __dirname + "/../data/board_spaces.json";
-    // Read the board space data from the JSON file
-    const boardSpaces = JSON.parse(fs.readFileSync(boardSpacesPath, 'utf-8'));
-    // Insert the board space data into the database
-    for (const boardSpace of boardSpaces) {
-        const query = {
-            text: `INSERT INTO board_spaces
-            (game_id, board_position, space_type, property_id)
+    const rows = await db.any("SELECT * FROM board_spaces");
+
+    const rowCount = rows.length;
+
+    if (rowCount === 0) {
+
+        const boardSpacesPath = __dirname + "/../data/board_spaces.json";
+        // Read the board space data from the JSON file
+        const boardSpaces = JSON.parse(fs.readFileSync(boardSpacesPath, 'utf-8'));
+        // Insert the board space data into the database
+        for (const boardSpace of boardSpaces) {
+            const query = {
+                text: `INSERT INTO board_spaces
+            (board_position, space_type, property_id)
             VALUES
-            ($1, $2, $3, $4)`,
-            values: [
-                game_id,
-                boardSpace.board_position,
-                boardSpace.space_type,
-                boardSpace.property_id,
-            ],
-        };
-        await db.query(query);
+            ($1, $2, $3)`,
+                values: [
+                    boardSpace.board_position,
+                    boardSpace.space_type,
+                    boardSpace.property_id,
+                ],
+            };
+            await db.query(query);
+        }
+    }
+    else {
+        console.log("board_spaces table is already populated");
     }
 };
 
 // Creates a new game
 const create = async (creator_id: number, game_title: string, is_private: boolean, game_password: string) => {
-    checkPropertyInfo(); // Checks if property_info table is populated. If not, populates it so users can play the game
     checkChanceCards(); // Checks if chance_cards table is populated. If not, populates it so users can play the game
     checkCommunityChestCards(); // Checks if community_chest_cards table is populated. If not, populates it so users can play the game
 
@@ -179,8 +186,8 @@ const create = async (creator_id: number, game_title: string, is_private: boolea
     await db.none(INSERT_FIRST_USER_SQL, [creator_id, id]); // Insert creator of the game into the game (into the game_users column of the game row)
     await db.none(INSERT_INVENTORY_SQL, [creator_id, id]);
     await db.none(INSERT_PROPERTY_INV_SQL, [creator_id, id]);
-    createGameBoard(id); // Creates the game board for this game (in the database in the board_spaces table)
-
+    createGameBoard(); // Creates the game board for this game (in the database in the board_spaces table)
+    checkPropertyInfo(id); // Checks if property_info table is populated. If not, populates it so users can play the game
     return { id, created_at }; // Returns the game id
 };
 
@@ -203,7 +210,7 @@ const join = async (game_id: number, user_id: number) => {
         [game_id]
     );
 
-    if(player_count.player_count >= 4) {
+    if (player_count.player_count >= 4) {
         console.log("Error thrown: Game is full");
         throw new Error("Error thrown: Game is full");
     }
@@ -215,10 +222,10 @@ const join = async (game_id: number, user_id: number) => {
     player_count = player_count.player_count;
     player_count++;
 
-    if(player_count >= 4) {
+    if (player_count >= 4) {
         await db.none("UPDATE games SET joinable=false WHERE id=$1", [game_id]);
     }
-    
+
     console.log("Player count: " + player_count);
 
     // Insert into game_users table with game_id, user_id, player_count
@@ -287,11 +294,23 @@ const state = async (game_id: number, user_id: number) => {
     };
 };
 
+const getProperties = async (game_id: number) => {
+    const properties = await db.many(
+        `
+    SELECT *
+    FROM property_info
+    WHERE game_id = $1
+    `, [game_id]
+    );
+    return properties;
+}
+
 export default {
     create,
     join,
     listGames,
     listMyGames,
     listPlayers,
-    state
+    state,
+    getProperties
 };

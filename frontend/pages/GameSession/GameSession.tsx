@@ -16,17 +16,18 @@ import "./GameSession.css";
 import GameUser from '#types/GameUser.ts';
 import Inventory from '#types/Inventory.ts';
 import PropertyInventory from '#types/PropertyInventory.ts';
+import Property from '#types/Property.ts';
 
 
 // interface GameUserDict {
 //     [key: string]: GameUser;
 // }
 
-// interface InventoryDict {
+// interface inventoryArray {
 //     [key: string]: Inventory;
 // }
 
-// interface PropertyInventoryDict {
+// interface PropertyinventoryArray {
 //     [key: string]: PropertyInventory;
 // }
 
@@ -74,31 +75,31 @@ function GameSession() {
      *  Game Data
      ************************************************************/
 
-    // const [gameUsersDict, setGameUsersDict] = useState<Map<string, GameUser>>(new Map()); // Dictionary of all players in the game
-    // const [inventoryDict, setInventoryDict] = useState<Map<string, Inventory>>(new Map()); // Inventory of all players in the game
-    // const [propertyInventoryDict, setPropertyInventoryDict] = useState<Map<string, PropertyInventory>>(new Map()); // Property inventory of all players in the game
+    // const [gameUsersArray, setgameUsersArray] = useState<Map<string, GameUser>>(new Map()); // Dictionary of all players in the game
+    // const [inventoryArray, setinventoryArray] = useState<Map<string, Inventory>>(new Map()); // Inventory of all players in the game
+    // const [propertyinventoryArray, setPropertyinventoryArray] = useState<Map<string, PropertyInventory>>(new Map()); // Property inventory of all players in the game
 
-    const [gameUsersDict, setGameUsersDict] = useState<GameUser[]>([]);
-    const [inventoryDict, setInventoryDict] = useState<Inventory[]>([]);
-    const [propertyInventoryDict, setPropertyInventoryDict] = useState<PropertyInventory[]>([]); // Property inventory of all players in the game
+    const [gameUsersArray, setGameUsersArray] = useState<GameUser[]>([]);
+    const [inventoryArray, setInventoryArray] = useState<Inventory[]>([]);
+    const [propertyinventoryArray, setPropertyInventoryArray] = useState<PropertyInventory[]>([]); // Property inventory of all players in the game
+    const [propertiesArray, setPropertiesArray] = useState<Property[]>([]); // Property inventory of all players in the game
 
     
 
-
     const updateGameUsers = (userId: number, newValues: Partial<GameUser>) => {
-        setGameUsersDict(gameUsersDict.map((e) => {
+        setGameUsersArray(gameUsersArray.map((e) => {
             return e.user_id == userId ? {...e, ...newValues} : e
         }))
     }
 
     const updateInventories = (userId: number, newValues: Partial<Inventory>) => {
-        setInventoryDict(inventoryDict.map((e) => {
+        setInventoryArray(inventoryArray.map((e) => {
             return e.user_id == userId ? {...e, ...newValues} : e
         }))
     }
 
     const updatePropertyInventories = (userId: number, newValues: Partial<PropertyInventory>) => {
-        setPropertyInventoryDict(propertyInventoryDict.map((e) => {
+        setPropertyInventoryArray(propertyinventoryArray.map((e) => {
             return e.user_id == userId ? {...e, ...newValues} : e
         }))
     }
@@ -106,12 +107,12 @@ function GameSession() {
 
     const fetchData = async () => {
         console.log("Fetching data");
-        // Fetching GameUsers data upon loading the page
+        // Fetching **GameUsers** data upon loading the page
         try {
             const response = await axiosInstance.get(`/api/players/getGameUsers/${lobbyID}`);
             const gameUsers: GameUser[] = response.data;
             console.log(response)
-            setGameUsersDict(gameUsers)
+            setGameUsersArray(gameUsers)
             // gameUsers.forEach((gameUser: GameUser) => {
             //     addGameUserObject(gameUser.user_id.toString(), gameUser)
             //     // updateGameUserObject(gameUser.user_id.toString(), gameUser);
@@ -120,11 +121,11 @@ function GameSession() {
             console.error("Error fetching GameUsers: ", error);
         }
 
-        //Fetching Inventory data upon loading the page
+        //Fetching **Inventory** data upon loading the page
         try {
             const response = await axiosInstance.get(`/api/players/getInventories/${lobbyID}`);
             const inventories: Inventory[] = response.data as Inventory[];
-            setInventoryDict(inventories)
+            setInventoryArray(inventories)
             // inventories.forEach((inventory: Inventory) => {
             //     updateInventoryObject(inventory.user_id.toString(), inventory);
             // });
@@ -132,33 +133,46 @@ function GameSession() {
             console.error("Error fetching Inventory: ", error);
         }
 
-        // Fetching PropertyInventory data upon loading the page
+        // Fetching **PropertyInventory** data upon loading the page
         try {
             const response = await axiosInstance.get(`/api/players/getPropertyInventories/${lobbyID}`);
             const propertyInventories: PropertyInventory[] = response.data as PropertyInventory[];
-            setPropertyInventoryDict(propertyInventories)
+            setPropertyInventoryArray(propertyInventories)
             // propertyInventories.forEach((propertyInventory: PropertyInventory) => {
             //     updatePropertyInventoryObject(propertyInventory.user_id.toString(), propertyInventory);
             // });
         } catch (error) {
             console.error("Error fetching PropertyInventory: ", error);
         }
+
+        // Fetching **Properties** data upon loading the page
+        try {
+            const response = await axiosInstance.get(`/api/games/getProperties/${lobbyID}`);
+            const properties: Property[] = response.data as Property[];
+            setPropertiesArray(properties)
+            // propertyInventories.forEach((propertyInventory: PropertyInventory) => {
+            //     updatePropertyInventoryObject(propertyInventory.user_id.toString(), propertyInventory);
+            // });
+        } catch (error) {
+            console.error("Error fetching Properties: ", error);
+        }
     };
 
-    // Whenever any data from gameUserDict, inventoryDict, or propertyInventoryDict changes, update the game info on everybody's end
+    // Whenever any data from gameUserDict, inventoryArray, or propertyinventoryArray changes, update the game info on everybody's end
     socket.on("updateGameInfo", () => {
         fetchData();
     });
 
     useEffect(() => {
+        console.log("GameSession useEffect fetch data")
         fetchData();
     }, [lobbyID]);
 
     useEffect(() => {
-        console.log("gameUsersDict: ", gameUsersDict);
-        console.log("inventoryDict: ", inventoryDict);
-        console.log("propertyInventoryDict: ", propertyInventoryDict);
-    }, [gameUsersDict, inventoryDict, propertyInventoryDict]);
+        console.log("gameUsersArray: ", gameUsersArray);
+        console.log("inventoryArray: ", inventoryArray);
+        console.log("propertyinventoryArray: ", propertyinventoryArray);
+    }, [gameUsersArray, inventoryArray, propertyinventoryArray]);
 
     socket.on(GAME_JOINED, (_data: any) => {
         console.log("GAME_JOINED event received");
@@ -176,7 +190,7 @@ function GameSession() {
         try {
             const response = await axiosInstance.post(`/api/players/addBalance/${lobbyID}`);
             console.log(response.data); // Log the response from the server
-            const user = inventoryDict.find((e) => e.user_id == userId)
+            const user = inventoryArray.find((e) => e.user_id == userId)
             if (user) {
                 updateInventories(userId, {balance: user.balance + 10})
             } else {
@@ -192,7 +206,7 @@ function GameSession() {
 
     const subtract10Balance = async (userId: number) => {
         try {
-            const user = inventoryDict.find((e) => e.user_id == userId)
+            const user = inventoryArray.find((e) => e.user_id == userId)
             if (user) {
                 updateInventories(userId, {balance: user.balance - 10})
             } else {
@@ -213,11 +227,11 @@ function GameSession() {
                 <div className="game-session">
                     <h2>Game #{lobbyID}</h2>
 
-                    {gameUsersDict.map((user) => (
+                    {gameUsersArray.map((user) => (
                         <div className="player-info" key={user.user_id}>
                             <p><strong>{user.username}</strong></p>
                             <p>Turn: {user.play_order}</p>
-                            <p>Money: {inventoryDict.find((e) => e.user_id == user.user_id)?.balance}</p>
+                            <p>Money: {inventoryArray.find((e) => e.user_id == user.user_id)?.balance}</p>
                             <div className="player-actions">
                                 <div>{user.user_id}</div>
                                 <button onClick={() => add10Balance(user.user_id)}>Add $10</button>

@@ -9,6 +9,10 @@ exports.up = (pgm) => {
         type: "integer",
         notNull: true,
       },
+      game_id: {
+        type: "integer",
+        notNull: true,
+      },
       property_name: {
         type: "varchar(255)",
         notNull: true,

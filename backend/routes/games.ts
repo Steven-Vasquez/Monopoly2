@@ -21,9 +21,9 @@ router.get("/getGamesList", async (_request: any, response: any) => {
 
 // Get list of games that user is in
 router.get("/getMyGamesList", async (request: any, response: any) => {
-    if(!request.session.user) return response.json([]); // If user is not logged in, return empty array
+    if (!request.session.user) return response.json([]); // If user is not logged in, return empty array
     const { id: user_id } = request.session.user;
-    
+
     try {
         const available_games = await Games.listMyGames(user_id);
         response.json(available_games);
@@ -105,6 +105,21 @@ router.post("/create", async (request: any, response: any) => {
         response.send({ message: "An error occurred during game creation.", success: false });
     }
 });
+
+
+// Get property_info table for a game
+router.get("/getProperties/:id", async (request: any, response: any) => {
+    try {
+        const { id: game_id } = request.params;
+        const properties = await Games.getProperties(game_id);
+        response.json(properties);
+    }
+    catch (error) {
+        console.error(error);
+        response.send("Error retrieving property_info");
+    }
+});
+
 
 
 export default router;

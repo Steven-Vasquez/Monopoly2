@@ -7,7 +7,7 @@ import { Tab } from "#components/general/Tab/Tab.tsx";
 import CreateGameDialog from "../../dialogs/CreateGameDialog/CreateGameDialog.tsx";
 import usePageTitle from "../../hooks/UsePageTitle.tsx";
 import axiosInstance from "#backend/axiosInstance.ts";
-import io from "socket.io-client";
+import io, {Socket} from "socket.io-client";
 
 import { GAME_CREATED } from "#constants"
 
@@ -39,11 +39,29 @@ function TimeAgo({ date }: TimeAgoProps) {
 }
 
 export default function GameHub(): JSX.Element {
+    const [socket, setSocket] = useState<Socket | null>(null);
+
+    useEffect(() => {
+        const socket = io("http://localhost:3001"); // Connecting to the socket room of the GameHub to update the list of games as needed
+        console.log("Hub.tsx: socket: ", socket);
+
+        // Updates the list of joinable games when a new game is created
+        socket.on(GAME_CREATED, (_data: any) => { 
+            console.log("GAME_CREATED event received");
+            getGamesList();
+            getMyGamesList();
+        });
+
+        setSocket(socket);
+
+        return () => {
+            socket.disconnect();
+        }
+    }, []);
+
     usePageTitle('Game Hub');
 
     const navigate = useNavigate();
-    const socket = io("http://localhost:3001"); // Connecting to the socket room of the GameHub to update the list of games as needed
-    console.log("Hub.tsx: socket: ", socket);
 
     const [activeTab, setActiveTab] = useState('');        // No tabs are active by default (for underline animation)
     const [showMyGames, setShowMyGames] = useState(false); // My games tab content is hidden by default
@@ -80,11 +98,6 @@ export default function GameHub(): JSX.Element {
         setActiveTab('joinable-games');
     }, []);
 
-    socket.on(GAME_CREATED, (_data: any) => { // Updates the list of joinable games when a new game is created
-        console.log("GAME_CREATED event received");
-        getGamesList();
-        getMyGamesList();
-    });
 
     const handleJoinRequest = (game_id: any) => {
         axiosInstance.post(`/api/games/${game_id}/join`)
@@ -97,12 +110,7 @@ export default function GameHub(): JSX.Element {
             });
     }
 
-    // Disconnect from socket when component unmounts
-    useEffect(() => {
-        return () => {
-            socket.disconnect();
-        }
-    }, [socket]);
+
 
     function toggleTab(tab: string) {
         return () => {

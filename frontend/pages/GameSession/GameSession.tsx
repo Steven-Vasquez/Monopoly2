@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import io from "socket.io-client";
+import io, {Socket} from "socket.io-client";
 import axiosInstance from '#backend/axiosInstance.ts';
 import { GAME_JOINED } from "#constants";
 
@@ -68,8 +68,30 @@ function GameSession() {
     /*************************************************************
      * Socket connection
      *************************************************************/
-    const socket = io("http://localhost:3001");
-    socket.emit("join", lobbyID); // Connecting to the socket room of the lobby for lobby-wide event updates
+    const [socket, setSocket] = useState<Socket | null>(null);
+
+    // Disconnect from socket when component unmounts
+    useEffect(() => {
+        const socket = io("http://localhost:3001");
+        socket.emit("join", lobbyID); // Connecting to the socket room of the lobby for lobby-wide event updates
+
+        // Whenever any data from gameUserDict, inventoryArray, or propertyinventoryArray changes, update the game info on everybody's end
+        socket.on("updateGameInfo", () => {
+            fetchData();
+        });
+
+        // When a user joins the game, update the game info
+        socket.on(GAME_JOINED, (_data: any) => {
+            console.log("GAME_JOINED event received");
+            fetchData();
+        });
+
+        setSocket(socket);
+
+        return () => {
+            socket.disconnect();
+        }
+    }, []);
 
     /************************************************************
      *  Game Data
@@ -84,23 +106,23 @@ function GameSession() {
     const [propertyinventoryArray, setPropertyInventoryArray] = useState<PropertyInventory[]>([]); // Property inventory of all players in the game
     const [propertiesArray, setPropertiesArray] = useState<Property[]>([]); // Property inventory of all players in the game
 
-    
+
 
     const updateGameUsers = (userId: number, newValues: Partial<GameUser>) => {
         setGameUsersArray(gameUsersArray.map((e) => {
-            return e.user_id == userId ? {...e, ...newValues} : e
+            return e.user_id == userId ? { ...e, ...newValues } : e
         }))
     }
 
     const updateInventories = (userId: number, newValues: Partial<Inventory>) => {
         setInventoryArray(inventoryArray.map((e) => {
-            return e.user_id == userId ? {...e, ...newValues} : e
+            return e.user_id == userId ? { ...e, ...newValues } : e
         }))
     }
 
     const updatePropertyInventories = (userId: number, newValues: Partial<PropertyInventory>) => {
         setPropertyInventoryArray(propertyinventoryArray.map((e) => {
-            return e.user_id == userId ? {...e, ...newValues} : e
+            return e.user_id == userId ? { ...e, ...newValues } : e
         }))
     }
 
@@ -158,10 +180,6 @@ function GameSession() {
         }
     };
 
-    // Whenever any data from gameUserDict, inventoryArray, or propertyinventoryArray changes, update the game info on everybody's end
-    socket.on("updateGameInfo", () => {
-        fetchData();
-    });
 
     useEffect(() => {
         console.log("GameSession useEffect fetch data")
@@ -174,17 +192,8 @@ function GameSession() {
         console.log("propertyinventoryArray: ", propertyinventoryArray);
     }, [gameUsersArray, inventoryArray, propertyinventoryArray]);
 
-    socket.on(GAME_JOINED, (_data: any) => {
-        console.log("GAME_JOINED event received");
-        fetchData();
-    });
 
-    // Disconnect from socket when component unmounts
-    useEffect(() => {
-        return () => {
-            socket.disconnect();
-        }
-    }, [socket]);
+
 
     const add10Balance = async (userId: number) => {
         try {
@@ -192,7 +201,7 @@ function GameSession() {
             console.log(response.data); // Log the response from the server
             const user = inventoryArray.find((e) => e.user_id == userId)
             if (user) {
-                updateInventories(userId, {balance: user.balance + 10})
+                updateInventories(userId, { balance: user.balance + 10 })
             } else {
                 throw new Error("Could not find user")
             }
@@ -208,7 +217,7 @@ function GameSession() {
         try {
             const user = inventoryArray.find((e) => e.user_id == userId)
             if (user) {
-                updateInventories(userId, {balance: user.balance - 10})
+                updateInventories(userId, { balance: user.balance - 10 })
             } else {
                 throw new Error("Could not find user")
             }

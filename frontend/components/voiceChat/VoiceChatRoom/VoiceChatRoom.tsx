@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useRef } from "react";
 import axiosInstance from "#backend/axiosInstance.ts";
-import io from "socket.io-client";
+import io, { Socket } from "socket.io-client";
 
 import { createPeerConnection, createOffer, createAnswer } from "./utility/webRTCUtils.ts";
 import "./VoiceChatRoom.css";
@@ -24,60 +24,30 @@ function VoiceChatRoom() {
     // TODO
     const [deafened, setDeafened] = useState(false); // State to manage deafen/undeafen
 
-    // Connecting to the socket room of the lobby for lobby-wide event updates
+    // Connecting to the voice chat socket room
+    const [socket, setSocket] = useState<Socket | null>(null);
+
     const { lobbyID } = useParams<{ lobbyID: string }>();
-    const socket = io("http://localhost:3001");
-
-    if (!joinedVoice) {
-        socket.emit("joinVoice", lobbyID); // Joins voice chat socket room (for example: voiceChat:1)
-    }
-
-    /*
+    // Disconnect from socket when component unmounts
     useEffect(() => {
+    
+        const socket = io("http://localhost:3001");
+
         if (!joinedVoice) {
-            console.log("Joining voice chat socket room: " + lobbyID);
             socket.emit("joinVoice", lobbyID); // Joins voice chat socket room (for example: voiceChat:1)
-            setJoinedVoice(true); // Set the state to indicate that the join has occurred
-            socket.emit("test", lobbyID);
         }
-        else {
-            console.log("Already joined voice chat socket room");
-        }
-    }, [lobbyID]);
-    */
 
-    // Update the ref of "inVoiceChat" when the state changes
-    useEffect(() => {
-        inVoiceChatRef.current = inVoiceChat;
-        //console.log("Updated inVoiceChatRef:", inVoiceChatRef.current);
-    }, [inVoiceChat]);
-
-    // Update the ref of "user_id" when the state changes
-    useEffect(() => {
-        user_idRef.current = user_id;
-        //console.log("Updated user_idRef:", user_idRef.current);
-    }, [user_id]);
-
-    // Handle receiving a new participant
-    useEffect(() => {
-        //console.log("a socket listener is being added");
+        // Handle receiving a new participant
         socket.on("userJoinedVoiceChat", (data: any) => {
             //console.log("A user has joined the voice room (not chat)");
         });
-        // Clean up the event listener
-        return () => {
-            //console.log("a socket listener is being removed");
-            socket.off("userJoinedVoiceChat");
-        }
-    }, []);
 
-    // Handle receiving an offer from another user
-    useEffect(() => {
         interface OfferData {
             from: number;
             offer: RTCSessionDescriptionInit;
         }
 
+        // Handle receiving an offer from another user
         socket.on("offer", async (data: OfferData) => {
             const { from, offer } = data;
 
@@ -103,11 +73,11 @@ function VoiceChatRoom() {
                     //console.log("Participants:", participants);
                 };
 
-                
+
                 peerConnection.addEventListener('icegatheringstatechange', () => {
                     //console.log('ICE Gathering State:', peerConnection.iceGatheringState);
                 });
-                
+
 
                 // Set the remote description of the current user's peer connection with the received offer
                 //console.log("Setting remote description");
@@ -115,7 +85,7 @@ function VoiceChatRoom() {
 
                 try {
                     const localParticipant = participants.find((participant) => participant.id === user_idRef.current);
-                    if(!localParticipant) {
+                    if (!localParticipant) {
                         //console.log("localParticipant is null");
                         return;
                     }
@@ -174,12 +144,12 @@ function VoiceChatRoom() {
 
                         // Now you can use remoteAudioStream as needed
                         //console.log("Received remote audio stream:", remoteAudioStream);
-                        
+
                         // Update the local state with the new participant and their peer connection
                         setParticipants(prevParticipants => [...prevParticipants, { id: from, audioStream: remoteAudioStream, peerConnection: localPeerConnection }]);
                         //console.log("Participants:", participants);
                     };
-                    
+
                     localPeerConnection.setRemoteDescription(answer);
 
                     // id: from
@@ -192,12 +162,50 @@ function VoiceChatRoom() {
             }
         });
 
-        // Clean up the event listener
+        socket.on("testReceived", (data: any) => {
+            //console.log("test received");
+            //console.log(participants);
+        });
+        
+        setSocket(socket);
+
+        // Clean up the event listeners and disconnect the socket
         return () => {
+            socket.off("userJoinedVoiceChat");
             socket.off("offer");
             socket.off("answer");
+            socket.off("testReceived");
+            socket.disconnect();
         }
-    }, [socket]);
+    }, []);
+
+    /*
+    useEffect(() => {
+        if (!joinedVoice) {
+            console.log("Joining voice chat socket room: " + lobbyID);
+            socket.emit("joinVoice", lobbyID); // Joins voice chat socket room (for example: voiceChat:1)
+            setJoinedVoice(true); // Set the state to indicate that the join has occurred
+            socket.emit("test", lobbyID);
+        }
+        else {
+            console.log("Already joined voice chat socket room");
+        }
+    }, [lobbyID]);
+    */
+
+    // Update the ref of "inVoiceChat" when the state changes
+    useEffect(() => {
+        inVoiceChatRef.current = inVoiceChat;
+        //console.log("Updated inVoiceChatRef:", inVoiceChatRef.current);
+    }, [inVoiceChat]);
+
+    // Update the ref of "user_id" when the state changes
+    useEffect(() => {
+        user_idRef.current = user_id;
+        //console.log("Updated user_idRef:", user_idRef.current);
+    }, [user_id]);
+
+
 
 
     // Handle joining the chat
@@ -234,6 +242,11 @@ function VoiceChatRoom() {
 
             // Notify other users about the new participant and include relevant details for connection setup
             setInVoiceChat(true); // Set inVoiceChat to true
+            
+            if (socket === null) {
+                console.log("Socket is null from handleJoinVoiceChat");
+                return;
+            }
 
             socket.emit("newParticipant",
                 participantId,
@@ -263,6 +276,10 @@ function VoiceChatRoom() {
 
             // Notify the server or other participants, if needed
             // For example, you can emit a "userLeftVoiceChat" event to inform others
+            if (socket === null) {
+                console.log("Socket is null from handleLeaveVoiceChat");
+                return;
+            }
             socket.emit("leaveVoice", lobbyID);
         } else {
             //console.warn("Leaving participant not found.");
@@ -296,29 +313,17 @@ function VoiceChatRoom() {
         //console.log("user_id from useEffect:", user_id);
     }, [user_id]);
 
-    // Disconnect from socket when component unmounts
-    useEffect(() => {
-        return () => {
-            socket.disconnect();
-        }
-    }, []);
 
     const testFunction = () => {
         //console.log("test function");
         //console.log("user_id: " + user_id);
+        if (socket === null) {
+            console.log("Socket is null from testFunction");
+            return;
+        }
         socket.emit("test", lobbyID);
     }
 
-    useEffect(() => {
-        socket.on("testReceived", (data: any) => {
-            //console.log("test received");
-            //console.log(participants);
-        });
-        // Clean up the event listener
-        return () => {
-            socket.off("testReceived");
-        }
-    }, [socket]);
 
     useEffect(() => {
         //console.log("inVoiceChat: " + inVoiceChat);

@@ -6,16 +6,28 @@ import { useState, useEffect, useRef } from 'react'
 import { GameModel } from '../../models/GameModel.ts'
 import { Player } from '../../models/Player.ts'
 
-import io from "socket.io-client";
+import io, { Socket } from "socket.io-client";
 import GameCommsPanel from "#components/game/GameCommsPanel/GameCommsPanel.tsx";
 
 export default function Test() {
     // Hard-coded socket connection for testing purposes
-    const socket = io("http://localhost:3001");
-    const game_id = '0';
-    socket.emit("join", game_id); // Connecting to the socket room of the lobby for lobby-wide event updates
+    const [socket, setSocket] = useState<Socket | null>(null);
 
-    
+    // Socket cleanup function
+    useEffect(() => {
+        const socket = io("http://localhost:3001");
+        const game_id = '0'; // Hard-coded socket connection for testing purposes
+        socket.emit("join", game_id); // Connecting to the socket room of the lobby for lobby-wide event updates
+
+        setSocket(socket);
+
+        return () => {
+            socket.disconnect();
+        }
+    }, []);
+
+
+
 
     const container = useRef<HTMLDivElement>(null);
     const [dim, setDim] = useState({ width: 0, height: 0 });
@@ -40,7 +52,7 @@ export default function Test() {
 
     const addPlayer = () => {
         // gameModel.addPlayer(player);
-        const newGame = new GameModel([...gameModel.players, new Player(index, "Top Hat", 0,0,0)]);
+        const newGame = new GameModel([...gameModel.players, new Player(index, "Top Hat", 0, 0, 0)]);
         setIndex(index += 1)
         setGameModel((newGame));
         console.log(newGame)
@@ -110,8 +122,13 @@ export default function Test() {
                             }
                         />
                     </div>
-                    {/* </> */}
-                    <GameCommsPanel socket={socket} />
+                    {socket ? (
+                        <GameCommsPanel socket={socket} />
+                    ) : (
+                        <p>Connecting to chat...</p>
+
+                    )}
+
                     <PlayerStats />
                     <PlayerInventory />
                     {/* <VoiceChatRoom />

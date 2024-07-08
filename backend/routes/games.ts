@@ -121,5 +121,17 @@ router.get("/getProperties/:id", async (request: any, response: any) => {
 });
 
 
+// Get game state
+router.get("/getState/:id", async (request: any, response: any) => {
+    const { id: game_id } = request.params;
+    //const { id: user_id } = request.session.user;
+
+    try {
+        const state = await Games.state(game_id);
+        response.json(state);
+    } catch (error) {
+        console.log({ error });
+    }
+});
 
 export default router;

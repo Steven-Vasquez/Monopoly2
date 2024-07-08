@@ -263,34 +263,53 @@ const listPlayers = async (game_id: number) => db.any(PLAYERS_LIST_SQL, [game_id
 
 
 // Create and return the game state
-const state = async (game_id: number, user_id: number) => {
+const state = async (game_id: number) => {
     // Dealing with the game_users table
-    const users = await db.many(
+
+    //properties, game_users, inventory, properties_inventory
+
+    const properties = await db.many(
         `
-     SELECT game_users.*
+    SELECT *
+    FROM property_info
+    WHERE game_id = $1
+    `, [game_id]
+    );
+
+    const game_users = await db.many(
+        `
+     SELECT *
      FROM game_users
-     WHERE game_users.game_id = $1
-     ORDER BY game_users.play_order
+     WHERE game_id = $1
+     ORDER BY play_order
      `,
         [game_id]
     );
 
     const inventories = await db.many(
         `
-    SELECT DISTINCT inventory.*, game_users.play_order
+    SELECT *
     FROM inventory
-    JOIN game_users ON inventory.user_id = game_users.user_id
-    WHERE inventory.game_id = $1 AND game_users.game_id = $1
-    ORDER BY game_users.play_order
+    WHERE game_id = $1
+    `,
+        [game_id]
+    );
+
+    const property_inventories = await db.many(
+    `
+    SELECT *
+    FROM property_inventory
+    WHERE game_id = $1
     `,
         [game_id]
     );
 
     return {
+        properties,
         game_id,
-        users,
+        game_users,
         inventories,
-        user_id,
+        property_inventories,
     };
 };
 

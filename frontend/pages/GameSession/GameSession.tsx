@@ -180,6 +180,11 @@ function GameSession() {
         }
     };
 
+    const fetchData2 = async () => {
+        console.log("Fetching data2");
+        
+    };
+
 
     useEffect(() => {
         console.log("GameSession useEffect fetch data")

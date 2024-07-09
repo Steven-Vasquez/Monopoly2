@@ -17,19 +17,8 @@ import GameUser from '#types/GameUser.ts';
 import Inventory from '#types/Inventory.ts';
 import PropertyInventory from '#types/PropertyInventory.ts';
 import Property from '#types/Property.ts';
+import BoardSpace from '#types/BoardSpace.ts';
 
-
-// interface GameUserDict {
-//     [key: string]: GameUser;
-// }
-
-// interface inventoryArray {
-//     [key: string]: Inventory;
-// }
-
-// interface PropertyinventoryArray {
-//     [key: string]: PropertyInventory;
-// }
 
 function GameSession() {
     const navigate = useNavigate();
@@ -105,6 +94,7 @@ function GameSession() {
     const [inventoryArray, setInventoryArray] = useState<Inventory[]>([]);
     const [propertyinventoryArray, setPropertyInventoryArray] = useState<PropertyInventory[]>([]); // Property inventory of all players in the game
     const [propertiesArray, setPropertiesArray] = useState<Property[]>([]); // Property inventory of all players in the game
+    const [BoardSpacesArray, setBoardSpacesArray] = useState<BoardSpace[]>([]); // All board spaces on the map
 
 
 
@@ -126,69 +116,47 @@ function GameSession() {
         }))
     }
 
+    const updatePropertiesArray = (propertyId: number, newValues: Partial<Property>) => {
+        setPropertiesArray(propertiesArray.map((e) => {
+            return e.property_id == propertyId ? { ...e, ...newValues } : e
+        }))
+    }
+
+
+
 
     const fetchData = async () => {
-        console.log("Fetching data");
-        // Fetching **GameUsers** data upon loading the page
-        try {
-            const response = await axiosInstance.get(`/api/players/getGameUsers/${lobbyID}`);
-            const gameUsers: GameUser[] = response.data;
-            console.log(response)
-            setGameUsersArray(gameUsers)
-            // gameUsers.forEach((gameUser: GameUser) => {
-            //     addGameUserObject(gameUser.user_id.toString(), gameUser)
-            //     // updateGameUserObject(gameUser.user_id.toString(), gameUser);
-            // });
-        } catch (error) {
-            console.error("Error fetching GameUsers: ", error);
-        }
-
-        //Fetching **Inventory** data upon loading the page
-        try {
-            const response = await axiosInstance.get(`/api/players/getInventories/${lobbyID}`);
-            const inventories: Inventory[] = response.data as Inventory[];
-            setInventoryArray(inventories)
-            // inventories.forEach((inventory: Inventory) => {
-            //     updateInventoryObject(inventory.user_id.toString(), inventory);
-            // });
-        } catch (error) {
-            console.error("Error fetching Inventory: ", error);
-        }
-
-        // Fetching **PropertyInventory** data upon loading the page
-        try {
-            const response = await axiosInstance.get(`/api/players/getPropertyInventories/${lobbyID}`);
-            const propertyInventories: PropertyInventory[] = response.data as PropertyInventory[];
-            setPropertyInventoryArray(propertyInventories)
-            // propertyInventories.forEach((propertyInventory: PropertyInventory) => {
-            //     updatePropertyInventoryObject(propertyInventory.user_id.toString(), propertyInventory);
-            // });
-        } catch (error) {
-            console.error("Error fetching PropertyInventory: ", error);
-        }
-
-        // Fetching **Properties** data upon loading the page
-        try {
-            const response = await axiosInstance.get(`/api/games/getProperties/${lobbyID}`);
-            const properties: Property[] = response.data as Property[];
-            setPropertiesArray(properties)
-            // propertyInventories.forEach((propertyInventory: PropertyInventory) => {
-            //     updatePropertyInventoryObject(propertyInventory.user_id.toString(), propertyInventory);
-            // });
-        } catch (error) {
-            console.error("Error fetching Properties: ", error);
-        }
-    };
-
-    const fetchData2 = async () => {
         console.log("Fetching data2");
-        
+        try {
+            const response = await axiosInstance.get(`/api/games/getGameState/${lobbyID}`);
+            const properties: Property[] = response.data.properties as Property[];
+            const gameUsers: GameUser[] = response.data.game_users as GameUser[];
+            const inventories: Inventory[] = response.data.inventories as Inventory[];
+            const propertyInventories: PropertyInventory[] = response.data.property_inventories as PropertyInventory[];
+            
+            setPropertiesArray(properties);
+            setGameUsersArray(gameUsers);
+            setInventoryArray(inventories);
+            setPropertyInventoryArray(propertyInventories);
+        } catch (error) {
+            console.error("Error fetching Game State: ", error);
+        }  
     };
 
+    const fetchBoardSpaces = async () => {
+        try {
+            const response = await axiosInstance.get(`/api/games/getBoardSpaces`);
+            setBoardSpacesArray(response.data as BoardSpace[]);
+        } catch (error) {
+            console.error("Error fetching Board Spaces: ", error);
+        }
+    }
+    
 
     useEffect(() => {
-        console.log("GameSession useEffect fetch data")
+        console.log("GameSession useEffect fetch data upon loading the page")
         fetchData();
+        fetchBoardSpaces();
     }, [lobbyID]);
 
     useEffect(() => {

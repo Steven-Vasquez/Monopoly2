@@ -14,20 +14,6 @@ const getGameUsers = async (game_id: number) => {
     );
 };
 
-const getInventories = async (game_id: number) => {
-    return db.manyOrNone(
-        `SELECT * FROM inventory WHERE game_id=$1`,
-        [game_id]
-    );
-}
-
-const getPropertyInventories = async (game_id: number) => {
-    return db.manyOrNone(
-        `SELECT * FROM property_inventory WHERE game_id=$1`,
-        [game_id]
-    );
-}
-
 const addBalance = async (user_id: number, game_id: number, amount: number) => {
     return db.none(
         `UPDATE inventory 
@@ -40,7 +26,5 @@ const addBalance = async (user_id: number, game_id: number, amount: number) => {
 export default {
     getUserIDS,
     getGameUsers,
-    getInventories,
-    getPropertyInventories,
     addBalance
 }

@@ -57,7 +57,7 @@ router.post("/:id/join", async (request: any, response: any) => {
     try {
         await Games.join(game_id, user_id);
 
-        const state = await Games.state(game_id, user_id);
+        const state = await Games.state(game_id);
         console.log("state: ");
         console.log(state);
         //io.to(game_id).emit(GAME_UPDATED(game_id), state);
@@ -107,22 +107,10 @@ router.post("/create", async (request: any, response: any) => {
 });
 
 
-// Get property_info table for a game
-router.get("/getProperties/:id", async (request: any, response: any) => {
-    try {
-        const { id: game_id } = request.params;
-        const properties = await Games.getProperties(game_id);
-        response.json(properties);
-    }
-    catch (error) {
-        console.error(error);
-        response.send("Error retrieving property_info");
-    }
-});
 
 
 // Get game state
-router.get("/getState/:id", async (request: any, response: any) => {
+router.get("/getGameState/:id", async (request: any, response: any) => {
     const { id: game_id } = request.params;
     //const { id: user_id } = request.session.user;
 
@@ -133,5 +121,16 @@ router.get("/getState/:id", async (request: any, response: any) => {
         console.log({ error });
     }
 });
+
+// Get board spaces
+router.get("/getBoardSpaces", async (request: any, response: any) => {
+    try {
+        const boardSpaces = await Games.getBoardSpaces();
+        response.json(boardSpaces);
+    } catch (error) {
+        console.log({ error });
+    }
+});
+
 
 export default router;

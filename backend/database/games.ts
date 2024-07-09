@@ -313,16 +313,19 @@ const state = async (game_id: number) => {
     };
 };
 
-const getProperties = async (game_id: number) => {
-    const properties = await db.many(
+const getBoardSpaces = async () => {
+    const boardSpaces = await db.many(
         `
     SELECT *
-    FROM property_info
-    WHERE game_id = $1
-    `, [game_id]
+    FROM board_spaces
+    ORDER BY board_position
+    `,
+        []
     );
-    return properties;
+
+    return boardSpaces;
 }
+
 
 export default {
     create,
@@ -331,5 +334,5 @@ export default {
     listMyGames,
     listPlayers,
     state,
-    getProperties
+    getBoardSpaces
 };

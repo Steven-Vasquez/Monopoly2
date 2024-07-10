@@ -1,12 +1,13 @@
 import "./BoardCell.css"
 import { useState, useEffect, useRef } from 'react'
+import { SpaceType } from "#types/SpaceType.js"
+import { PropertyColor } from "#types/PropertyColor.js"
 
 export type BoardCellProps = {
-    type: "property" | "income-tax" | "chest" | "chance" | "railroad" | "electric-company" | "water-works" | "luxury-tax"| "go" | "jail" | "free-parking" | "go-to-jail",
+    type: SpaceType,
     price?: number,
-    color?: "brown" | "sky" | "pink" | "orange" | "red" | "yellow" | "green" | "blue", 
+    color?: PropertyColor, 
     title?: string,
-    description?: string,
     // width?: number,
     // height?: number,
     orientation?: "to-left" | "to-right" | "to-bottom" | "to-top"

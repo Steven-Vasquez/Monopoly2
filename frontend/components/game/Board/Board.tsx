@@ -12,6 +12,7 @@ import Inventory from '#types/Inventory.ts';
 import PropertyInventory from '#types/PropertyInventory.ts';
 import Property from '#types/Property.ts';
 import BoardSpace from '#types/BoardSpace.ts';
+import { SpaceType } from "#types/SpaceType.js"
 
 
 // interface CellProps extends BoardCellProps {
@@ -43,13 +44,19 @@ export function Board(props: {height: number, width: number, lobbyID: string}) {
     const fetchData = async () => {
         console.log("Fetching data2");
         try {
-            const response = await axiosInstance.get(`/api/games/getGameState/${props.lobbyID}`);
-            const properties: Property[] = response.data.properties as Property[];
+            const stateResponse = await axiosInstance.get(`/api/games/getGameState/${props.lobbyID}`);
+            const properties: Property[] = stateResponse.data.properties as Property[];
+
+            const spacesResponse = await axiosInstance.get(`/api/games/getBoardSpaces`);
+            console.log(spacesResponse);
+            const spaces: BoardSpace[] = spacesResponse.data as BoardSpace[]
+
             // const gameUsers: GameUser[] = response.data.game_users as GameUser[];
             // const inventories: Inventory[] = response.data.inventories as Inventory[];
             // const propertyInventories: PropertyInventory[] = response.data.property_inventories as PropertyInventory[];
             
             setPropertiesArray(properties);
+            setBoardSpacesArray(spaces);
             // setGameUsersArray(gameUsers);
             // setInventoryArray(inventories);
             // setPropertyInventoryArray(propertyInventories);
@@ -65,6 +72,35 @@ export function Board(props: {height: number, width: number, lobbyID: string}) {
         // fetchBoardSpaces();
     }, [props.lobbyID]);
 
+    function GenerateBoardTopRow(): React.JSX.Element {
+        const topRowSlice = BoardSpacesArray.slice(21,30)
+        console.log(topRowSlice);
+        return(
+            <>
+                {topRowSlice.map((e) => {
+                    if (e.space_type == 'property' && e.property_id) {
+                        let propertyInfo = propertiesArray.find((elem) => elem.property_id == e.property_id);
+                        if (!propertyInfo) {
+                            // if property not found, return empty element
+                            console.log("Property not found", e.property_id)
+                            return (<></>)
+                        }
+                        console.log("Property", propertyInfo)
+                        return <BoardCell
+                            type={e.space_type}
+                            price={propertyInfo.property_cost}
+                            color={propertyInfo.property_color}
+                            title={propertyInfo.property_name}
+                            orientation="to-bottom"
+                        />
+                    } else {
+                        console.log("Space", e.space_type)
+                    }
+                })}
+            </>
+        )
+    }
+
     return (
         <div className="board" style={{
             height: props.height,
@@ -72,9 +108,10 @@ export function Board(props: {height: number, width: number, lobbyID: string}) {
         }}>
             {/* <p>{props.width} x {props.height}</p> */}
             <div className="top-left">
-                <BoardCell type={"free-parking"} />
+                <BoardCell type={SpaceType.freeParking} />
             </div>
             <div className="top">
+                <GenerateBoardTopRow />
                 {/* {
                     props.top.map((e) => {
                         return <BoardCell
@@ -89,7 +126,7 @@ export function Board(props: {height: number, width: number, lobbyID: string}) {
                 } */}
             </div>
             <div className="top-right">
-                <BoardCell type={"go-to-jail"} />
+                {/* <BoardCell type={"go-to-jail"} /> */}
             </div>
             <div className="left">
                 {/* {
@@ -133,7 +170,7 @@ export function Board(props: {height: number, width: number, lobbyID: string}) {
                 } */}
             </div>
             <div className="bottom-left">
-                <BoardCell type={"jail"} />
+                {/* <BoardCell type={"jail"} /> */}
             </div>
             <div className="bottom">
                 {/* {
@@ -150,7 +187,7 @@ export function Board(props: {height: number, width: number, lobbyID: string}) {
                 } */}
             </div>
             <div className="bottom-right">
-                <BoardCell type={"go"} />
+                {/* <BoardCell type={"go"} /> */}
             </div>
         </div>
     )

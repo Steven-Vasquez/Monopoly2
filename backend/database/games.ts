@@ -21,6 +21,7 @@ const checkPropertyInfo = async (game_id: number) => {
     console.log(propertiesPath);
     // Read the property data from the JSON file
     const properties: Property[] = JSON.parse(fs.readFileSync(propertiesPath, 'utf-8'));
+    console.log("properties length:" + properties.length);
     // Insert the property data into the database
     for (const property of properties) {
         const query = {

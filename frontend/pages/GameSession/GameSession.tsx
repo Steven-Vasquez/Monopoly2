@@ -163,6 +163,8 @@ function GameSession() {
         console.log("gameUsersArray: ", gameUsersArray);
         console.log("inventoryArray: ", inventoryArray);
         console.log("propertyinventoryArray: ", propertyinventoryArray);
+        console.log("propertiesArray: ", propertiesArray);
+        console.log("BoardSpacesArray: ", BoardSpacesArray);
     }, [gameUsersArray, inventoryArray, propertyinventoryArray]);
 
 

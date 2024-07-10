@@ -123,7 +123,7 @@ router.get("/getGameState/:id", async (request: any, response: any) => {
 });
 
 // Get board spaces
-router.get("/getBoardSpaces", async (request: any, response: any) => {
+router.get("/getBoardSpaces", async (_request: any, response: any) => {
     try {
         const boardSpaces = await Games.getBoardSpaces();
         response.json(boardSpaces);

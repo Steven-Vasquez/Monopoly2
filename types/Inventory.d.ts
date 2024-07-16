@@ -5,5 +5,3 @@ interface Inventory {
     jail_turns: number;
     jail_free_card: number;
 }
-
-export default Inventory;

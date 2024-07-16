@@ -1,11 +1,9 @@
-import { PropertyColor } from "../types/PropertyColor.ts";
-
 interface Property {
     property_id: number,
     game_id: number,
     property_type: "color" | "railroad" | "utility",
     property_name: string,
-    property_color?: PropertyColor,
+    property_color?: "brown"| "light_blue" | "pink" | "orange" | "red" | "yellow" | "green" | "dark_blue",
     property_cost: number,
     mortgage_payout: number,
     unmortgage_cost: number,
@@ -21,5 +19,3 @@ interface Property {
     owner?: number,
     mortgaged?: boolean,
 }
-
-export default Property;

@@ -1,13 +1,12 @@
 import "./BoardCell.css"
 import { useState, useEffect, useRef } from 'react'
-import { SpaceType } from "#types/SpaceType.js"
-import { PropertyColor } from "#types/PropertyColor.js"
 
 export type BoardCellProps = {
-    type: SpaceType,
-    price?: number,
-    color?: PropertyColor, 
-    title?: string,
+    data: {space: BoardSpace, property?: Property},
+    // type: SpaceType,
+    // price?: number,
+    // color?: PropertyColor, 
+    // title?: string,
     // width?: number,
     // height?: number,
     orientation?: "to-left" | "to-right" | "to-bottom" | "to-top"
@@ -40,7 +39,7 @@ export function BoardCell(props: BoardCellProps) {
     }, [container.current]);
 
 
-    switch (props.type) {
+    switch (props.data.space.space_type) {
         case "property":
             return(
                 <div className="board-cell property" ref={container}>
@@ -54,16 +53,16 @@ export function BoardCell(props: BoardCellProps) {
                         }
                     >
                         <div 
-                            className={"colorblock " + props.color}
+                            className={"colorblock " + props.data.property?.property_color}
                         ></div>
                         <div className="cell-info">
-                            <p className="name">{props.title}</p>
-                            <p className="price">${props.price}</p>
+                            <p className="name">{props.data.property?.property_name}</p>
+                            <p className="price">${props.data.property?.property_cost}</p>
                         </div>
                     </div>
                 </div>
             )
-        case "income-tax":
+        case "income_tax":
             return(
                 <div className="board-cell income-tax" ref={container}>
                     <div 
@@ -77,12 +76,12 @@ export function BoardCell(props: BoardCellProps) {
                     >
                         <div className="cell-info">
                             <p className="title">Income Tax</p>
-                            <p className="desc">{props.description}</p>
+                            {/* <p className="desc">{props.description}</p> */}
                         </div>
                     </div>
                 </div>
             )
-        case "chest":
+        case "community_chest":
             return(
                 <div className="board-cell chest" ref={container}>
                     <div 
@@ -120,67 +119,67 @@ export function BoardCell(props: BoardCellProps) {
                     </div>
                 </div>
             )
-        case "railroad":
-            return(
-                <div className="board-cell railroad" ref={container}>
-                    <div 
-                        className={"cell-contents " + props.orientation} 
-                        style={
-                            props.orientation == "to-left" || props.orientation == "to-right" ? 
-                            {width: dim.height, height: dim.width} 
-                            : 
-                            {width: dim.width, height: dim.height}
-                        }
-                    >
-                        <div className="cell-info">
-                            <p className="name">{props.title}</p>
-                            <img className="cell-icon" src="/frontend/assets/gameBoard/train.svg" alt="" draggable="false"/>
-                            <p className="price">${props.price}</p>
-                        </div>
-                    </div>
-                </div>
-            )
-        case "electric-company":
-            return(
-                <div className="board-cell electric-company" ref={container}>
-                    <div 
-                        className={"cell-contents " + props.orientation} 
-                        style={
-                            props.orientation == "to-left" || props.orientation == "to-right" ? 
-                            {width: dim.height, height: dim.width} 
-                            : 
-                            {width: dim.width, height: dim.height}
-                        }
-                    >
-                        <div className="cell-info">
-                            <p className="name">{props.title ? props.title : "Electric Company"}</p>
-                            <img className="cell-icon" src="/frontend/assets/gameBoard/light.svg" alt="" draggable="false"/>
-                            <p className="price">${props.price}</p>
-                        </div>
-                    </div>
-                </div>
-            )
-        case "water-works":
-            return(
-                <div className="board-cell water-works" ref={container}>
-                    <div 
-                        className={"cell-contents " + props.orientation} 
-                        style={
-                            props.orientation == "to-left" || props.orientation == "to-right" ? 
-                            {width: dim.height, height: dim.width} 
-                            : 
-                            {width: dim.width, height: dim.height}
-                        }
-                    >
-                        <div className="cell-info">
-                            <p className="name">{props.title ? props.title : "Water Works"}</p>
-                            <img className="cell-icon" src="/frontend/assets/gameBoard/water.svg" alt="" draggable="false"/>
-                            <p className="price">${props.price}</p>
-                        </div>
-                    </div>
-                </div>
-            )
-        case "luxury-tax":
+        // case "railroad":
+        //     return(
+        //         <div className="board-cell railroad" ref={container}>
+        //             <div 
+        //                 className={"cell-contents " + props.orientation} 
+        //                 style={
+        //                     props.orientation == "to-left" || props.orientation == "to-right" ? 
+        //                     {width: dim.height, height: dim.width} 
+        //                     : 
+        //                     {width: dim.width, height: dim.height}
+        //                 }
+        //             >
+        //                 <div className="cell-info">
+        //                     <p className="name">{props.title}</p>
+        //                     <img className="cell-icon" src="/frontend/assets/gameBoard/train.svg" alt="" draggable="false"/>
+        //                     <p className="price">${props.price}</p>
+        //                 </div>
+        //             </div>
+        //         </div>
+        //     )
+        // case "electric-company":
+        //     return(
+        //         <div className="board-cell electric-company" ref={container}>
+        //             <div 
+        //                 className={"cell-contents " + props.orientation} 
+        //                 style={
+        //                     props.orientation == "to-left" || props.orientation == "to-right" ? 
+        //                     {width: dim.height, height: dim.width} 
+        //                     : 
+        //                     {width: dim.width, height: dim.height}
+        //                 }
+        //             >
+        //                 <div className="cell-info">
+        //                     <p className="name">{props.title ? props.title : "Electric Company"}</p>
+        //                     <img className="cell-icon" src="/frontend/assets/gameBoard/light.svg" alt="" draggable="false"/>
+        //                     <p className="price">${props.price}</p>
+        //                 </div>
+        //             </div>
+        //         </div>
+        //     )
+        // case "water-works":
+        //     return(
+        //         <div className="board-cell water-works" ref={container}>
+        //             <div 
+        //                 className={"cell-contents " + props.orientation} 
+        //                 style={
+        //                     props.orientation == "to-left" || props.orientation == "to-right" ? 
+        //                     {width: dim.height, height: dim.width} 
+        //                     : 
+        //                     {width: dim.width, height: dim.height}
+        //                 }
+        //             >
+        //                 <div className="cell-info">
+        //                     <p className="name">{props.title ? props.title : "Water Works"}</p>
+        //                     <img className="cell-icon" src="/frontend/assets/gameBoard/water.svg" alt="" draggable="false"/>
+        //                     <p className="price">${props.price}</p>
+        //                 </div>
+        //             </div>
+        //         </div>
+        //     )
+        case "luxury_tax":
             return(
                 <div className="board-cell luxury-tax" ref={container}>
                     <div 
@@ -195,7 +194,7 @@ export function BoardCell(props: BoardCellProps) {
                         <div className="cell-info">
                             <p className="title">Luxury Tax</p>
                             <img className="cell-icon" src="/frontend/assets/gameBoard/tax.svg" alt="" draggable="false"/>
-                            <p className="desc">{props.description}</p>
+                            {/* <p className="desc">{props.description}</p> */}
                         </div>
                     </div>
                 </div>
@@ -236,7 +235,7 @@ export function BoardCell(props: BoardCellProps) {
                     </div>
                 </div>
             )
-        case "free-parking":
+        case "free_parking":
             return(
                 <div className="board-corner free-parking" ref={container}>
                     <div 
@@ -249,7 +248,7 @@ export function BoardCell(props: BoardCellProps) {
                     </div>
                 </div>
             )
-        case "go-to-jail":
+        case "go_to_jail":
             return(
                 <div className="board-corner go-to-jail" ref={container}>
                     <div 

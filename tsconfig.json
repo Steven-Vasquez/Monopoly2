@@ -23,8 +23,9 @@
     /* Linting */
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "typeRoots": ["./node_modules/@types", "./types"]
   },
-  "include": ["frontend/**/*", "backend/**/*", "shared"],
+  "include": ["frontend/**/*", "backend/**/*", "shared", "types/*"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

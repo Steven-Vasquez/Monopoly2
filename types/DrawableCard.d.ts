@@ -7,5 +7,3 @@ interface DrawableCard {
     action_type: string,
     action_data?: number 
 }
-
-export default DrawableCard;

@@ -4,16 +4,13 @@ import { BoardCell } from "../BoardCell/BoardCell.tsx";
 import { BoardCellProps } from "../BoardCell/BoardCell.tsx";
 import PlayerTurnDialogOptions from "../../../dialogs/PlayerTurnDialogOptions/PlayerTurnDialogOptions.tsx";
 import axiosInstance from "#backend/axiosInstance.js";
+import { toast } from 'react-hot-toast';
 // import { Logo } from "../../general/Logo/Logo.tsx";
 
 
-import GameUser from '#types/GameUser.ts';
-import Inventory from '#types/Inventory.ts';
-import PropertyInventory from '#types/PropertyInventory.ts';
-import Property from '#types/Property.ts';
-import BoardSpace from '#types/BoardSpace.ts';
-import { SpaceType } from "#types/SpaceType.js"
-
+// import GameUser from '#types/GameUser.ts';
+// import Inventory from '#types/Inventory.js';
+// import PropertyInventory from '#types/PropertyInventory.js';
 
 // interface CellProps extends BoardCellProps {
 //     type: "property" | "income-tax" | "chest" | "chance" | "railroad" | "electric-company" | "water-works" | "luxury-tax",
@@ -63,6 +60,7 @@ export function Board(props: {height: number, width: number, lobbyID: string}) {
             console.log("Board Fetch", properties);
         } catch (error) {
             console.error("Error fetching Game State: ", error);
+            toast.error(`Error fetching Game State!`);
         }  
     };
 
@@ -87,10 +85,10 @@ export function Board(props: {height: number, width: number, lobbyID: string}) {
                         }
                         console.log("Property", propertyInfo)
                         return <BoardCell
-                            type={e.space_type}
-                            price={propertyInfo.property_cost}
-                            color={propertyInfo.property_color}
-                            title={propertyInfo.property_name}
+                            data={{space: e, property: propertyInfo}}
+                            // price={propertyInfo.property_cost}
+                            // color={propertyInfo.property_color}
+                            // title={propertyInfo.property_name}
                             orientation="to-bottom"
                         />
                     } else {
@@ -108,7 +106,7 @@ export function Board(props: {height: number, width: number, lobbyID: string}) {
         }}>
             {/* <p>{props.width} x {props.height}</p> */}
             <div className="top-left">
-                <BoardCell type={SpaceType.freeParking} />
+                {/* <BoardCell type={SpaceType.freeParking} /> */}
             </div>
             <div className="top">
                 <GenerateBoardTopRow />

@@ -13,11 +13,11 @@ import VoiceChatRoom from '../../components/voiceChat/VoiceChatRoom/VoiceChatRoo
 import TextChatBox from '../../components/textChat/TextChatBox/TextChatBox.tsx';
 
 import "./GameSession.css";
-import GameUser from '#types/GameUser.ts';
-import Inventory from '#types/Inventory.ts';
-import PropertyInventory from '#types/PropertyInventory.ts';
-import Property from '#types/Property.ts';
-import BoardSpace from '#types/BoardSpace.ts';
+// import GameUser from '#types/GameUser.ts';
+// import Inventory from '#types/Inventory.js';
+// import PropertyInventory from '#types/PropertyInventory.js';
+// import Property from '#types/Property.ts';
+// import BoardSpace from '#types/BoardSpace.js';
 
 
 function GameSession() {

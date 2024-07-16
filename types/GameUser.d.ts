@@ -8,5 +8,3 @@ interface GameUser {
     dice_doubles_count: number;
     alive: boolean;
   }
-  
-  export default GameUser;

@@ -12,5 +12,3 @@ interface PropertyInventory {
     greens_owned: number;
     dark_blues_owned: number;
 }
-
-export default PropertyInventory;

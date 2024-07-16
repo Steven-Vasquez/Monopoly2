@@ -2,7 +2,6 @@ import db from "./connection.ts";
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import fs from "fs";
-import Property from "#types/Property.ts";
 
 
 // Ensures the property_info table is populated. Otherwise, no game can be played properly

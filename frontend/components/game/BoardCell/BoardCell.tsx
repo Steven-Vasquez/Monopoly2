@@ -52,11 +52,32 @@ export function BoardCell(props: BoardCellProps) {
                             {width: dim.width, height: dim.height}
                         }
                     >
-                        <div 
-                            className={"colorblock " + props.data.property?.property_color}
-                        ></div>
+                        {props.data.property?.property_type == 'color' ?
+                            <div 
+                                className={"colorblock " + props.data.property?.property_color}
+                            ></div>
+                            :
+                            <></>
+                        }
                         <div className="cell-info">
                             <p className="name">{props.data.property?.property_name}</p>
+                            {
+                                (() => {
+                                    if (props.data.property?.property_type == 'railroad') {
+                                        return(<img className="cell-icon" src="/frontend/assets/gameBoard/train.svg" alt="" draggable="false"/>) 
+                                    } 
+                                    else if (props.data.property?.property_type == 'utility' && props.data.property?.property_name.toLowerCase().includes('water')) {
+                                        return(<img className="cell-icon" src="/frontend/assets/gameBoard/water.svg" alt="" draggable="false"/>) 
+                                    } 
+                                    else if (props.data.property?.property_type == 'utility' && props.data.property?.property_name.toLowerCase().includes('electric')) {
+                                        return(<img className="cell-icon" src="/frontend/assets/gameBoard/light.svg" alt="" draggable="false"/>) 
+                                    } 
+                                    else {
+                                        return(<></>)
+                                    }
+                                }
+                                )()
+                            }
                             <p className="price">${props.data.property?.property_cost}</p>
                         </div>
                     </div>
@@ -76,7 +97,7 @@ export function BoardCell(props: BoardCellProps) {
                     >
                         <div className="cell-info">
                             <p className="title">Income Tax</p>
-                            {/* <p className="desc">{props.description}</p> */}
+                            <p className="desc">{props.data.space.tax_amount}</p>
                         </div>
                     </div>
                 </div>
@@ -194,7 +215,7 @@ export function BoardCell(props: BoardCellProps) {
                         <div className="cell-info">
                             <p className="title">Luxury Tax</p>
                             <img className="cell-icon" src="/frontend/assets/gameBoard/tax.svg" alt="" draggable="false"/>
-                            {/* <p className="desc">{props.description}</p> */}
+                            <p className="desc">{props.data.space.tax_amount}</p>
                         </div>
                     </div>
                 </div>

@@ -29,14 +29,14 @@ interface BoardProps {
     width: number;
 }
 
-export function Board(props: {height: number, width: number, lobbyID: string}) {
+export function Board(props: { height: number, width: number, lobbyID: string }) {
 
     // const [gameUsersArray, setGameUsersArray] = useState<GameUser[]>([]);
     // const [inventoryArray, setInventoryArray] = useState<Inventory[]>([]);
     // const [propertyinventoryArray, setPropertyInventoryArray] = useState<PropertyInventory[]>([]); // Property inventory of all players in the game
     const [propertiesArray, setPropertiesArray] = useState<Property[]>([]); // Property inventory of all players in the game
     const [BoardSpacesArray, setBoardSpacesArray] = useState<BoardSpace[]>([]); // All board spaces on the map
-
+    const [boardLoaded, setBoardLoaded] = useState(false)
 
     const fetchData = async () => {
         console.log("Fetching data2");
@@ -45,23 +45,24 @@ export function Board(props: {height: number, width: number, lobbyID: string}) {
             const properties: Property[] = stateResponse.data.properties as Property[];
 
             const spacesResponse = await axiosInstance.get(`/api/games/getBoardSpaces`);
-            console.log(spacesResponse);
+            console.log("Space response", spacesResponse);
             const spaces: BoardSpace[] = spacesResponse.data as BoardSpace[]
 
             // const gameUsers: GameUser[] = response.data.game_users as GameUser[];
             // const inventories: Inventory[] = response.data.inventories as Inventory[];
             // const propertyInventories: PropertyInventory[] = response.data.property_inventories as PropertyInventory[];
-            
+
             setPropertiesArray(properties);
             setBoardSpacesArray(spaces);
             // setGameUsersArray(gameUsers);
             // setInventoryArray(inventories);
             // setPropertyInventoryArray(propertyInventories);
-            console.log("Board Fetch", properties);
+            console.log("Board Fetch", spaces);
+            setBoardLoaded(true)
         } catch (error) {
             console.error("Error fetching Game State: ", error);
             toast.error(`Error fetching Game State!`);
-        }  
+        }
     };
 
     useEffect(() => {
@@ -71,9 +72,9 @@ export function Board(props: {height: number, width: number, lobbyID: string}) {
     }, [props.lobbyID]);
 
     function GenerateBoardTopRow(): React.JSX.Element {
-        const topRowSlice = BoardSpacesArray.slice(21,30)
-        console.log(topRowSlice);
-        return(
+        const topRowSlice = BoardSpacesArray.slice(21, 30)
+        // console.log(topRowSlice);
+        return (
             <>
                 {topRowSlice.map((e) => {
                     if (e.space_type == 'property' && e.property_id) {
@@ -85,60 +86,135 @@ export function Board(props: {height: number, width: number, lobbyID: string}) {
                         }
                         console.log("Property", propertyInfo)
                         return <BoardCell
-                            data={{space: e, property: propertyInfo}}
-                            // price={propertyInfo.property_cost}
-                            // color={propertyInfo.property_color}
-                            // title={propertyInfo.property_name}
+                            data={{ space: e, property: propertyInfo }}
                             orientation="to-bottom"
                         />
                     } else {
-                        console.log("Space", e.space_type)
+                        return <BoardCell
+                            data={{ space: e }}
+                            orientation="to-bottom"
+                        />
                     }
                 })}
             </>
         )
     }
 
+    function GenerateBoardLeftCol(): React.JSX.Element {
+        const leftColSlice = BoardSpacesArray.slice(11, 20)
+        // console.log(leftColSlice);
+        return (
+            <>
+                {leftColSlice.map((e) => {
+                    if (e.space_type == 'property' && e.property_id) {
+                        let propertyInfo = propertiesArray.find((elem) => elem.property_id == e.property_id);
+                        if (!propertyInfo) {
+                            // if property not found, return empty element
+                            console.log("Property not found", e.property_id)
+                            return (<></>)
+                        }
+                        console.log("Property", propertyInfo)
+                        return <BoardCell
+                            data={{ space: e, property: propertyInfo }}
+                            orientation="to-right"
+                        />
+                    } else {
+                        return <BoardCell
+                            key={e.board_position}
+                            data={{ space: e }}
+                            orientation="to-right"
+                        />
+                    }
+                })}
+            </>
+        )
+    }
+
+    function GenerateBoardRightCol(): React.JSX.Element {
+        const rightColSlice = BoardSpacesArray.slice(31, 40)
+        console.log("Right col slice:", rightColSlice);
+        return (
+            <>
+                {rightColSlice.map((e) => {
+                    if (e.space_type == 'property' && e.property_id) {
+                        let propertyInfo = propertiesArray.find((elem) => elem.property_id == e.property_id);
+                        if (!propertyInfo) {
+                            // if property not found, return empty element
+                            console.log("Property not found", e.property_id)
+                            return (<></>)
+                        }
+                        console.log("Property", propertyInfo)
+                        return <BoardCell
+                            key={e.board_position}
+                            data={{ space: e, property: propertyInfo }}
+                            orientation="to-left"
+                        />
+                    } else {
+                        // console.log("Space", e.space_type)
+                        return <BoardCell 
+                            key={e.board_position}
+                            data={{ space: e }}
+                            orientation="to-left"
+                        />
+                    }
+                })}
+            </>
+        )
+    }
+
+    function GenerateBoardBotttomRow(): React.JSX.Element {
+        const bottomRowSlice = BoardSpacesArray.slice(1, 10)
+        // console.log(topRowSlice);
+        return (
+            <>
+                {bottomRowSlice.map((e) => {
+                    if (e.space_type == 'property' && e.property_id) {
+                        let propertyInfo = propertiesArray.find((elem) => elem.property_id == e.property_id);
+                        if (!propertyInfo) {
+                            // if property not found, return empty element
+                            console.log("Property not found", e.property_id)
+                            return (<></>)
+                        }
+                        console.log("Property", propertyInfo)
+                        return <BoardCell 
+                            key={e.board_position}
+                            data={{ space: e, property: propertyInfo }}
+                            orientation="to-top"
+                        />
+                    } else {
+                        return <BoardCell 
+                            key={e.board_position}
+                            data={{ space: e }}
+                            orientation="to-top"
+                        />
+                    }
+                })}
+            </>
+        )
+    }
+
+    if (!boardLoaded) {
+        return (<></>)
+    }
     return (
         <div className="board" style={{
             height: props.height,
             width: props.width
         }}>
+            {/* {isLoading ? 'loading': 'done'} */}
             {/* <p>{props.width} x {props.height}</p> */}
             <div className="top-left">
-                {/* <BoardCell type={SpaceType.freeParking} /> */}
+                <BoardCell data={{ space: BoardSpacesArray[20] }} />
             </div>
             <div className="top">
                 <GenerateBoardTopRow />
-                {/* {
-                    props.top.map((e) => {
-                        return <BoardCell
-                            type={e.type}
-                            price={e.price}
-                            color={e.color}
-                            title={e.title}
-                            description={e.description}
-                            orientation="to-bottom"
-                        />
-                    })
-                } */}
             </div>
             <div className="top-right">
-                {/* <BoardCell type={"go-to-jail"} /> */}
+
+                <BoardCell data={{ space: BoardSpacesArray[30] }} />
             </div>
             <div className="left">
-                {/* {
-                    props.left.map((e) => {
-                        return <BoardCell
-                            type={e.type}
-                            price={e.price}
-                            color={e.color}
-                            title={e.title}
-                            description={e.description}
-                            orientation="to-right"
-                        />
-                    })
-                } */}
+                <GenerateBoardLeftCol />
             </div>
             <div className="center">
                 <div className="center-monopoly-title">
@@ -154,38 +230,16 @@ export function Board(props: {height: number, width: number, lobbyID: string}) {
                 <PlayerTurnDialogOptions />
             </div>
             <div className="right">
-                {/* {
-                    props.right.map((e) => {
-                        return <BoardCell
-                            type={e.type}
-                            price={e.price}
-                            color={e.color}
-                            title={e.title}
-                            description={e.description}
-                            orientation="to-left"
-                        />
-                    })
-                } */}
+                <GenerateBoardRightCol />
             </div>
             <div className="bottom-left">
-                {/* <BoardCell type={"jail"} /> */}
+                <BoardCell data={{ space: BoardSpacesArray[10] }} />
             </div>
             <div className="bottom">
-                {/* {
-                    props.bottom.map((e) => {
-                        return <BoardCell
-                            type={e.type}
-                            price={e.price}
-                            color={e.color}
-                            title={e.title}
-                            description={e.description}
-                            orientation="to-top"
-                        />
-                    })
-                } */}
+                <GenerateBoardBotttomRow />
             </div>
             <div className="bottom-right">
-                {/* <BoardCell type={"go"} /> */}
+                <BoardCell data={{ space: BoardSpacesArray[0] }} />
             </div>
         </div>
     )

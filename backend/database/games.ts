@@ -4,6 +4,7 @@ import { dirname } from 'path';
 import fs from "fs";
 
 
+
 // Ensures the property_info table is populated. Otherwise, no game can be played properly
 const checkPropertyInfo = async (game_id: number) => {
     console.log("Checking if property info is correct...");
@@ -148,13 +149,14 @@ const createGameBoard = async () => {
         for (const boardSpace of boardSpaces) {
             const query = {
                 text: `INSERT INTO board_spaces
-            (board_position, space_type, property_id)
+            (board_position, space_type, property_id, tax_amount)
             VALUES
-            ($1, $2, $3)`,
+            ($1, $2, $3, $4)`,
                 values: [
                     boardSpace.board_position,
                     boardSpace.space_type,
                     boardSpace.property_id,
+                    boardSpace.tax_amount,
                 ],
             };
             await db.query(query);

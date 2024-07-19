@@ -16,6 +16,9 @@ exports.up = (pgm) => {
       },
       property_id: {
         type: "integer",
+      },
+      tax_amount: {
+        type: "integer"
       }
     });
   };

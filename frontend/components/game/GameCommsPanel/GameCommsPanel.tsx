@@ -63,9 +63,9 @@ export function GameCommsPanel(props: any) {
                 // <p>Game Actions go here...</p>
             ) :
                 <div className="chat" ref={chatbox}>
-                    {/* <VoiceChatRoom />*/ }
-                    {/* <hr className="divider"></hr> */}
-                    {/* <TextChatBox game_id={'0'} socket={props.socket} height={chatHeight} /> */}
+                    <VoiceChatRoom />
+                    <hr className="divider"></hr>
+                    <TextChatBox game_id={'0'} socket={props.socket} height={chatHeight} />
                 </div>
             }
         </div>

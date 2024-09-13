@@ -1,5 +1,7 @@
 import "./BoardCell.css"
 import { useState, useEffect, useRef } from 'react'
+import { Property } from "#types/Property.js"; // Fix Not Found Error- Importing Property interface from types folder
+
 
 export type BoardCellProps = {
     data: {space: BoardSpace, property?: Property},

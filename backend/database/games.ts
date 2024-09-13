@@ -2,7 +2,7 @@ import db from "./connection.ts";
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import fs from "fs";
-
+import { Property } from "#types/Property.js"; // Fix Not Found Error- Importing Property interface from types folder
 
 
 // Ensures the property_info table is populated. Otherwise, no game can be played properly

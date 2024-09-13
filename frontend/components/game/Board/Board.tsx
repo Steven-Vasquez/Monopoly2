@@ -11,6 +11,8 @@ import { toast } from 'react-hot-toast';
 // import GameUser from '#types/GameUser.ts';
 // import Inventory from '#types/Inventory.js';
 // import PropertyInventory from '#types/PropertyInventory.js';
+import { Property } from "#types/Property.js"; // Fix Not Found Error- Importing Property interface from types folder
+
 
 // interface CellProps extends BoardCellProps {
 //     type: "property" | "income-tax" | "chest" | "chance" | "railroad" | "electric-company" | "water-works" | "luxury-tax",
@@ -46,7 +48,7 @@ export function Board(props: { height: number, width: number, lobbyID: string })
 
             const spacesResponse = await axiosInstance.get(`/api/games/getBoardSpaces`);
             console.log("Space response", spacesResponse);
-            const spaces: BoardSpace[] = spacesResponse.data as BoardSpace[]
+            const spaces: BoardSpace[] = spacesResponse.data as BoardSpace[];
 
             // const gameUsers: GameUser[] = response.data.game_users as GameUser[];
             // const inventories: Inventory[] = response.data.inventories as Inventory[];

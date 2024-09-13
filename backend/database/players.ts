@@ -23,8 +23,18 @@ const addBalance = async (user_id: number, game_id: number, amount: number) => {
     );
 };
 
+const subtractBalance = async (user_id: number, game_id: number, amount: number) => {
+    return db.none(
+        `UPDATE inventory 
+         SET balance = balance - $3 
+         WHERE user_id = $1 AND game_id = $2`,
+        [user_id, game_id, amount]
+    );
+};
+
 export default {
     getUserIDS,
     getGameUsers,
-    addBalance
+    addBalance,
+    subtractBalance
 }

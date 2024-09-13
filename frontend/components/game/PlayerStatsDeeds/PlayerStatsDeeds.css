@@ -1,0 +1,53 @@
+.brown {
+	background-color: var(--brown);
+}
+
+.light_blue {
+	background-color: var(--sky);
+}
+
+.pink {
+	background-color: var(--pink);
+}
+
+.orange {
+	background-color: var(--orange);
+}
+
+.red {
+	background-color: var(--red);
+}
+
+.yellow {
+	background-color: var(--yellow);
+}
+
+.green {
+	background-color: var(--green);
+}
+
+.dark_blue {
+	background-color: var(--blue);
+}
+
+.deed-icon {
+    height: 32px;
+    width: 24px;
+    border: 1px solid var(--border-color);
+}
+
+.deed-icon > .deed-color {
+	height: 9px;
+	border-bottom: 1px solid var(--border-color);
+}
+
+.deed-icon > .deed-count {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-weight: 800;
+	background-color: var(--background-dark);
+	height: calc(100% - 9px);
+	line-height: 1;
+	font-size: 0.8em;
+}

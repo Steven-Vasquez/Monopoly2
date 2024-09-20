@@ -46,7 +46,6 @@
     }
 }
 
-
 .player-avatar {
     /* row-start / column-start / row-end / column-end */
     grid-area: 1 / 1 / 3 / 1;
@@ -66,26 +65,17 @@
 }
 
 .player-name-status {
-    grid-area: 1 / 2 / 1 / 3;
-    /* display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 6px; */
-    width: fit-content;
-}
-
-.player-name {
-    /* vertical-align: middle; */
     display: inline-block;
-    width: 100%;
+    max-width: 100%;
 
     /* handle overflow if username is too long for container*/
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    
-    border: 2px solid green;
-    background-color: lightgreen;
+
+    /* colors for debugging */
+    /* border: 2px solid green;
+    background-color: lightgreen; */
 }
 
 .player-stats.is-turn .player-name {

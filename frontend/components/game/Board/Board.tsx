@@ -5,13 +5,15 @@ import { BoardCellProps } from "../BoardCell/BoardCell.tsx";
 import PlayerTurnDialogOptions from "../../../dialogs/PlayerTurnDialogOptions/PlayerTurnDialogOptions.tsx";
 import axiosInstance from "#backend/axiosInstance.js";
 import { toast } from 'react-hot-toast';
+import { Property } from "#types/Property.js";
+// import { Property } from "#types/Property.js";
 // import { Logo } from "../../general/Logo/Logo.tsx";
 
 
 // import GameUser from '#types/GameUser.ts';
 // import Inventory from '#types/Inventory.js';
 // import PropertyInventory from '#types/PropertyInventory.js';
-import { Property } from "#types/Property.js"; // Fix Not Found Error- Importing Property interface from types folder
+// import { Property } from "#types/Property.js"; // Fix Not Found Error- Importing Property interface from types folder
 
 
 // interface CellProps extends BoardCellProps {

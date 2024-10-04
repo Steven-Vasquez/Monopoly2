@@ -6,13 +6,27 @@ import { Color } from "#types/Color.js";
 
 interface PlayerInfo {
     name: string,
-    vc: boolean,
-    turn: boolean,
+    player_id: number
+    balance: number,
     properties: PropertyInventory,
     avatar: string
 }
 
-function PlayerStats() {
+function PlayerStats(props: {
+    gameUsersArray: GameUser[],
+    propertyInventoryArray: PropertyInventory[],
+    inventoryArray: Inventory[],
+    usernamesArray: String[]
+}) {
+
+    // COMMENTED OUT SO THAT THE CODE CAN RUN
+    // const playerInfoArray: PlayerInfo[] = props.gameUserArray.map((user, index) => {
+    //     //GET request to get username
+    //     return {
+    //         name: 
+    //     }
+    // })
+
     const playerInfo: PlayerInfo[] = [
         {
             name: "Hubert Blaine Wolfeschlegelsteinhausenbergerdorff Sr.",

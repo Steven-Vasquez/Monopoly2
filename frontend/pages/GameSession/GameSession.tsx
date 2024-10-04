@@ -96,10 +96,12 @@ function GameSession() {
     // const [propertyinventoryArray, setPropertyinventoryArray] = useState<Map<string, PropertyInventory>>(new Map()); // Property inventory of all players in the game
 
     const [gameUsersArray, setGameUsersArray] = useState<GameUser[]>([]);
-    const [inventoryArray, setInventoryArray] = useState<Inventory[]>([]);
+    const [inventoryArray, setInventoryArray] = useState<Inventory[]>([]); // Inventory of all players in the game (excluding properties)
     const [propertyinventoryArray, setPropertyInventoryArray] = useState<PropertyInventory[]>([]); // Property inventory of all players in the game
     // const [propertiesArray, setPropertiesArray] = useState<Property[]>([]); // Property inventory of all players in the game -- REMOVE?
     const [BoardSpacesArray, setBoardSpacesArray] = useState<BoardSpace[]>([]); // All board spaces on the map
+    const [usernamesArray, setUsernamesArray] = useState<String[]>([])
+
 
 
     const updateGameUsers = (userId: number, newValues: Partial<GameUser>) => {
@@ -145,15 +147,26 @@ function GameSession() {
         }
     };
 
+    //ENSURE THIS WORKS
+    const fetchUsernames = async () => {
+        try {
+            const response = await axiosInstance.get(`/api/games/getPlayersList/${lobbyID}`);
+            setUsernamesArray(response.data);
+        } catch (error) {
+            console.error("Error fetching usernames ", error);
+        }
+    }
 
     useEffect(() => {
         console.log("GameSession useEffect fetch data upon loading the page")
         fetchData();
+        fetchUsernames();
         fetchBoardSpaces();
     }, [lobbyID]);
 
     useEffect(() => {
         console.log("gameUsersArray: ", gameUsersArray);
+        console.log("gameUser1: ", gameUsersArray[0])
         console.log("inventoryArray: ", inventoryArray);
         console.log("propertyinventoryArray: ", propertyinventoryArray);
         // console.log("propertiesArray: ", propertiesArray);
@@ -261,7 +274,11 @@ function GameSession() {
                         <p>Connecting to chat...</p>
 
                     )}
-                    <PlayerStats />
+                    <PlayerStats 
+                        gameUsersArray={gameUsersArray} 
+                        propertyInventoryArray={propertyinventoryArray}
+                        inventoryArray={inventoryArray}
+                        usernamesArray={usernamesArray}/>
                     <PlayerInventory />
 
                     {/* <div id="board-container">

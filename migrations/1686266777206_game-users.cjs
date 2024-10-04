@@ -13,6 +13,10 @@ exports.up = (pgm) => {
         type: "integer",
         notNull: true,
       },
+      username: {
+        type: "varchar(256)",
+        notNull: true,
+      },
       current_player: {
         type: "boolean",
         default: false,
